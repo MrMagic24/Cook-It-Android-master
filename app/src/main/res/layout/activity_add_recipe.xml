@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/add_recipe_layout"
+    tools:context=".AddRecipeActivity">
+
+    <TextView
+        android:id="@+id/textViewMainAddRecipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space24"
+        android:layout_centerHorizontal="true"
+        android:text="@string/add_new_recipe"
+        android:textSize="22sp"/>
+
+    <EditText
+        android:id="@+id/editTextAddRecipeName"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp"
+        android:ems="10"
+        android:inputType="textPersonName|text" />
+
+    <TextView
+        android:id="@+id/textViewIngredientsAddRecipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="350dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/add_new_recipe"
+        android:textSize="22sp"/>
+
+    <TextView
+        android:id="@+id/textViewHowAddRecipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/how_recipe"
+        android:textSize="22sp"/>
+
+    <EditText
+        android:id="@+id/editTextAddRecipeHow"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="190dp"
+        android:ems="10"
+        android:inputType="textPersonName|text"
+        android:singleLine="false" />
+
+    <TextView
+        android:id="@+id/textViewCategoryAddRecipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="250dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/category_recipe"
+        android:textSize="22sp"/>
+
+    <Spinner
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:id="@+id/categories"
+        android:layout_marginTop="290dp"
+        android:layout_centerHorizontal="true"/>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="400dp">
+
+        <TableLayout
+            android:id="@+id/tableLayout"
+            android:layout_width="370dp"
+            android:layout_height="wrap_content">
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:id="@+id/categoriestest" />
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:id="@+id/categoriestest1" />
+        </TableLayout>
+    </LinearLayout>
+</RelativeLayout>
