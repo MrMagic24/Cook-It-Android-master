@@ -1,5 +1,6 @@
 package com.uiresource.cookit.Database.Accounts;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Insert;
@@ -12,7 +13,7 @@ import java.util.List;
 public interface AccountListDao {
 
     @Query("SELECT * FROM AccountList")
-    List<AccountList> getAll();
+    LiveData<List<AccountList>> getAllAccounts();
 
     @Query("SELECT * FROM AccountList WHERE id = :id")
     AccountList getById(String id);

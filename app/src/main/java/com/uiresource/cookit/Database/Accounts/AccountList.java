@@ -38,6 +38,60 @@ public class AccountList {
 
     @SerializedName("rateReviewsCount")
     public int rateReviewsCount;
+
+    public AccountList(@NonNull String id, String email, String userName, String firstName, String pathToAvatar, String aboutYourself, boolean gender, int recipiesCount, int reviewsCount, int rateReviewsCount) {
+        this.id = id;
+        this.email = email;
+        this.userName = userName;
+        this.firstName = firstName;
+        this.pathToAvatar = pathToAvatar;
+        this.aboutYourself = aboutYourself;
+        this.gender = gender;
+        this.recipiesCount = recipiesCount;
+        this.reviewsCount = reviewsCount;
+        this.rateReviewsCount = rateReviewsCount;
+    }
+
+    @NonNull
+    public String getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getPathToAvatar() {
+        return pathToAvatar;
+    }
+
+    public String getAboutYourself() {
+        return aboutYourself;
+    }
+
+    public boolean isGender() {
+        return gender;
+    }
+
+    public int getRecipiesCount() {
+        return recipiesCount;
+    }
+
+    public int getReviewsCount() {
+        return reviewsCount;
+    }
+
+    public int getRateReviewsCount() {
+        return rateReviewsCount;
+    }
 }
 
 

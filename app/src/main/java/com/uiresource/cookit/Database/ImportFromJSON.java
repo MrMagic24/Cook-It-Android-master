@@ -48,7 +48,7 @@ public class ImportFromJSON {
         return resp;
     }
 
-    public List<AccountList> AccountGetList(AppDatabase db, AccountListDao accountListDao){
+    /*public List<AccountList> AccountGetList(AppDatabase db, AccountListDao accountListDao){
 
         response = Import(URL + "Account/GetList");
 
@@ -61,6 +61,6 @@ public class ImportFromJSON {
 
         trans.setAccounts(accountListDao);
 
-        return accountListDao.getAll();
-    }
+        return accountListDao.getAllAccounts();
+    }*/
 }

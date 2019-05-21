@@ -98,7 +98,7 @@ public class AccountImport implements Parcelable {
     public void setAccounts(AccountListDao accountListDao){
 
         for (int i = 0; i < items.size(); i++){
-            AccountList acc = new AccountList();
+            /*AccountList acc = new AccountList();
             acc.id = (String) items.get(i).id;
             acc.userName = (String) items.get(i).userName;
             acc.pathToAvatar = (String) items.get(i).pathToAvatar;
@@ -112,7 +112,7 @@ public class AccountImport implements Parcelable {
 
             Log.i("GSON", "\nИмя: " + acc.userName + "\nID: " + acc.id);
 
-            accountListDao.insert(acc);
+            accountListDao.insert(acc);*/
         }
     }
 }
