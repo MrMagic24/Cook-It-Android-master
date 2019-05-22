@@ -9,8 +9,11 @@ import com.google.gson.annotations.SerializedName;
 @Entity
 public class AccountList {
 
-    @PrimaryKey @NonNull @SerializedName("id")
+    @PrimaryKey @NonNull
     public String id;
+
+    @SerializedName("id")
+    public String idServer;
 
     @SerializedName("email")
     public String email;
@@ -39,8 +42,9 @@ public class AccountList {
     @SerializedName("rateReviewsCount")
     public int rateReviewsCount;
 
-    public AccountList(@NonNull String id, String email, String userName, String firstName, String pathToAvatar, String aboutYourself, boolean gender, int recipiesCount, int reviewsCount, int rateReviewsCount) {
+    public AccountList(@NonNull String id, String idServer, String email, String userName, String firstName, String pathToAvatar, String aboutYourself, boolean gender, int recipiesCount, int reviewsCount, int rateReviewsCount) {
         this.id = id;
+        this.idServer = idServer;
         this.email = email;
         this.userName = userName;
         this.firstName = firstName;
@@ -55,6 +59,10 @@ public class AccountList {
     @NonNull
     public String getId() {
         return id;
+    }
+
+    public String getIdServer() {
+        return idServer;
     }
 
     public String getEmail() {

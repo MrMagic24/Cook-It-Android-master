@@ -34,7 +34,7 @@ public class AccountRepository {
     }
 
     public void deleteAllAccounts(){
-        new DeleteAccountAsyncTask(AccountDao).execute();
+        new DeleteAllAccountsAsyncTask(AccountDao).execute();
     }
 
     public LiveData<List<AccountList>> getAllAccounts(){
