@@ -105,14 +105,14 @@ public class AccountImport implements Parcelable {
         return items.size();
     }
 
-    /*public ArrayList<AccountList> getAccountsFromJSON(){
+    public ArrayList<AccountList> getAccountsFromJSON(){
 
         ArrayList<AccountList> AccList = new ArrayList<AccountList>();
 
         for (int i = 0; i < items.size(); i++){
             AccountList acc = new AccountList(
-                    items.get(i).idServer,
-                    items.get(i).idServer,
+                    items.get(i).id,
+                    items.get(i).id,
                     items.get(i).email,
                     items.get(i).userName,
                     items.get(i).firstName,
@@ -123,7 +123,7 @@ public class AccountImport implements Parcelable {
                     items.get(i).reviewsCount,
                     items.get(i).rateReviewsCount);
 
-            Log.i("GSON", "\nИмя: " + acc.userName + "\nID: " + acc.id);
+            Log.i("GSON", "Аккаунт добавлен!");
 
             AccList.add(acc);
 
@@ -131,5 +131,5 @@ public class AccountImport implements Parcelable {
         }
 
         return AccList;
-    }*/
+    }
 }

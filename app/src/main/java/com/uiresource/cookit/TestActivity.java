@@ -34,6 +34,8 @@ import com.uiresource.cookit.Database.ImportFromJSON;
 import com.uiresource.cookit.Database.Test.Trasnlation;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.xml.transform.URIResolver;
 
@@ -43,6 +45,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import static com.uiresource.cookit.Database.ImportFromJSON.*;
+
 public class TestActivity extends AppCompatActivity {
 
     private OkHttpClient okHttpClient;
@@ -51,16 +55,19 @@ public class TestActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private TextView textView;
     private AccountViewModel accountViewModel;
+    private static ArrayList<AccountList> AccListJSON;
     private static final int ADD_NOTE_REQUEST = 1;
     private static final int EDIT_NOTE_REQUEST = 2;
+
+    private Timer timer;
+    private TimerTask timerTask;
+
     //private String JSONText = "{\"items\":[{\"id\":\"5eee1be1-d52b-4c38-d87e-08d6d8651ad9\",\"email\":\"vladisa375@gmail.com\",\"userName\":\"vladisa375@gmail.com\",\"firstName\":null,\"lastName\":null,\"pathToAvatar\":null,\"gender\":false,\"aboutYourself\":null,\"recipiesCount\":0,\"reviewsCount\":0,\"rateReviewsCount\":0}],\"sort\":\"Id\",\"page\":0,\"pageSize\":10,\"totalItemsCount\":1,\"pagesCount\":1}";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-
-
 
         FloatingActionButton buttonAddAccount = findViewById(R.id.button_add_account);
         buttonAddAccount.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +100,10 @@ public class TestActivity extends AppCompatActivity {
             public void onChanged(@Nullable List<AccountList> accountLists) {
                 //Toast.makeText(TestActivity.this,"onChanged", Toast.LENGTH_SHORT).show();
 
-                importAccountFromJSON(adapter);
+                AccListJSON = AccountGetList();
+
+                importAccountFromJSON(accountLists);
+
                 adapter.submitList(accountLists);
 
 
@@ -219,19 +229,21 @@ public class TestActivity extends AppCompatActivity {
         }
     }
 
-    protected void importAccountFromJSON(AccountAdapter adapter){
+    protected void importAccountFromJSON(List<AccountList> accountLists){
 
         //AccountList account = new AccountList(ID, ID, Email, Username, "","","", false, 0,0,0);
 
-        //ArrayList<AccountList> AccListJSON = ImportFromJSON.AccountGetListVoid();
-        ImportFromJSON.AccountGetListVoid();
+        //AccListJSON = ImportFromJSON.AccountGetList();
+        //ImportFromJSON.AccountGetListVoid();
         //LiveData<List<AccountList>> AccList = accountViewModel.getAllAccounts();
 
-        int kek = adapter.getItemsCount();
+        //int kek = adapter.getItemsCount();
+
+        Log.i("GSON", "Количество из БД: " + accountLists.size());
 
         boolean checkItem = false;
 
-        //Log.i("GSON", "Количество записей JSON: " + AccListJSON.size());
+        Log.i("GSON", "Количество записей JSON: " + AccListJSON.size());
 
         /*for(int i = 0; i < AccListJSON.size(); i++){
             for(int j = 0; j < adapter.getItemsCount(); j++){

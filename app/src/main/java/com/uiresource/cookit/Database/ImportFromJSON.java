@@ -1,9 +1,11 @@
 package com.uiresource.cookit.Database;
 
+import android.os.Handler;
 import android.util.Log;
 
 //import com.google.gson.Gson;
 //import com.google.gson.GsonBuilder;
+import com.uiresource.cookit.Database.Accounts.AccountAdapter;
 import com.uiresource.cookit.Database.Accounts.AccountImport;
 import com.uiresource.cookit.Database.Accounts.AccountList;
 import com.uiresource.cookit.Database.Accounts.AccountListDao;
@@ -11,6 +13,8 @@ import com.uiresource.cookit.Database.Accounts.AccountListDao;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -21,6 +25,8 @@ import okhttp3.Response;
 import com.google.gson.*;
 import com.uiresource.cookit.Database.Test.Trasnlation;
 
+import static java.lang.Thread.*;
+
 public class ImportFromJSON {
 
     private static String URL = "https://surviveonsotka20190514062215.azurewebsites.net/api/";
@@ -29,8 +35,12 @@ public class ImportFromJSON {
     private static Request request;
     private static String resp;
     private static String response;
+    public static ArrayList<AccountList> ListAcc;
 
-    private static String Import(String url){
+    private static Timer timer;
+    private static TimerTask timerTask;
+
+    /*private static String Import(String url){
         resp = "";
         okHttpClient = new OkHttpClient();;
         request = new Request.Builder().url(url).build();
@@ -53,31 +63,58 @@ public class ImportFromJSON {
         });
 
         return resp;
+    }*/
+
+    public static ArrayList<AccountList> AccountGetList(){
+
+        getJSON();
+
+        try {
+            sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        Log.i("GSON", "Вышел из метода");
+        Log.i("GSON", "Количество из JSON: " + ListAcc.size());
+
+        return ListAcc;
     }
 
-    /*public static ArrayList<AccountList> AccountGetList(){
+    private static void getJSON(){
+        response = URL + "Account/GetList";
 
-        //response = Import(URL + "Account/GetList");
+        okHttpClient = new OkHttpClient();;
+        request = new Request.Builder().url(response).build();
 
-        //response = Import("https://surviveonsotka20190514062215.azurewebsites.net/api/Account/GetList");
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //Log.i(TAG,e.getMessage());
+            }
 
-        //response = "https://surviveonsotka20190514062215.azurewebsites.net/api/Account/GetList";
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()){
+                    final String myResponse = response.body().string();
 
+                    GsonBuilder builder = new GsonBuilder();
+                    Gson gson = builder.create();
 
+                    final AccountImport acc = gson.fromJson(myResponse, AccountImport.class);
 
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder.create();
+                    /*try {
+                        sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }*/
 
-        final AccountImport trans = gson.fromJson(response, AccountImport.class);
-
-        //accountListDao.deleteAll();
-
-        Log.i("GSON", "ID из JSON: " + trans.id);
-
-        return trans.getAccountsFromJSON();
-
-        //return accountListDao.getAllAccounts();
-    }*/
+                    ListAcc = acc.getAccountsFromJSON();
+                    Log.i("GSON", "Присвоил ListAcc");
+                }
+            }
+        });
+    }
 
     public static void AccountGetListVoid(){
 
@@ -104,14 +141,38 @@ public class ImportFromJSON {
 
                     final AccountImport acc = gson.fromJson(myResponse, AccountImport.class);
 
+                    ListAcc = acc.getAccountsFromJSON();
+
                     //accountListDao.deleteAll();
 
                     //Log.i("GSON", "JSON: " + myResponse);
-                    Log.i("GSON", "ID из JSON: " + acc.setResult());
+                    Log.i("GSON", "ID из JSON: " + ListAcc.get(0).getIdServer());
+                    //Log.i("GSON", "Количество из JSON: " + ListAcc.size());
                 }
             }
         });
 
+        timer = new Timer();
+
+        timerTask = new TimerTask(){
+            @Override
+            public void run()
+            {
+                Log.i("GSON", "Количество из JSON: " + ListAcc.size());
+                timer.cancel();
+                //Log.i("GSON", "Количество в БД: " + adapter.getItemsCount());
+            }
+        };
+
+        timer.schedule(timerTask, 2000, 2000);
+
+        /*Handler handler = new Handler();
+        Runnable r = new Runnable() {
+            public void run() {
+                Log.i("GSON", "Количество из JSON: " + ListAcc.size());
+            }
+        };
+        handler.postDelayed(r, 5000);*/
 
 
         //return trans.getAccountsFromJSON();
