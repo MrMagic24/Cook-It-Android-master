@@ -1,5 +1,6 @@
 package com.uiresource.cookit;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.room.Room;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -58,6 +60,8 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
+
+
         FloatingActionButton buttonAddAccount = findViewById(R.id.button_add_account);
         buttonAddAccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +92,11 @@ public class TestActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable List<AccountList> accountLists) {
                 //Toast.makeText(TestActivity.this,"onChanged", Toast.LENGTH_SHORT).show();
-                adapter.setAccounts(accountLists);
+
+                importAccountFromJSON(adapter);
+                adapter.submitList(accountLists);
+
+
             }
         });
 
@@ -198,9 +206,9 @@ public class TestActivity extends AppCompatActivity {
 
             String Username = data.getStringExtra(AddAccountActivity.EXTRA_USERNAME);
             String Email = data.getStringExtra(AddAccountActivity.EXTRA_EMAIL);
-            String ID = data.getStringExtra(AddAccountActivity.EXTRA_IDSERVER);
+            String IDServer = data.getStringExtra(AddAccountActivity.EXTRA_IDSERVER);
 
-            AccountList account = new AccountList(id, ID, Email, Username, "","","", false, 0,0,0);
+            AccountList account = new AccountList(id, IDServer, Email, Username, "","","", false, 0,0,0);
             accountViewModel.update(account);
 
             Toast.makeText(TestActivity.this,"Updated", Toast.LENGTH_SHORT).show();
@@ -209,5 +217,54 @@ public class TestActivity extends AppCompatActivity {
         else {
             Toast.makeText(TestActivity.this,"Not saved", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    protected void importAccountFromJSON(AccountAdapter adapter){
+
+        //AccountList account = new AccountList(ID, ID, Email, Username, "","","", false, 0,0,0);
+
+        //ArrayList<AccountList> AccListJSON = ImportFromJSON.AccountGetListVoid();
+        ImportFromJSON.AccountGetListVoid();
+        //LiveData<List<AccountList>> AccList = accountViewModel.getAllAccounts();
+
+        int kek = adapter.getItemsCount();
+
+        boolean checkItem = false;
+
+        //Log.i("GSON", "Количество записей JSON: " + AccListJSON.size());
+
+        /*for(int i = 0; i < AccListJSON.size(); i++){
+            for(int j = 0; j < adapter.getItemsCount(); j++){
+                if (adapter.getAccountAt(j).getIdServer() == AccListJSON.get(i).getIdServer()){
+                    checkItem = true;
+
+                    if (adapter.getAccountAt(j).getId() != AccListJSON.get(i).getId() ||
+                            adapter.getAccountAt(j).getUserName() != AccListJSON.get(i).getUserName() ||
+                            adapter.getAccountAt(j).getEmail() != AccListJSON.get(i).getEmail() ||
+                            adapter.getAccountAt(j).getFirstName() != AccListJSON.get(i).getFirstName() ||
+                            adapter.getAccountAt(j).getAboutYourself() != AccListJSON.get(i).getAboutYourself() ||
+                            adapter.getAccountAt(j).getPathToAvatar() != AccListJSON.get(i).getPathToAvatar() ||
+                            adapter.getAccountAt(j).isGender() != AccListJSON.get(i).isGender() ||
+                            adapter.getAccountAt(j).getRecipiesCount() != AccListJSON.get(i).getRecipiesCount() ||
+                            adapter.getAccountAt(j).getReviewsCount() != AccListJSON.get(i).getReviewsCount() ||
+                            adapter.getAccountAt(j).getRateReviewsCount() != AccListJSON.get(i).getRateReviewsCount()){
+
+                        accountViewModel.update(AccListJSON.get(i));
+                        Log.i("GSON", "Аккаунт обновлен! \nID: " + AccListJSON.get(i).getIdServer() + "\nИмя: " + AccListJSON.get(i).getUserName());
+                    }
+                }
+            }
+
+            if (checkItem == false){
+                accountViewModel.insert(AccListJSON.get(i));
+                Log.i("GSON", "Аккаунт добавлен! \nID: " + AccListJSON.get(i).getIdServer() + "\nИмя: " + AccListJSON.get(i).getUserName());
+            }
+        }
+*/
+
+
+        //accountViewModel.insert(account);
+
+        Toast.makeText(TestActivity.this,"Download Success!", Toast.LENGTH_SHORT).show();
     }
 }

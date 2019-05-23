@@ -67,8 +67,8 @@ public class Trasnlation implements Parcelable {
         }
     };
 
-    public ArrayList<InnerClassName> items = new ArrayList<InnerClassName>();
-    class InnerClassName {
+    public ArrayList<InnerClassName1> items = new ArrayList<InnerClassName1>();
+    class InnerClassName1 {
         //String translatedText;
 
         public String id;
@@ -94,5 +94,9 @@ public class Trasnlation implements Parcelable {
 
     public String setResult(){
         return "email: " + items.get(0).email + "\nID: " + items.get(0).id;
+    }
+
+    public int getSize(){
+        return items.size();
     }
 }

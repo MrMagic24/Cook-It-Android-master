@@ -2,6 +2,8 @@ package com.uiresource.cookit.Database.Accounts;
 
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
+import android.support.v7.recyclerview.extensions.ListAdapter;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +16,38 @@ import com.uiresource.cookit.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.AccountHolder> {
+public class AccountAdapter extends ListAdapter<AccountList, AccountAdapter.AccountHolder> {
 
     private List<AccountList> accounts = new ArrayList<>();
     private onItemClickListener listener;
+
+    public AccountAdapter() {
+        super(DIFF_CALLBACK);
+    }
+
+    private static final DiffUtil.ItemCallback<AccountList> DIFF_CALLBACK = new DiffUtil.ItemCallback<AccountList>() {
+        @Override
+        public boolean areItemsTheSame(AccountList oldItem, @NonNull AccountList newItem) {
+            return oldItem.getId() == newItem.getId();
+        }
+
+        @Override
+        public boolean areContentsTheSame(AccountList oldItem, AccountList newItem) {
+            return oldItem.getUserName().equals(newItem.getUserName()) &&
+                    oldItem.getEmail().equals(newItem.getEmail()) &&
+                    oldItem.getIdServer().equals(newItem.getIdServer());
+        }
+
+        /*@Override
+        public boolean areItemsTheSame(@NonNull AccountList accountList, @NonNull AccountList t1) {
+            return false;
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull AccountList accountList, @NonNull AccountList t1) {
+            return false;
+        }*/
+    };
 
     @NonNull
     @Override
@@ -29,24 +59,28 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.AccountH
 
     @Override
     public void onBindViewHolder(@NonNull AccountHolder holder, int position) {
-        AccountList currentAccount = accounts.get(position);
+        AccountList currentAccount = getItem(position);
         holder.textViewID.setText(currentAccount.getIdServer());
         holder.textViewEmail.setText(currentAccount.getEmail());
         holder.textViewUsername.setText(currentAccount.getUserName());
     }
 
-    @Override
+    /*@Override
     public int getItemCount() {
+        return accounts.size();
+    }*/
+
+    public int getItemsCount() {
         return accounts.size();
     }
 
-    public void setAccounts(List<AccountList> accounts) {
+    /*public void setAccounts(List<AccountList> accounts) {
         this.accounts = accounts;
         notifyDataSetChanged();
-    }
+    }*/
 
     public AccountList getAccountAt(int position) {
-        return accounts.get(position);
+        return getItem(position);
     }
 
     class AccountHolder extends RecyclerView.ViewHolder {
@@ -65,7 +99,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.AccountH
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     if (listener != null && position != RecyclerView.NO_POSITION){
-                        listener.onItemClick(accounts.get(position));
+                        listener.onItemClick(getItem(position));
                     }
                 }
             });

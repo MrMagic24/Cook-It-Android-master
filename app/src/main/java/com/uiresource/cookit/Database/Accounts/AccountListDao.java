@@ -15,6 +15,9 @@ public interface AccountListDao {
     @Query("SELECT * FROM AccountList")
     LiveData<List<AccountList>> getAllAccounts();
 
+    @Query("SELECT * FROM AccountList")
+    List<AccountList> getAllAccountsList();
+
     @Query("SELECT * FROM AccountList WHERE id = :id")
     AccountList getById(String id);
 
