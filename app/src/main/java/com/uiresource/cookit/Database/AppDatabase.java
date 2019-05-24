@@ -11,7 +11,7 @@ import android.support.annotation.NonNull;
 import com.uiresource.cookit.Database.Accounts.AccountList;
 import com.uiresource.cookit.Database.Accounts.AccountListDao;
 
-@Database(entities = {AccountList.class}, version = 2, exportSchema = false)
+@Database(entities = {AccountList.class}, version = 3, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase instance;
@@ -50,7 +50,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
             accountListDao.deleteAll();
             //accountListDao.insert(new AccountList("44d838a0-d66b-4884-8b40-7bd17f281656", "kek", "svin", "","","", true, 0,0,0));
-            accountListDao.insert(new AccountList("1","9de8f6ee-552a-454e-8431-1c58ffe0f36f\n", "Yo Man", "svinGames", "","","", true, 0,0,0));
+            accountListDao.insert(new AccountList("9de8f6ee-552a-454e-8431-1c58ffe0f36f","hey@mail.ru", "Yo Man", "svinGames", "","", true, 0,0,0));
             return null;
         }
     }

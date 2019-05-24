@@ -56,6 +56,8 @@ public class TestActivity extends AppCompatActivity {
     private TextView textView;
     private AccountViewModel accountViewModel;
     private static ArrayList<AccountList> AccListJSON;
+    private static List<AccountList> AccList;
+    private boolean checkImport = false;
     private static final int ADD_NOTE_REQUEST = 1;
     private static final int EDIT_NOTE_REQUEST = 2;
 
@@ -68,6 +70,8 @@ public class TestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
+
+        AccListJSON = AccountGetList();
 
         FloatingActionButton buttonAddAccount = findViewById(R.id.button_add_account);
         buttonAddAccount.setOnClickListener(new View.OnClickListener() {
@@ -95,18 +99,19 @@ public class TestActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
+        //accountViewModel.deleteAllAccounts();
         accountViewModel.getAllAccounts().observe(this, new Observer<List<AccountList>>() {
             @Override
             public void onChanged(@Nullable List<AccountList> accountLists) {
                 //Toast.makeText(TestActivity.this,"onChanged", Toast.LENGTH_SHORT).show();
 
-                AccListJSON = AccountGetList();
+                //AccListJSON = AccountGetList();
 
-                importAccountFromJSON(accountLists);
+                if (!checkImport){
+                    importAccountFromJSON(accountLists);
+                    Log.i("GSON", "Activity - Попытка второго вызова функции importAccountFromJSON"); }
 
                 adapter.submitList(accountLists);
-
-
             }
         });
 
@@ -129,7 +134,6 @@ public class TestActivity extends AppCompatActivity {
             public void onItemClick(AccountList account) {
                 Intent intent = new Intent(TestActivity.this, AddAccountActivity.class);
                 intent.putExtra(AddAccountActivity.EXTRA_ID, account.getId());
-                intent.putExtra(AddAccountActivity.EXTRA_IDSERVER, account.getIdServer());
                 intent.putExtra(AddAccountActivity.EXTRA_EMAIL, account.getEmail());
                 intent.putExtra(AddAccountActivity.EXTRA_USERNAME, account.getUserName());
                 startActivityForResult(intent, EDIT_NOTE_REQUEST);
@@ -196,9 +200,9 @@ public class TestActivity extends AppCompatActivity {
         if (requestCode == ADD_NOTE_REQUEST && resultCode == RESULT_OK){
             String Username = data.getStringExtra(AddAccountActivity.EXTRA_USERNAME);
             String Email = data.getStringExtra(AddAccountActivity.EXTRA_EMAIL);
-            String ID = data.getStringExtra(AddAccountActivity.EXTRA_IDSERVER);
+            //String ID = data.getStringExtra(AddAccountActivity.EXTRA_ID);
 
-            AccountList account = new AccountList(ID, ID, Email, Username, "","","", false, 0,0,0);
+            AccountList account = new AccountList("97e9e5c9-ca52-41a2-ae30-a59af83d8b42", Email, Username, "","","", false, 0,0,0);
             accountViewModel.insert(account);
 
             Toast.makeText(TestActivity.this,"Saved", Toast.LENGTH_SHORT).show();
@@ -216,9 +220,9 @@ public class TestActivity extends AppCompatActivity {
 
             String Username = data.getStringExtra(AddAccountActivity.EXTRA_USERNAME);
             String Email = data.getStringExtra(AddAccountActivity.EXTRA_EMAIL);
-            String IDServer = data.getStringExtra(AddAccountActivity.EXTRA_IDSERVER);
 
-            AccountList account = new AccountList(id, IDServer, Email, Username, "","","", false, 0,0,0);
+            AccountList account = new AccountList(id, Email, Username, "","","", false, 0,0,0);
+            //AccountExportToServer(account);
             accountViewModel.update(account);
 
             Toast.makeText(TestActivity.this,"Updated", Toast.LENGTH_SHORT).show();
@@ -229,7 +233,7 @@ public class TestActivity extends AppCompatActivity {
         }
     }
 
-    protected void importAccountFromJSON(List<AccountList> accountLists){
+    protected void importAccountFromJSON(List<AccountList> accountList){
 
         //AccountList account = new AccountList(ID, ID, Email, Username, "","","", false, 0,0,0);
 
@@ -239,42 +243,57 @@ public class TestActivity extends AppCompatActivity {
 
         //int kek = adapter.getItemsCount();
 
-        Log.i("GSON", "Количество из БД: " + accountLists.size());
+        Log.i("GSON", "Количество из БД: " + accountList.size());
 
         boolean checkItem = false;
+        boolean checkUpdate = false;
 
         Log.i("GSON", "Количество записей JSON: " + AccListJSON.size());
 
-        /*for(int i = 0; i < AccListJSON.size(); i++){
-            for(int j = 0; j < adapter.getItemsCount(); j++){
-                if (adapter.getAccountAt(j).getIdServer() == AccListJSON.get(i).getIdServer()){
+        for(int i = 0; i < AccListJSON.size(); i++){
+            for(int j = 0; j < accountList.size(); j++){
+                if (accountList.get(j).getId().equals(AccListJSON.get(i).getId())){
                     checkItem = true;
 
-                    if (adapter.getAccountAt(j).getId() != AccListJSON.get(i).getId() ||
-                            adapter.getAccountAt(j).getUserName() != AccListJSON.get(i).getUserName() ||
-                            adapter.getAccountAt(j).getEmail() != AccListJSON.get(i).getEmail() ||
-                            adapter.getAccountAt(j).getFirstName() != AccListJSON.get(i).getFirstName() ||
-                            adapter.getAccountAt(j).getAboutYourself() != AccListJSON.get(i).getAboutYourself() ||
-                            adapter.getAccountAt(j).getPathToAvatar() != AccListJSON.get(i).getPathToAvatar() ||
-                            adapter.getAccountAt(j).isGender() != AccListJSON.get(i).isGender() ||
-                            adapter.getAccountAt(j).getRecipiesCount() != AccListJSON.get(i).getRecipiesCount() ||
-                            adapter.getAccountAt(j).getReviewsCount() != AccListJSON.get(i).getReviewsCount() ||
-                            adapter.getAccountAt(j).getRateReviewsCount() != AccListJSON.get(i).getRateReviewsCount()){
+                    /*if (AccListJSON.get(i).getUserName() == null){AccListJSON.get(i).userName = "null";}
+                    if (AccListJSON.get(i).getEmail() == null){AccListJSON.get(i).email = "null";}
+                    if (AccListJSON.get(i).getFirstName() == null){AccListJSON.get(i).firstName = "null";}
+                    if (AccListJSON.get(i).getAboutYourself() == null){AccListJSON.get(i).aboutYourself = "null";}
+                    if (AccListJSON.get(i).getPathToAvatar() == null){AccListJSON.get(i).pathToAvatar = "null";}*/
 
-                        accountViewModel.update(AccListJSON.get(i));
-                        Log.i("GSON", "Аккаунт обновлен! \nID: " + AccListJSON.get(i).getIdServer() + "\nИмя: " + AccListJSON.get(i).getUserName());
-                    }
+                    /*if (!(accountList.get(j).getUserName().equals(AccListJSON.get(i).getUserName())) ||
+                            !(accountList.get(j).getEmail().equals(AccListJSON.get(i).getEmail())) ||
+                            !(accountList.get(j).getFirstName().equals(AccListJSON.get(i).getFirstName())) ||
+                            !(accountList.get(j).getAboutYourself().equals(AccListJSON.get(i).getAboutYourself())) ||
+                            !(accountList.get(j).getPathToAvatar().equals(AccListJSON.get(i).getPathToAvatar())) ||
+                            accountList.get(j).isGender() != AccListJSON.get(i).isGender() ||
+                            accountList.get(j).getRecipiesCount() != AccListJSON.get(i).getRecipiesCount() ||
+                            accountList.get(j).getReviewsCount() != AccListJSON.get(i).getReviewsCount() ||
+                            accountList.get(j).getRateReviewsCount() != AccListJSON.get(i).getRateReviewsCount()){*/
+
+                        AccountList ThisAccount = new AccountList(AccListJSON.get(i).getId(), AccListJSON.get(i).getEmail(), AccListJSON.get(i).getUserName(), AccListJSON.get(i).getFirstName(),AccListJSON.get(i).getPathToAvatar(),AccListJSON.get(i).getAboutYourself(), AccListJSON.get(i).isGender(), AccListJSON.get(i).getRecipiesCount(),AccListJSON.get(i).getReviewsCount(),AccListJSON.get(i).getRateReviewsCount());
+                        accountViewModel.update(ThisAccount);
+                        checkUpdate = true;
+                        Log.i("GSON", "Activity - Аккаунт обновлен! \nID: " + AccListJSON.get(i).getId() + "\nИмя: " + AccListJSON.get(i).getUserName());
+                    //}
                 }
             }
 
-            if (checkItem == false){
-                accountViewModel.insert(AccListJSON.get(i));
-                Log.i("GSON", "Аккаунт добавлен! \nID: " + AccListJSON.get(i).getIdServer() + "\nИмя: " + AccListJSON.get(i).getUserName());
+            if (!checkItem){
+                AccountList NewAccount = new AccountList(AccListJSON.get(i).getId(),  AccListJSON.get(i).getEmail(), AccListJSON.get(i).getUserName(), AccListJSON.get(i).getFirstName(),AccListJSON.get(i).getPathToAvatar(),AccListJSON.get(i).getAboutYourself(), AccListJSON.get(i).isGender(), AccListJSON.get(i).getRecipiesCount(),AccListJSON.get(i).getReviewsCount(),AccListJSON.get(i).getRateReviewsCount());
+                accountViewModel.insert(NewAccount);
+                Log.i("GSON", "Activity - Аккаунт добавлен! \nID: ");
             }
+
+            if (!checkUpdate && checkItem){
+                Log.i("GSON", "Activity - Данные не изменены \nID: ");
+            }
+
+            checkItem = false;
         }
-*/
 
 
+        checkImport = true;
         //accountViewModel.insert(account);
 
         Toast.makeText(TestActivity.this,"Download Success!", Toast.LENGTH_SHORT).show();

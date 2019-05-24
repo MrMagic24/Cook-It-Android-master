@@ -17,11 +17,10 @@ public class AddAccountActivity extends AppCompatActivity {
     public static final String EXTRA_USERNAME = "com.uiresource.cookit.EXTRA_USERNAME";
     public static final String EXTRA_EMAIL = "com.uiresource.cookit.EXTRA_EMAIL";
     public static final String EXTRA_ID = "com.uiresource.cookit.EXTRA_ID";
-    public static final String EXTRA_IDSERVER = "com.uiresource.cookit.EXTRA_IDSERVER";
 
     private EditText editTextUsername;
     private EditText editTextEmail;
-    private EditText editTextID;
+    //private EditText editTextID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +38,11 @@ public class AddAccountActivity extends AppCompatActivity {
 
         editTextUsername = findViewById(R.id.edit_text_accUsername);
         editTextEmail = findViewById(R.id.edit_text_accEmail);
-        editTextID = findViewById(R.id.edit_text_accID);
+        //editTextID = findViewById(R.id.edit_text_accID);
 
         Intent intent = getIntent();
 
         if (intent.hasExtra(EXTRA_ID)){
-            editTextID.setText(intent.getStringExtra(EXTRA_IDSERVER));
             editTextUsername.setText(intent.getStringExtra(EXTRA_USERNAME));
             editTextEmail.setText(intent.getStringExtra(EXTRA_EMAIL));
         }
@@ -56,9 +54,9 @@ public class AddAccountActivity extends AppCompatActivity {
     private void saveAccount(){
         String Username = editTextUsername.getText().toString();
         String Email = editTextEmail.getText().toString();
-        String IDServer = editTextID.getText().toString();
+        //String ID = editTextID.getText().toString();
 
-        if (Username.trim().isEmpty() || Email.trim().isEmpty() || IDServer.trim().isEmpty()){
+        if (Username.trim().isEmpty() || Email.trim().isEmpty()){
             Toast.makeText(this,"Please insert data", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -66,7 +64,6 @@ public class AddAccountActivity extends AppCompatActivity {
         Intent data = new Intent();
         data.putExtra(EXTRA_USERNAME, Username);
         data.putExtra(EXTRA_EMAIL, Email);
-        data.putExtra(EXTRA_IDSERVER, IDServer);
 
         String id = "-1";
         id = getIntent().getStringExtra(EXTRA_ID);

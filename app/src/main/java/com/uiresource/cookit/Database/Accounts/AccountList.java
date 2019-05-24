@@ -10,10 +10,11 @@ import com.google.gson.annotations.SerializedName;
 public class AccountList {
 
     @PrimaryKey @NonNull
+    @SerializedName("id")
     public String id;
 
-    @SerializedName("id")
-    public String idServer;
+    /*@SerializedName("id")
+    public String idServer;*/
 
     @SerializedName("email")
     public String email;
@@ -42,9 +43,8 @@ public class AccountList {
     @SerializedName("rateReviewsCount")
     public int rateReviewsCount;
 
-    public AccountList(@NonNull String id, String idServer, String email, String userName, String firstName, String pathToAvatar, String aboutYourself, boolean gender, int recipiesCount, int reviewsCount, int rateReviewsCount) {
+    public AccountList(@NonNull String id, String email, String userName, String firstName, String pathToAvatar, String aboutYourself, boolean gender, int recipiesCount, int reviewsCount, int rateReviewsCount) {
         this.id = id;
-        this.idServer = idServer;
         this.email = email;
         this.userName = userName;
         this.firstName = firstName;
@@ -61,9 +61,9 @@ public class AccountList {
         return id;
     }
 
-    public String getIdServer() {
+    /*public String getIdServer() {
         return idServer;
-    }
+    }*/
 
     public String getEmail() {
         return email;

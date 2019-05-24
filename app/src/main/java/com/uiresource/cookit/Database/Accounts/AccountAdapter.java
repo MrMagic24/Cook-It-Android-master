@@ -11,10 +11,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import com.uiresource.cookit.Database.ImportFromJSON;
 import com.uiresource.cookit.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.uiresource.cookit.Database.ImportFromJSON.AccountGetList;
 
 public class AccountAdapter extends ListAdapter<AccountList, AccountAdapter.AccountHolder> {
 
@@ -35,7 +38,7 @@ public class AccountAdapter extends ListAdapter<AccountList, AccountAdapter.Acco
         public boolean areContentsTheSame(AccountList oldItem, AccountList newItem) {
             return oldItem.getUserName().equals(newItem.getUserName()) &&
                     oldItem.getEmail().equals(newItem.getEmail()) &&
-                    oldItem.getIdServer().equals(newItem.getIdServer());
+                    oldItem.getId().equals(newItem.getId());
         }
 
         /*@Override
@@ -60,7 +63,7 @@ public class AccountAdapter extends ListAdapter<AccountList, AccountAdapter.Acco
     @Override
     public void onBindViewHolder(@NonNull AccountHolder holder, int position) {
         AccountList currentAccount = getItem(position);
-        holder.textViewID.setText(currentAccount.getIdServer());
+        holder.textViewID.setText(currentAccount.getId());
         holder.textViewEmail.setText(currentAccount.getEmail());
         holder.textViewUsername.setText(currentAccount.getUserName());
     }

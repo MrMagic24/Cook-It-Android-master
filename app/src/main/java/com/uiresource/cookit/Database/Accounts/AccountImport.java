@@ -2,6 +2,7 @@ package com.uiresource.cookit.Database.Accounts;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.gson.annotations.SerializedName;
@@ -73,19 +74,19 @@ public class AccountImport implements Parcelable {
     public ArrayList<InnerClassName> items = new ArrayList<InnerClassName>();
     class InnerClassName {
         //String translatedText;
-
+        @NonNull
         public String id;
-
+        @NonNull
         public String email;
-
+        @NonNull
         public String userName;
-
+        @NonNull
         public String firstName;
-
+        @NonNull
         public String lastName;
-
+        @NonNull
         public String pathToAvatar;
-
+        @NonNull
         public String aboutYourself;
 
         public boolean gender;
@@ -110,8 +111,10 @@ public class AccountImport implements Parcelable {
         ArrayList<AccountList> AccList = new ArrayList<AccountList>();
 
         for (int i = 0; i < items.size(); i++){
+
+
+
             AccountList acc = new AccountList(
-                    items.get(i).id,
                     items.get(i).id,
                     items.get(i).email,
                     items.get(i).userName,
@@ -122,6 +125,8 @@ public class AccountImport implements Parcelable {
                     items.get(i).recipiesCount,
                     items.get(i).reviewsCount,
                     items.get(i).rateReviewsCount);
+
+            //if (items.get(i).id == null) {items.set(i, acc)}
 
             Log.i("GSON", "Аккаунт добавлен!");
 
