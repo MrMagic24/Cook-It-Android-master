@@ -125,6 +125,7 @@ public class Main extends BaseActivity
         } else if (id == R.id.shop_list) {
 
         } else if (id == R.id.setting) {
+            startActivity(new Intent(this, LoginActivity.class));
 
         }
 

@@ -44,6 +44,7 @@
         <item name="android:textColor">@color/colorTextDark</item>
         <item name="android:textAppearance">@style/SemiBold</item>
     </style>
+
     <style name="Text22SemiWhite">
         <item name="android:textSize">@dimen/h1</item>
         <item name="android:textColor">@android:color/white</item>
@@ -60,11 +61,13 @@
         <item name="android:textColor">@color/colorTextGrey</item>
         <item name="android:textAppearance">@style/Light</item>
     </style>
+
     <style name="Text14Grey">
         <item name="android:textSize">@dimen/h3</item>
         <item name="android:textColor">@color/colorTextGrey</item>
         <item name="android:textAppearance">@style/Regular</item>
     </style>
+
     <style name="Text14Pink">
         <item name="android:textSize">@dimen/h3</item>
         <item name="android:textColor">@color/colorPink</item>
@@ -80,4 +83,9 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 </resources>

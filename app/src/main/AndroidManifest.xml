@@ -11,8 +11,13 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AddAccountActivity"
-            android:parentActivityName=".TestActivity"></activity>
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".AddAccountActivity"
+            android:parentActivityName=".TestActivity" />
         <activity android:name=".TestActivity" />
         <activity android:name=".AddRecipeActivity" />
         <activity

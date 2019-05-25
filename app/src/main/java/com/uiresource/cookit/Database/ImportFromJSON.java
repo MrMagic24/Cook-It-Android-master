@@ -1,7 +1,11 @@
 package com.uiresource.cookit.Database;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.ImageView;
 
 //import com.google.gson.Gson;
 //import com.google.gson.GsonBuilder;
@@ -27,6 +31,7 @@ import okhttp3.Response;
 import com.google.gson.*;
 import com.uiresource.cookit.Database.Accounts.AccountRepository;
 import com.uiresource.cookit.Database.Test.Trasnlation;
+import com.uiresource.cookit.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,45 +41,19 @@ import static java.lang.Thread.*;
 
 public class ImportFromJSON {
 
-    private static String URL = "https://surviveonsotka20190514062215.azurewebsites.net/api/";
+    private static String URL = "https://surviveonsotka20190524073221.azurewebsites.net/api/";
 
     private static OkHttpClient okHttpClient;
     private static Request request;
-    private static String resp;
     private static String response;
     private static ArrayList<AccountList> ListAcc;
-    private static AccountListDao accountListDao;
-    private static AccountRepository AccRepos;
 
-    private static Timer timer;
-    private static TimerTask timerTask;
+    private static GsonBuilder builder = new GsonBuilder();
+    private static Gson gson = builder.create();
 
-    /*private static String Import(String url){
-        resp = "";
-        okHttpClient = new OkHttpClient();;
-        request = new Request.Builder().url(url).build();
+    private static final MediaType MEDIA_TYPE =
+            MediaType.parse("application/json");
 
-        okHttpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                //Log.i(TAG,e.getMessage());
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()){
-                    final String myResponse = response.body().string();
-                    //return myResponse;
-
-                    resp = myResponse;
-                }
-            }
-        });
-
-        return resp;
-    }*/
-
-    //ArrayList<AccountList>
     public static ArrayList<AccountList> AccountGetList(){
 
         if (ListAcc != null){
@@ -92,8 +71,6 @@ public class ImportFromJSON {
         }
 
         Log.i("GSON", "Вышел из метода");
-        //Log.i("GSON", "Количество из JSON: " + ListAcc.size());
-
         return ListAcc;
     }
 
@@ -119,12 +96,6 @@ public class ImportFromJSON {
 
                     final AccountImport acc = gson.fromJson(myResponse, AccountImport.class);
 
-                    /*try {
-                        sleep(2000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }*/
-
                     ListAcc = acc.getAccountsFromJSON();
                     Log.i("GSON", "Присвоил ListAcc");
                 }
@@ -132,24 +103,19 @@ public class ImportFromJSON {
         });
     }
 
-    public static void AccountExportToServer(AccountList account){
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder.create();
+    public static void AccountRegisterToServer(AccountList account){
 
-        RegUser regUser = new RegUser(account.email, "AaT1234.", "AaT1234.");
+        RegisterUser registerUser = new RegisterUser(account.email, "AaT1234.", "AaT1234.");
 
         Log.i("GSON", "Вызван метод AccountExportToServer");
-
-        final MediaType MEDIA_TYPE =
-                MediaType.parse("application/json");
 
         okHttpClient = new OkHttpClient();
 
         RequestBody body = RequestBody.create(MEDIA_TYPE,
-                gson.toJson(regUser));
+                gson.toJson(registerUser));
 
         final Request request = new Request.Builder()
-                .url("https://surviveonsotka20190514062215.azurewebsites.net/api/Account/Register")
+                .url(URL + "Account/Register")
                 .post(body)
                 .addHeader("Content-Type", "application/json")
                 .addHeader("accept", "text/plain")
@@ -171,15 +137,129 @@ public class ImportFromJSON {
         Log.i("GSON", "Завершен метод AccountExportToServer");
     }
 
-    public static class RegUser {
+    public static void AccountLoginToServer(AccountList account){
+
+        LoginUser loginUser = new LoginUser(account.email, "AaT1234.", true);
+
+        Log.i("GSON", "Вызван метод AccountLoginToServer");
+
+        okHttpClient = new OkHttpClient();
+
+        RequestBody body = RequestBody.create(MEDIA_TYPE,
+                gson.toJson(loginUser));
+
+        final Request request = new Request.Builder()
+                .url(URL + "Account/Login")
+                .post(body)
+                .addHeader("Content-Type", "application/json")
+                .addHeader("accept", "text/plain")
+                .build();
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.i("GSON",e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String result = response.body().string();
+                Log.i("GSON", result);
+            }
+        });
+
+        Log.i("GSON", "Завершен метод AccountLoginToServer");
+    }
+
+    public static void AccountUpdateToServer(AccountList account){
+
+        Log.i("GSON", "Вызван метод AccountUpdateToServer");
+
+        okHttpClient = new OkHttpClient();
+
+        JSONObject postdata = new JSONObject();
+        try {
+            postdata.put("firstName", "Ultra Pacan");
+            postdata.put("lastName", "Mega Pacan");
+            postdata.put("gender", account.gender);
+            postdata.put("aboutYourself", "asdsdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd");
+            postdata.put("avatar", JSONObject.NULL);
+
+        } catch(JSONException e){
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        Log.i("GSON", postdata.toString());
+        RequestBody body = RequestBody.create(MEDIA_TYPE,
+                postdata.toString());
+
+        final Request request = new Request.Builder()
+                .url(URL + "Account/UpdateUser")
+                .post(body)
+                .addHeader("Content-Type", "application/json")
+                .addHeader("accept", "text/plain")
+                .build();
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.i("GSON",e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String result = response.body().string();
+                Log.i("GSON", result);
+            }
+        });
+
+        Log.i("GSON", "Завершен метод AccountUpdateToServer");
+    }
+
+    public static class RegisterUser {
         String email;
         String password;
         String passwordConfirm;
 
-        public RegUser(String email, String password, String passwordConfirm) {
+        public RegisterUser(String email, String password, String passwordConfirm) {
             this.email = email;
             this.password = password;
             this.passwordConfirm = passwordConfirm;
         }
     }
+
+    public static class LoginUser {
+        String email;
+        String password;
+        boolean rememberMe;
+
+        public LoginUser(String email, String password, boolean rememberMe) {
+            this.email = email;
+            this.password = password;
+            this.rememberMe = rememberMe;
+        }
+    }
+
+    /*public static class UpdateUser {
+        String firstName;
+        String lastName;
+        boolean gender;
+        String aboutYourself;
+        avatar avatar;
+
+        public UpdateUser(String firstName, String lastName, boolean gender, String aboutYourself, avatar avatar) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.gender = gender;
+            this.aboutYourself = aboutYourself;
+            this.avatar = avatar;
+        }
+    }
+
+    public static class avatar {
+
+        public avatar() {
+        }
+    }*/
 }

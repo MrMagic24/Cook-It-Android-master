@@ -1,10 +1,14 @@
 package com.uiresource.cookit;
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.room.Room;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +19,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +51,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import static com.uiresource.cookit.Database.ImportFromJSON.*;
+import static java.lang.Thread.sleep;
 
 public class TestActivity extends AppCompatActivity {
 
@@ -223,6 +229,15 @@ public class TestActivity extends AppCompatActivity {
 
             AccountList account = new AccountList(id, Email, Username, "","","", false, 0,0,0);
             //AccountExportToServer(account);
+            AccountLoginToServer(account);
+
+            try {
+                sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            AccountUpdateToServer(account);
             accountViewModel.update(account);
 
             Toast.makeText(TestActivity.this,"Updated", Toast.LENGTH_SHORT).show();
