@@ -27,13 +27,15 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static java.lang.Thread.sleep;
+
 public class LoginActivity extends AppCompatActivity {
 
     private EditText loginInputEmail, loginInputPassword;
     private Button btnlogin;
     private Button btnLinkSignup;
 
-    private boolean checkResult = false;
+    private boolean checkResult;
 
     private String URL = "https://surviveonsotka20190524073221.azurewebsites.net/api/";
 
@@ -63,8 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loginUser(loginInputEmail.getText().toString(),
-                        loginInputPassword.getText().toString());
+                loginUser();
             }
         });
 
@@ -87,15 +88,14 @@ public class LoginActivity extends AppCompatActivity {
         });*/
     }
 
-    private void loginUser( final String email, final String password) {
+    private void loginUser() {
         // Tag used to cancel the request
 
-        //boolean checkResult = false;
         String cancel_req_tag = "login";
         progressDialog.setMessage("Logging you in...");
         showDialog();
 
-
+        checkResult = false;
 
         ImportFromJSON.LoginUser loginUser = new ImportFromJSON.LoginUser(loginInputEmail.getText().toString(), loginInputPassword.getText().toString(), true);
 
@@ -127,32 +127,42 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.isSuccessful()){
                     checkResult = true;
                     Log.i("GSON","Вход произведен!");
+
                 }
 
                 else {
-                    //String errorMsg = response
-                    /*Toast.makeText(getApplicationContext(),
-                            result, Toast.LENGTH_LONG).show();*/
+                    Log.i("GSON","Вход НЕ произведен!");
                 }
 
+                CheckResult();
                 hideDialog();
             }
         });
 
-        if (!checkResult){
-            Toast.makeText(getApplicationContext(),
-                    "Фиаско братан", Toast.LENGTH_LONG).show();
-        }
-
         Log.i("GSON", "Завершен метод loginUser");
-        // Adding request to request queue
-        //AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(strReq,cancel_req_tag);
     }
 
     private void showDialog() {
         if (!progressDialog.isShowing())
             progressDialog.show();
     }
+
+    private void CheckResult() {
+        LoginActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (!checkResult) {
+                    Toast.makeText(getApplicationContext(),
+                            "Фиаско братан", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "Вход произведен", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+    }
+
     private void hideDialog() {
         if (progressDialog.isShowing())
             progressDialog.dismiss();
