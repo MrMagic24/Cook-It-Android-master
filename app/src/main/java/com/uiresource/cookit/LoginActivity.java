@@ -33,6 +33,8 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnlogin;
     private Button btnLinkSignup;
 
+    private boolean checkResult = false;
+
     private String URL = "https://surviveonsotka20190524073221.azurewebsites.net/api/";
 
     private static GsonBuilder builder = new GsonBuilder();
@@ -87,6 +89,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginUser( final String email, final String password) {
         // Tag used to cancel the request
+
+        //boolean checkResult = false;
         String cancel_req_tag = "login";
         progressDialog.setMessage("Logging you in...");
         showDialog();
@@ -121,21 +125,26 @@ public class LoginActivity extends AppCompatActivity {
                 Log.i("GSON", result);
 
                 if (response.isSuccessful()){
+                    checkResult = true;
                     Log.i("GSON","Вход произведен!");
                 }
 
                 else {
                     //String errorMsg = response
-                    Toast.makeText(getApplicationContext(),
-                            "Фиаско братан", Toast.LENGTH_LONG).show();
-                    hideDialog();
+                    /*Toast.makeText(getApplicationContext(),
+                            result, Toast.LENGTH_LONG).show();*/
                 }
 
                 hideDialog();
             }
         });
 
-        Log.i("GSON", "Завершен метод AccountLoginToServer");
+        if (!checkResult){
+            Toast.makeText(getApplicationContext(),
+                    "Фиаско братан", Toast.LENGTH_LONG).show();
+        }
+
+        Log.i("GSON", "Завершен метод loginUser");
         // Adding request to request queue
         //AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(strReq,cancel_req_tag);
     }
