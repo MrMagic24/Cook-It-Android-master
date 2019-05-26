@@ -26,6 +26,7 @@ public class Recipes {
     @SerializedName("reviewsCount")
     int reviewsCount;
 
+
    /* @SerializedName("user")
     AccountList user;
 
@@ -48,7 +49,7 @@ public class Recipes {
     Ingredients ingredients;
 
     @SerializedName("steps")
-    Step steps;
+    StepResponse steps;
 
     @SerializedName("tags")
     Tags tags;*/

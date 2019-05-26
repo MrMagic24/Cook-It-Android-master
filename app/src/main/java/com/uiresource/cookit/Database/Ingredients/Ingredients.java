@@ -9,6 +9,14 @@ import com.google.gson.annotations.SerializedName;
 @Entity
 public class Ingredients {
 
+    public Ingredients(@NonNull String id, String name, String typeFoodId, String pathToIcon, int recipiesCount) {
+        this.id = id;
+        this.name = name;
+        this.typeFoodId = typeFoodId;
+        this.pathToIcon = pathToIcon;
+        this.recipiesCount = recipiesCount;
+    }
+
     @NonNull
     public String getId() {
         return id;
@@ -16,14 +24,6 @@ public class Ingredients {
 
     public void setId(@NonNull String id) {
         this.id = id;
-    }
-
-    public String getIdServer() {
-        return idServer;
-    }
-
-    public void setIdServer(String idServer) {
-        this.idServer = idServer;
     }
 
     public String getName() {
@@ -60,10 +60,8 @@ public class Ingredients {
 
     @PrimaryKey
     @NonNull
-    public String id;
-
     @SerializedName("id")
-    public String idServer;
+    public String id;
 
     @SerializedName("name")
     public String name;

@@ -11,4 +11,9 @@
     <string name="category_recipe">Категория</string>
     <string name="name_recipe">Название</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_passwordConfirm">Password Confirm</string>
+    <string name="btn_sign_up">Зарегестрироваться</string>
+    <string name="btn_link_login">I have an account!</string>
 </resources>

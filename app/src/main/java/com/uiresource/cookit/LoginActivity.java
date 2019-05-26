@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.uiresource.cookit.Database.ImportFromJSON;
+import com.uiresource.cookit.utils.RegisterActivity;
 
 import java.io.IOException;
 
@@ -65,27 +66,24 @@ public class LoginActivity extends AppCompatActivity {
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loginUser();
+                if (loginInputEmail.getText().toString().trim().isEmpty() || loginInputPassword.getText().toString().trim().isEmpty()){
+                    Toast.makeText(getApplicationContext(),"Please insert data", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else {
+                    loginUser();
+                }
             }
         });
 
-        /*btnLinkSignup.setOnClickListener(new View.OnClickListener() {
+        btnLinkSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
                 startActivity(i);
 
             }
-        });*/
-
-        /*FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
+        });
     }
 
     private void loginUser() {
@@ -134,8 +132,8 @@ public class LoginActivity extends AppCompatActivity {
                     Log.i("GSON","Вход НЕ произведен!");
                 }
 
-                CheckResult();
                 hideDialog();
+                CheckResult(result);
             }
         });
 
@@ -147,13 +145,34 @@ public class LoginActivity extends AppCompatActivity {
             progressDialog.show();
     }
 
-    private void CheckResult() {
+    private void CheckResult(final String result) {
         LoginActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (!checkResult) {
+
+                    String alert;
+                    switch(result) {
+                        case "{\"User cannot be created\":[\"Passwords must be at least 6 characters.\",\"Passwords must have at least one non alphanumeric character.\",\"Passwords must have at least one digit ('0'-'9').\",\"Passwords must have at least one uppercase ('A'-'Z').\"]}":
+                            alert = "Пароль должен включать в себя цифры (0 - 9), большие ('A'-'Z') и маленькие ('a'-'z') латинские буквы, один пунктуационный символ и содержать не менее 6 символов.";
+                            break;
+                        case "{\"Email\":[\"The Email field is not a valid e-mail address.\"]}":
+                            alert = "Введен неверный формат Email";
+                            break;
+                        case "{\"Email\":[\"The Email field is not a valid e-mail address.\"],\"PasswordConfirm\":[\"Пароли не совпадают\"]}":
+                            alert = "Введен неверный формат Email";
+                            break;
+                        case "Password or email are incorrect ":
+                            alert = "Неверный Email или пароль";
+                            break;
+                        default:
+                            alert = "Ошибка сервера";
+                            Toast.makeText(getApplicationContext(),
+                                    result, Toast.LENGTH_LONG).show();
+                            break;
+                    }
                     Toast.makeText(getApplicationContext(),
-                            "Фиаско братан", Toast.LENGTH_LONG).show();
+                            alert, Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "Вход произведен", Toast.LENGTH_LONG).show();

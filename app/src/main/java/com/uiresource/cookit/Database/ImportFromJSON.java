@@ -30,6 +30,8 @@ import okhttp3.Response;
 
 import com.google.gson.*;
 import com.uiresource.cookit.Database.Accounts.AccountRepository;
+import com.uiresource.cookit.Database.Ingredients.Ingredients;
+import com.uiresource.cookit.Database.Ingredients.IngredientsImport;
 import com.uiresource.cookit.Database.Test.Trasnlation;
 import com.uiresource.cookit.R;
 
@@ -47,6 +49,7 @@ public class ImportFromJSON {
     private static Request request;
     private static String response;
     private static ArrayList<AccountList> ListAcc;
+    private static ArrayList<Ingredients> IngAcc;
 
     private static GsonBuilder builder = new GsonBuilder();
     private static Gson gson = builder.create();
@@ -60,7 +63,7 @@ public class ImportFromJSON {
             ListAcc = null;
         }
 
-        getJSON();
+        getJSON("Account/GetList");
 
         while (ListAcc == null){
             try {
@@ -70,12 +73,32 @@ public class ImportFromJSON {
             }
         }
 
-        Log.i("GSON", "Вышел из метода");
+        Log.i("GSON", "Вышел из метода AccountGetList");
         return ListAcc;
     }
 
-    private static void getJSON(){
-        response = URL + "Account/GetList";
+    public static ArrayList<Ingredients> IngredientsGetList(){
+
+        if (IngAcc != null){
+            IngAcc = null;
+        }
+
+        getJSON("Recipes/GetList");
+
+        while (IngAcc == null){
+            try {
+                sleep(60);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Log.i("GSON", "Вышел из метода IngredientsGetList");
+        return IngAcc;
+    }
+
+    private static void getJSON(String path){
+        response = URL + path;
 
         okHttpClient = new OkHttpClient();
         request = new Request.Builder().url(response).build();
@@ -94,10 +117,10 @@ public class ImportFromJSON {
                     GsonBuilder builder = new GsonBuilder();
                     Gson gson = builder.create();
 
-                    final AccountImport acc = gson.fromJson(myResponse, AccountImport.class);
+                    final IngredientsImport acc = gson.fromJson(myResponse, IngredientsImport.class);
 
-                    ListAcc = acc.getAccountsFromJSON();
-                    Log.i("GSON", "Присвоил ListAcc");
+                    IngAcc = acc.getIngredientsFromJSON();
+                    Log.i("GSON", "Присвоил IngAcc");
                 }
             }
         });
