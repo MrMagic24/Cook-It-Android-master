@@ -165,6 +165,9 @@ public class LoginActivity extends AppCompatActivity {
                         case "Password or email are incorrect ":
                             alert = "Неверный Email или пароль";
                             break;
+                        case "{\"StatusCode\":400,\"Message\":\"Incorrect user password or email \\n innerException: \"}":
+                            alert = "Неверный Email или пароль";
+                            break;
                         default:
                             alert = "Ошибка сервера";
                             Toast.makeText(getApplicationContext(),

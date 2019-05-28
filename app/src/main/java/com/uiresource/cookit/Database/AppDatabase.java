@@ -12,14 +12,17 @@ import com.uiresource.cookit.Database.Accounts.AccountList;
 import com.uiresource.cookit.Database.Accounts.AccountListDao;
 import com.uiresource.cookit.Database.Ingredients.Ingredients;
 import com.uiresource.cookit.Database.Ingredients.IngredientsDao;
+import com.uiresource.cookit.Database.Recipes.Recipes;
+import com.uiresource.cookit.Database.Recipes.RecipesDao;
 
-@Database(entities = {AccountList.class, Ingredients.class}, version = 4, exportSchema = false)
+@Database(entities = {AccountList.class, Ingredients.class, Recipes.class}, version = 6, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase instance;
 
     public abstract AccountListDao accountListDao();
     public abstract IngredientsDao ingredientsDao();
+    public abstract RecipesDao recipesDao();
 
     public static synchronized AppDatabase getInstance(Context context){
         if (instance == null){
@@ -44,10 +47,12 @@ public abstract class AppDatabase extends RoomDatabase {
     private static class PopulateDbAsynkTask extends AsyncTask<Void, Void, Void>{
         private AccountListDao accountListDao;
         private IngredientsDao ingredientsDao;
+        private RecipesDao recipesDao;
 
         private PopulateDbAsynkTask(AppDatabase db){
             accountListDao = db.accountListDao();
             ingredientsDao = db.ingredientsDao();
+            recipesDao = db.recipesDao();
         }
 
         @Override

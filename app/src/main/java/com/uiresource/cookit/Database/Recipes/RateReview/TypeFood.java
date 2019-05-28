@@ -4,7 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Tag {
+public class TypeFood {
     @SerializedName("name")
     public String name;
 
@@ -12,16 +12,24 @@ public class Tag {
         return name;
     }
 
+    public String getPathToIcon() {
+        return pathToIcon;
+    }
+
     public String getId() {
         return id;
     }
 
-    public Tag(String name, String id) {
+    public TypeFood(String name, String pathToIcon, String id) {
         this.name = name;
+        this.pathToIcon = pathToIcon;
         this.id = id;
     }
 
+    @SerializedName("pathToIcon")
+    public String pathToIcon;
+
     @SerializedName("id")
-    @ColumnInfo(name = "idTag")
+    @ColumnInfo(name = "idTypeFood")
     public String id;
 }

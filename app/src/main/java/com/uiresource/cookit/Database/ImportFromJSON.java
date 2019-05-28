@@ -32,6 +32,8 @@ import com.google.gson.*;
 import com.uiresource.cookit.Database.Accounts.AccountRepository;
 import com.uiresource.cookit.Database.Ingredients.Ingredients;
 import com.uiresource.cookit.Database.Ingredients.IngredientsImport;
+import com.uiresource.cookit.Database.Recipes.Recipes;
+import com.uiresource.cookit.Database.Recipes.RecipesImport;
 import com.uiresource.cookit.Database.Test.Trasnlation;
 import com.uiresource.cookit.R;
 
@@ -49,7 +51,8 @@ public class ImportFromJSON {
     private static Request request;
     private static String response;
     private static ArrayList<AccountList> ListAcc;
-    private static ArrayList<Ingredients> IngAcc;
+    private static ArrayList<Ingredients> ListIngredients;
+    private static ArrayList<Recipes> ListRecipes;
 
     private static GsonBuilder builder = new GsonBuilder();
     private static Gson gson = builder.create();
@@ -63,7 +66,7 @@ public class ImportFromJSON {
             ListAcc = null;
         }
 
-        getJSON("Account/GetList");
+        getAccountJSON("Account/GetList");
 
         while (ListAcc == null){
             try {
@@ -79,13 +82,13 @@ public class ImportFromJSON {
 
     public static ArrayList<Ingredients> IngredientsGetList(){
 
-        if (IngAcc != null){
-            IngAcc = null;
+        if (ListIngredients != null){
+            ListIngredients = null;
         }
 
-        getJSON("Recipes/GetList");
+        getIngredientsJSON("Ingredients/GetList");
 
-        while (IngAcc == null){
+        while (ListIngredients == null){
             try {
                 sleep(60);
             } catch (InterruptedException e) {
@@ -94,10 +97,59 @@ public class ImportFromJSON {
         }
 
         Log.i("GSON", "Вышел из метода IngredientsGetList");
-        return IngAcc;
+        return ListIngredients;
     }
 
-    private static void getJSON(String path){
+    public static ArrayList<Recipes> RecipesGetList(){
+
+        if (ListRecipes != null){
+            ListRecipes = null;
+        }
+
+        getRecipesJSON("Recipes/GetList");
+
+        while (ListRecipes == null){
+            try {
+                sleep(60);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Log.i("GSON", "Вышел из метода RecipesGetList");
+        return ListRecipes;
+    }
+
+    private static void getAccountJSON(String path){
+        response = URL + path;
+
+        okHttpClient = new OkHttpClient();
+        request = new Request.Builder().url(response).build();
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //Log.i(TAG,e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()){
+                    final String myResponse = response.body().string();
+
+                    GsonBuilder builder = new GsonBuilder();
+                    Gson gson = builder.create();
+
+                    final AccountImport acc = gson.fromJson(myResponse, AccountImport.class);
+
+                    ListAcc = acc.getAccountsFromJSON();
+                    Log.i("GSON", "Присвоил ListIngredients");
+                }
+            }
+        });
+    }
+    
+    private static void getIngredientsJSON(String path){
         response = URL + path;
 
         okHttpClient = new OkHttpClient();
@@ -119,8 +171,37 @@ public class ImportFromJSON {
 
                     final IngredientsImport acc = gson.fromJson(myResponse, IngredientsImport.class);
 
-                    IngAcc = acc.getIngredientsFromJSON();
-                    Log.i("GSON", "Присвоил IngAcc");
+                    ListIngredients = acc.getIngredientsFromJSON();
+                    Log.i("GSON", "Присвоил ListIngredients");
+                }
+            }
+        });
+    }
+
+    private static void getRecipesJSON(String path){
+        response = URL + path;
+
+        okHttpClient = new OkHttpClient();
+        request = new Request.Builder().url(response).build();
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //Log.i(TAG,e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()){
+                    final String myResponse = response.body().string();
+
+                    GsonBuilder builder = new GsonBuilder();
+                    Gson gson = builder.create();
+
+                    final RecipesImport acc = gson.fromJson(myResponse, RecipesImport.class);
+
+                    ListRecipes = acc.getRecipesFromJSON();
+                    Log.i("GSON", "Присвоил ListRecipes");
                 }
             }
         });

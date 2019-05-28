@@ -1,18 +1,14 @@
-package com.uiresource.cookit.Database.Recipes;
+package com.uiresource.cookit.Database.Recipes.Tables;
 
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Ingredients {
-    @PrimaryKey
-    @NonNull
+public class IngredientToRecipeResponse {
+
     @SerializedName("ingredientId")
     public String ingredientId;
-
-    /*@SerializedName("id")
-    public String idServer;*/
 
     @SerializedName("amount")
     public int amount;
@@ -22,4 +18,11 @@ public class Ingredients {
 
     @SerializedName("weight")
     public int weight;
+
+    public IngredientToRecipeResponse(String ingredientId, int amount, int price, int weight) {
+        this.ingredientId = ingredientId;
+        this.amount = amount;
+        this.price = price;
+        this.weight = weight;
+    }
 }

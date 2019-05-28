@@ -1,5 +1,6 @@
 package com.uiresource.cookit.Database.Recipes;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -13,6 +14,9 @@ public interface RecipesDao {
 
     @Query("SELECT * FROM Recipes")
     List<Recipes> getAll();
+
+    @Query("SELECT * FROM Recipes")
+    LiveData<List<Recipes>> getAllRecipes();
 
     @Query("SELECT * FROM Recipes WHERE id = :id")
     Recipes getById(String id);

@@ -1,4 +1,4 @@
-package com.uiresource.cookit.Database.Recipes;
+package com.uiresource.cookit.Database.Recipes.Tables;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -9,4 +9,8 @@ public class TagsInRecipeResponse {
 
     @SerializedName("tag")
     String tag;
+
+    public String getTag() {
+        return tag;
+    }
 }

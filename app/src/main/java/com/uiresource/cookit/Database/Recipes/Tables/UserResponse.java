@@ -1,4 +1,4 @@
-package com.uiresource.cookit.Database.Recipes;
+package com.uiresource.cookit.Database.Recipes.Tables;
 
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
@@ -6,8 +6,7 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 
 public class UserResponse {
-    @PrimaryKey
-    @NonNull
+
     @SerializedName("id")
     public String id;
 
@@ -43,4 +42,18 @@ public class UserResponse {
 
     @SerializedName("rateReviewsCount")
     public int rateReviewsCount;
+
+    public UserResponse(@NonNull String id, String email, String userName, String firstName, String lastName, String pathToAvatar, String aboutYourself, boolean gender, int recipiesCount, int reviewsCount, int rateReviewsCount) {
+        this.id = id;
+        this.email = email;
+        this.userName = userName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.pathToAvatar = pathToAvatar;
+        this.aboutYourself = aboutYourself;
+        this.gender = gender;
+        this.recipiesCount = recipiesCount;
+        this.reviewsCount = reviewsCount;
+        this.rateReviewsCount = rateReviewsCount;
+    }
 }

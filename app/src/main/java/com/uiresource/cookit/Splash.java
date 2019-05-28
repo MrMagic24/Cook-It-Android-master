@@ -18,19 +18,24 @@ import com.google.gson.GsonBuilder;
 import com.uiresource.cookit.Database.Ingredients.Ingredients;
 import com.uiresource.cookit.Database.Ingredients.IngredientsDao;
 import com.uiresource.cookit.Database.Ingredients.IngredientsViewModel;
+import com.uiresource.cookit.Database.Recipes.Recipes;
+import com.uiresource.cookit.Database.Recipes.RecipesViewModel;
 
 import java.util.ArrayList;
 
 import static com.uiresource.cookit.Database.ImportFromJSON.IngredientsGetList;
+import static com.uiresource.cookit.Database.ImportFromJSON.RecipesGetList;
 
 public class Splash extends BaseActivity {
 
     private String URL = "https://surviveonsotka20190524073221.azurewebsites.net/api/";
 
     private static ArrayList<Ingredients> IngListJSON;
+    private static ArrayList<Recipes> RecipesListJSON;
     //private IngredientsDao ingredientsDao;
 
     private IngredientsViewModel ingredientsViewModel;
+    private RecipesViewModel recipesViewModell;
 
     private static GsonBuilder builder = new GsonBuilder();
     private static Gson gson = builder.create();
@@ -47,7 +52,10 @@ public class Splash extends BaseActivity {
         changeStatusBarColor();
 
         ingredientsViewModel = ViewModelProviders.of(this).get(IngredientsViewModel.class);
-        getIngredients();
+        recipesViewModell = ViewModelProviders.of(this).get(RecipesViewModel.class);
+
+        //getIngredients();
+        getRecipes();
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -128,4 +136,21 @@ public class Splash extends BaseActivity {
         Toast.makeText(getApplicationContext(),"Download Ingredients is Success!", Toast.LENGTH_SHORT).show();
     }
 
+    private void getRecipes(){
+        RecipesListJSON = RecipesGetList();
+
+        recipesViewModell.deleteAllRecipes();
+        //ingredientsViewModel.deleteAllIngredients();
+
+        Log.i("GSON", "Количество записей JSON: " + RecipesListJSON.size());
+
+        for(int i = 0; i < RecipesListJSON.size(); i++){
+
+            Recipes NewRecipe = new Recipes(RecipesListJSON.get(i).getId(), RecipesListJSON.get(i).getName(), RecipesListJSON.get(i).getDescription(), RecipesListJSON.get(i).getReviews(),RecipesListJSON.get(i).getCategories(), RecipesListJSON.get(i).getUser(), RecipesListJSON.get(i).getDateCreated(), RecipesListJSON.get(i).getPathToPhotos(), RecipesListJSON.get(i).getTimeForCooking(),RecipesListJSON.get(i).getTimeForPreparetion(), RecipesListJSON.get(i).getRate(), RecipesListJSON.get(i).getIngredients(), RecipesListJSON.get(i).getSteps(), RecipesListJSON.get(i).getTags());
+            recipesViewModell.insert(NewRecipe);
+            Log.i("GSON", "Activity - Рецепт Recipes добавлен! \nID: " + RecipesListJSON.get(i).getId() + "\nИмя: " + RecipesListJSON.get(i).getName());
+        }
+
+        Toast.makeText(getApplicationContext(),"Download Recipes is Success!", Toast.LENGTH_SHORT).show();
+    }
 }
