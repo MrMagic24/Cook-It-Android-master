@@ -35,7 +35,7 @@ public class Splash extends BaseActivity {
     //private IngredientsDao ingredientsDao;
 
     private IngredientsViewModel ingredientsViewModel;
-    private RecipesViewModel recipesViewModell;
+    private RecipesViewModel recipesViewModel;
 
     private static GsonBuilder builder = new GsonBuilder();
     private static Gson gson = builder.create();
@@ -52,7 +52,7 @@ public class Splash extends BaseActivity {
         changeStatusBarColor();
 
         ingredientsViewModel = ViewModelProviders.of(this).get(IngredientsViewModel.class);
-        recipesViewModell = ViewModelProviders.of(this).get(RecipesViewModel.class);
+        recipesViewModel = ViewModelProviders.of(this).get(RecipesViewModel.class);
 
         //getIngredients();
         getRecipes();
@@ -139,7 +139,7 @@ public class Splash extends BaseActivity {
     private void getRecipes(){
         RecipesListJSON = RecipesGetList();
 
-        recipesViewModell.deleteAllRecipes();
+        recipesViewModel.deleteAllRecipes();
         //ingredientsViewModel.deleteAllIngredients();
 
         Log.i("GSON", "Количество записей JSON: " + RecipesListJSON.size());
@@ -147,7 +147,7 @@ public class Splash extends BaseActivity {
         for(int i = 0; i < RecipesListJSON.size(); i++){
 
             Recipes NewRecipe = new Recipes(RecipesListJSON.get(i).getId(), RecipesListJSON.get(i).getName(), RecipesListJSON.get(i).getDescription(), RecipesListJSON.get(i).getReviews(),RecipesListJSON.get(i).getCategories(), RecipesListJSON.get(i).getUser(), RecipesListJSON.get(i).getDateCreated(), RecipesListJSON.get(i).getPathToPhotos(), RecipesListJSON.get(i).getTimeForCooking(),RecipesListJSON.get(i).getTimeForPreparetion(), RecipesListJSON.get(i).getRate(), RecipesListJSON.get(i).getIngredients(), RecipesListJSON.get(i).getSteps(), RecipesListJSON.get(i).getTags());
-            recipesViewModell.insert(NewRecipe);
+            recipesViewModel.insert(NewRecipe);
             Log.i("GSON", "Activity - Рецепт Recipes добавлен! \nID: " + RecipesListJSON.get(i).getId() + "\nИмя: " + RecipesListJSON.get(i).getName());
         }
 

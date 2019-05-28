@@ -18,7 +18,7 @@
             android:background="?attr/colorPrimary"
             android:textAlignment="center"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title=" Вход в аккаунт" />
+            app:title="Вход в аккаунт" />
 
     </android.support.design.widget.AppBarLayout>
 

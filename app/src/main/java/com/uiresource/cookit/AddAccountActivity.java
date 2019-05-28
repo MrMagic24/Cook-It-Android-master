@@ -36,8 +36,9 @@ public class AddAccountActivity extends AppCompatActivity {
             }
         });
 
-        editTextUsername = findViewById(R.id.edit_text_accUsername);
-        editTextEmail = findViewById(R.id.edit_text_accEmail);
+       /* editTextUsername = findViewById(R.id.edit_text_accUsername);
+        editTextEmail = findViewById(R.id.edit_text_accEmail);*/
+
         //editTextID = findViewById(R.id.edit_text_accID);
 
         Intent intent = getIntent();

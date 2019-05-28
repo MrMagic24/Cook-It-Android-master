@@ -1,5 +1,7 @@
 package com.uiresource.cookit;
 
+import android.arch.lifecycle.ViewModelProviders;
+import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -18,12 +20,20 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.uiresource.cookit.Database.AppDatabase;
+import com.uiresource.cookit.Database.Ingredients.IngredientsDao;
+import com.uiresource.cookit.Database.Recipes.Recipes;
+import com.uiresource.cookit.Database.Recipes.RecipesDao;
+import com.uiresource.cookit.Database.Recipes.RecipesViewModel;
 import com.uiresource.cookit.utils.CircleGlide;
 import com.uiresource.cookit.utils.CustomTypefaceSpan;
+
+import java.util.ArrayList;
 
 public class Main extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout drawer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,7 +123,7 @@ public class Main extends BaseActivity
 
         if (id == R.id.new_recipe) {
             //Intent intent = new Intent(this, AddRecipeActivity.class);
-            startActivity(new Intent(this, AddRecipeActivity.class));
+            //startActivity(new Intent(this, AddRecipeActivity.class));
 
             // Handle the camera action
         } else if (id == R.id.recipes) {

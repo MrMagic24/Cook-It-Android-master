@@ -11,10 +11,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".utils.AddRecipeActivity"></activity>
         <activity
             android:name=".utils.RegisterActivity"
             android:label="@string/title_activity_register"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
@@ -22,8 +23,7 @@
         <activity
             android:name=".AddAccountActivity"
             android:parentActivityName=".TestActivity" />
-        <activity android:name=".TestActivity" />
-        <activity android:name=".AddRecipeActivity" />
+        <activity android:name=".TestActivity" /> <!-- <activity android:name=".AddRecipeActivity" /> -->
         <activity
             android:name=".Splash"
             android:theme="@style/Full">

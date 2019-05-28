@@ -36,6 +36,9 @@ import com.uiresource.cookit.Database.Accounts.AccountListDao;
 import com.uiresource.cookit.Database.Accounts.AccountViewModel;
 import com.uiresource.cookit.Database.AppDatabase;
 import com.uiresource.cookit.Database.ImportFromJSON;
+import com.uiresource.cookit.Database.Recipes.Recipes;
+import com.uiresource.cookit.Database.Recipes.RecipesAdapter;
+import com.uiresource.cookit.Database.Recipes.RecipesViewModel;
 import com.uiresource.cookit.Database.Test.Trasnlation;
 
 import java.io.IOException;
@@ -61,6 +64,7 @@ public class TestActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private TextView textView;
     private AccountViewModel accountViewModel;
+    private RecipesViewModel recipesViewModel;
     private static ArrayList<AccountList> AccListJSON;
     private static List<AccountList> AccList;
     private boolean checkImport = false;
@@ -77,7 +81,7 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
-        AccListJSON = AccountGetList();
+        //AccListJSON = AccountGetList();
 
         FloatingActionButton buttonAddAccount = findViewById(R.id.button_add_account);
         buttonAddAccount.setOnClickListener(new View.OnClickListener() {
@@ -101,10 +105,11 @@ public class TestActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 
-        final AccountAdapter adapter = new AccountAdapter();
+        //final AccountAdapter adapter = new AccountAdapter();
+        final RecipesAdapter adapter = new RecipesAdapter();
         recyclerView.setAdapter(adapter);
 
-        accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
+        /*accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
         //accountViewModel.deleteAllAccounts();
         accountViewModel.getAllAccounts().observe(this, new Observer<List<AccountList>>() {
             @Override
@@ -119,6 +124,15 @@ public class TestActivity extends AppCompatActivity {
 
                 adapter.submitList(accountLists);
             }
+        });*/
+
+        recipesViewModel = ViewModelProviders.of(this).get(RecipesViewModel.class);
+        //accountViewModel.deleteAllAccounts();
+        recipesViewModel.getAllRecipes().observe(this, new Observer<List<Recipes>>() {
+            @Override
+            public void onChanged(@Nullable List<Recipes> recipes) {
+                adapter.submitList(recipes);
+            }
         });
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
@@ -130,12 +144,33 @@ public class TestActivity extends AppCompatActivity {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-                accountViewModel.delete(adapter.getAccountAt(viewHolder.getAdapterPosition()));
+                recipesViewModel.delete(adapter.getRecipeAt(viewHolder.getAdapterPosition()));
                 Toast.makeText(TestActivity.this,"Deleted", Toast.LENGTH_SHORT).show();
             }
         }).attachToRecyclerView(recyclerView);
 
-        adapter.setOnItemClickListener(new AccountAdapter.onItemClickListener() {
+        /*new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                accountViewModel.delete(adapter.getAccountAt(viewHolder.getAdapterPosition()));
+                Toast.makeText(TestActivity.this,"Deleted", Toast.LENGTH_SHORT).show();
+            }
+        }).attachToRecyclerView(recyclerView);*/
+
+        adapter.setOnItemClickListener(new RecipesAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(Recipes account) {
+
+            }
+        });
+
+        /*adapter.setOnItemClickListener(new AccountAdapter.onItemClickListener() {
             @Override
             public void onItemClick(AccountList account) {
                 Intent intent = new Intent(TestActivity.this, AddAccountActivity.class);
@@ -144,7 +179,7 @@ public class TestActivity extends AppCompatActivity {
                 intent.putExtra(AddAccountActivity.EXTRA_USERNAME, account.getUserName());
                 startActivityForResult(intent, EDIT_NOTE_REQUEST);
             }
-        });
+        });*/
 
         //textView  = (TextView) findViewById(R.id.textViewTestTextView);
         /*okHttpClient = new OkHttpClient();
@@ -290,6 +325,64 @@ public class TestActivity extends AppCompatActivity {
                         accountViewModel.update(ThisAccount);
                         checkUpdate = true;
                         Log.i("GSON", "Activity - Аккаунт обновлен! \nID: " + AccListJSON.get(i).getId() + "\nИмя: " + AccListJSON.get(i).getUserName());
+                    //}
+                }
+            }
+
+            if (!checkItem){
+                AccountList NewAccount = new AccountList(AccListJSON.get(i).getId(),  AccListJSON.get(i).getEmail(), AccListJSON.get(i).getUserName(), AccListJSON.get(i).getFirstName(),AccListJSON.get(i).getPathToAvatar(),AccListJSON.get(i).getAboutYourself(), AccListJSON.get(i).isGender(), AccListJSON.get(i).getRecipiesCount(),AccListJSON.get(i).getReviewsCount(),AccListJSON.get(i).getRateReviewsCount());
+                accountViewModel.insert(NewAccount);
+                Log.i("GSON", "Activity - Аккаунт добавлен! \nID: ");
+            }
+
+            if (!checkUpdate && checkItem){
+                Log.i("GSON", "Activity - Данные не изменены \nID: ");
+            }
+
+            checkItem = false;
+        }
+
+
+        checkImport = true;
+        //accountViewModel.insert(account);
+
+        Toast.makeText(TestActivity.this,"Download Success!", Toast.LENGTH_SHORT).show();
+    }
+
+    protected void importRecipesFromJSON(List<Recipes> recipesList){
+
+        Log.i("GSON", "Количество из БД: " + recipesList.size());
+
+        boolean checkItem = false;
+        boolean checkUpdate = false;
+
+        Log.i("GSON", "Количество записей JSON: " + AccListJSON.size());
+
+        for(int i = 0; i < AccListJSON.size(); i++){
+            for(int j = 0; j < recipesList.size(); j++){
+                if (recipesList.get(j).getId().equals(AccListJSON.get(i).getId())){
+                    checkItem = true;
+
+                    /*if (AccListJSON.get(i).getUserName() == null){AccListJSON.get(i).userName = "null";}
+                    if (AccListJSON.get(i).getEmail() == null){AccListJSON.get(i).email = "null";}
+                    if (AccListJSON.get(i).getFirstName() == null){AccListJSON.get(i).firstName = "null";}
+                    if (AccListJSON.get(i).getAboutYourself() == null){AccListJSON.get(i).aboutYourself = "null";}
+                    if (AccListJSON.get(i).getPathToAvatar() == null){AccListJSON.get(i).pathToAvatar = "null";}*/
+
+                    /*if (!(accountList.get(j).getUserName().equals(AccListJSON.get(i).getUserName())) ||
+                            !(accountList.get(j).getEmail().equals(AccListJSON.get(i).getEmail())) ||
+                            !(accountList.get(j).getFirstName().equals(AccListJSON.get(i).getFirstName())) ||
+                            !(accountList.get(j).getAboutYourself().equals(AccListJSON.get(i).getAboutYourself())) ||
+                            !(accountList.get(j).getPathToAvatar().equals(AccListJSON.get(i).getPathToAvatar())) ||
+                            accountList.get(j).isGender() != AccListJSON.get(i).isGender() ||
+                            accountList.get(j).getRecipiesCount() != AccListJSON.get(i).getRecipiesCount() ||
+                            accountList.get(j).getReviewsCount() != AccListJSON.get(i).getReviewsCount() ||
+                            accountList.get(j).getRateReviewsCount() != AccListJSON.get(i).getRateReviewsCount()){*/
+
+                    AccountList ThisAccount = new AccountList(AccListJSON.get(i).getId(), AccListJSON.get(i).getEmail(), AccListJSON.get(i).getUserName(), AccListJSON.get(i).getFirstName(),AccListJSON.get(i).getPathToAvatar(),AccListJSON.get(i).getAboutYourself(), AccListJSON.get(i).isGender(), AccListJSON.get(i).getRecipiesCount(),AccListJSON.get(i).getReviewsCount(),AccListJSON.get(i).getRateReviewsCount());
+                    accountViewModel.update(ThisAccount);
+                    checkUpdate = true;
+                    Log.i("GSON", "Activity - Аккаунт обновлен! \nID: " + AccListJSON.get(i).getId() + "\nИмя: " + AccListJSON.get(i).getUserName());
                     //}
                 }
             }
