@@ -131,6 +131,7 @@ public class Main extends BaseActivity
             startActivity(new Intent(this, TestActivity.class));
 
         } else if (id == R.id.saved) {
+            startActivity(new Intent(this, UpdateAccountActivity.class));
 
         } else if (id == R.id.shop_list) {
 

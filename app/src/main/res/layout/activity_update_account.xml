@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/add_recipe_layout"
-    tools:context=".AddRecipeActivity">
+    android:id="@+id/update_account_layout"
+    tools:context=".UpdateAccountActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -19,9 +19,9 @@
             android:background="?attr/colorPrimary"
             android:textAlignment="center"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="Создание рецепта" />
+            app:title="Изменить данные аккаунта" />
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_add_recipe" />
+    <include layout="@layout/content_update_account" />
 
 </android.support.design.widget.CoordinatorLayout>

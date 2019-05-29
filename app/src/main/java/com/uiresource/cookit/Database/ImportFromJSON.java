@@ -345,14 +345,14 @@ public class ImportFromJSON {
         }
     }
 
-    /*public static class UpdateUser {
+    public static class UpdateUser {
         String firstName;
         String lastName;
         boolean gender;
         String aboutYourself;
-        avatar avatar;
+        String avatar;
 
-        public UpdateUser(String firstName, String lastName, boolean gender, String aboutYourself, avatar avatar) {
+        public UpdateUser(String firstName, String lastName, boolean gender, String aboutYourself, String avatar) {
             this.firstName = firstName;
             this.lastName = lastName;
             this.gender = gender;
@@ -360,10 +360,4 @@ public class ImportFromJSON {
             this.avatar = avatar;
         }
     }
-
-    public static class avatar {
-
-        public avatar() {
-        }
-    }*/
 }
