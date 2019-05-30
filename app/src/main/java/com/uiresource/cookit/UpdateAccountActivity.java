@@ -29,6 +29,7 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,6 +48,9 @@ public class UpdateAccountActivity extends AppCompatActivity {
     private ImageView imgView;
     private final int IMG_REQUEST = 1;
     private Bitmap bitmap;
+    private ArrayList<String> StringImg;
+    private String st;
+    private byte[] imgByte;
     ProgressDialog progressDialog;
 
     private boolean checkResult;
@@ -113,17 +117,44 @@ public class UpdateAccountActivity extends AppCompatActivity {
         startActivityForResult(intent, IMG_REQUEST);
     }
 
-    private String ImageToString(Bitmap bitmap){
+    private void ImageToString(Bitmap bitmap){
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG,100, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG,20, byteArrayOutputStream);
         byte[] imgBytes = byteArrayOutputStream.toByteArray();
-        return Base64.encodeToString(imgBytes,Base64.DEFAULT);
+
+        imgByte = byteArrayOutputStream.toByteArray();
+
+        StringImg = new ArrayList<String>();
+
+        int StrLen = 0;
+        int StLen = 0;
+
+        for (int i = 0; i < imgBytes.length; i++){
+            if (StrLen == 100){
+                StringImg.add(st);
+                //Log.i("TAG", StringImg.get(StLen));
+                st = "";
+                StrLen = 0;
+                StLen++;
+            }
+            else {
+                imgByte[0] = imgBytes[i];
+                st = st + Base64.encodeToString(imgByte,Base64.DEFAULT);
+                StrLen++;
+            }
+        }
+
+        //Log.i("TAG", StLen);
+
+        //return Base64.encodeToString(imgBytes,Base64.DEFAULT);
     }
 
     private void updateUser() {
         // Tag used to cancel the request
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "Account/UpdateUser",
+        ImageToString(bitmap);
+
+        /*StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "Account/UpdateUser",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -140,7 +171,7 @@ public class UpdateAccountActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Log.i("GSON", "Ошибка StringRequest");
             }
         })
         {
@@ -158,10 +189,15 @@ public class UpdateAccountActivity extends AppCompatActivity {
             }
         };
 
-        MySingleton.getInstance(UpdateAccountActivity.this).addToReqQueue(stringRequest);
+        MySingleton.getInstance(UpdateAccountActivity.this).addToReqQueue(stringRequest);*/
 
 
+        //Map<String,String> par = getParams();
+        int kek = StringImg.size();
+        //Log.i("GSON", kek);
 
+        //Log.i("GSON", par.get("avatar"));
+        //par.get("avatar");
 
 
         //String cancel_req_tag = "login";
@@ -170,18 +206,21 @@ public class UpdateAccountActivity extends AppCompatActivity {
 
         checkResult = false;
 
-        ImportFromJSON.UpdateUser updateUser = new ImportFromJSON.UpdateUser(accountInputFirstName.getText().toString(), accountInputLastName.getText().toString(), true, accountInputAboutYourself.getText().toString(), ImageToString(bitmap));
+        //ImportFromJSON.UpdateUser updateUser = new ImportFromJSON.UpdateUser(accountInputFirstName.getText().toString(), accountInputLastName.getText().toString(), true, accountInputAboutYourself.getText().toString(), ImageToString(bitmap));
 
+        /*for (int i = 0; i < StringImg.size(); i++){
+            Log.i("TAG", StringImg.get(i).toString());
+        }*/
         //Log.i("TAG", ImageToString(bitmap));
 
         Log.i("TAG", "Вызван метод updateUser");
 
-        OkHttpClient okHttpClient = new OkHttpClient();
+        //OkHttpClient okHttpClient = new OkHttpClient();
 
-        RequestBody body = RequestBody.create(MEDIA_TYPE,
+        /*RequestBody body = RequestBody.create(MEDIA_TYPE,
                 gson.toJson(updateUser));
 
-        /*JSONObject response = null;
+        JSONObject response = null;
         try {
             response = new JSONObject();
             response.put("firstName", accountInputFirstName.getText().toString());
@@ -192,9 +231,13 @@ public class UpdateAccountActivity extends AppCompatActivity {
         } catch (Exception exx) {
         }
 
-        okhttp3.RequestBody body = RequestBody.create(MEDIA_TYPE, response.toString());*/
+        //okhttp3.RequestBody body = RequestBody.create(MEDIA_TYPE, response.toString());
 
-        Log.i("GSON",gson.toJson(updateUser));
+        try {
+            Log.i("GSON",response.getString("avatar"));
+        } catch (Exception exx) {
+        }*/
+
 
         /*final Request request = new Request.Builder()
                 .url(URL + "Account/UpdateUser")
@@ -282,4 +325,16 @@ public class UpdateAccountActivity extends AppCompatActivity {
         if (progressDialog.isShowing())
             progressDialog.dismiss();
     }
+
+    /*protected Map<String, String> getParams()
+    {
+        Map<String, String> params = new HashMap<>();
+        params.put("firstName", accountInputFirstName.getText().toString());
+        params.put("lastName", accountInputLastName.getText().toString());
+        params.put("gender", String.valueOf(true));
+        params.put("avatar", ImageToString(bitmap));
+        params.put("aboutYourself", accountInputAboutYourself.getText().toString());
+
+        return params;
+    }*/
 }
