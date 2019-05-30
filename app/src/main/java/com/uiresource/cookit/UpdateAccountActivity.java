@@ -117,22 +117,23 @@ public class UpdateAccountActivity extends AppCompatActivity {
         startActivityForResult(intent, IMG_REQUEST);
     }
 
-    private void ImageToString(Bitmap bitmap){
+    private String ImageToString(Bitmap bitmap){
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG,20, byteArrayOutputStream);
         byte[] imgBytes = byteArrayOutputStream.toByteArray();
 
-        imgByte = byteArrayOutputStream.toByteArray();
+        //imgByte = new byte[]{"-1".getBytes(), "-2".getBytes()};
 
         StringImg = new ArrayList<String>();
 
         int StrLen = 0;
         int StLen = 0;
 
-        for (int i = 0; i < imgBytes.length; i++){
-            if (StrLen == 100){
+        //for (int i = 0; i < imgBytes.length; i++){
+        /*for (int i = 0; i < 10; i++){
+            if (StrLen == 10){
                 StringImg.add(st);
-                //Log.i("TAG", StringImg.get(StLen));
+                Log.i("TAG", StringImg.get(StLen));
                 st = "";
                 StrLen = 0;
                 StLen++;
@@ -140,13 +141,18 @@ public class UpdateAccountActivity extends AppCompatActivity {
             else {
                 imgByte[0] = imgBytes[i];
                 st = st + Base64.encodeToString(imgByte,Base64.DEFAULT);
+                Log.i("Bytes", st);
                 StrLen++;
             }
-        }
+        }*/
 
+        //int kek = StringImg.size();
+        //Log.i("GSON", "imgBytes: " + String.valueOf(imgByte.length));
+        //Log.i("GSON", "imgBytes: " + Base64.encodeToString(imgBytes,Base64.DEFAULT).length());
+        //Log.i("GSON", String.valueOf(kek));
         //Log.i("TAG", StLen);
 
-        //return Base64.encodeToString(imgBytes,Base64.DEFAULT);
+        return Base64.encodeToString(imgBytes,Base64.DEFAULT);
     }
 
     private void updateUser() {
@@ -194,7 +200,7 @@ public class UpdateAccountActivity extends AppCompatActivity {
 
         //Map<String,String> par = getParams();
         int kek = StringImg.size();
-        //Log.i("GSON", kek);
+        Log.i("GSON", String.valueOf(kek));
 
         //Log.i("GSON", par.get("avatar"));
         //par.get("avatar");
@@ -211,7 +217,7 @@ public class UpdateAccountActivity extends AppCompatActivity {
         /*for (int i = 0; i < StringImg.size(); i++){
             Log.i("TAG", StringImg.get(i).toString());
         }*/
-        //Log.i("TAG", ImageToString(bitmap));
+        Log.i("TAG", String.valueOf(ImageToString(bitmap).length()));
 
         Log.i("TAG", "Вызван метод updateUser");
 
