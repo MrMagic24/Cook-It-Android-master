@@ -350,9 +350,9 @@ public class ImportFromJSON {
         String lastName;
         boolean gender;
         String aboutYourself;
-        String avatar;
+        ArrayList<String> avatar;
 
-        public UpdateUser(String firstName, String lastName, boolean gender, String aboutYourself, String avatar) {
+        public UpdateUser(String firstName, String lastName, boolean gender, String aboutYourself, ArrayList<String> avatar) {
             this.firstName = firstName;
             this.lastName = lastName;
             this.gender = gender;

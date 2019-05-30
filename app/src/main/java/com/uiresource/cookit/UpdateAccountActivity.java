@@ -17,9 +17,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -30,6 +27,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +35,9 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class UpdateAccountActivity extends AppCompatActivity {
 
@@ -50,7 +50,6 @@ public class UpdateAccountActivity extends AppCompatActivity {
     private Bitmap bitmap;
     private ArrayList<String> StringImg;
     private String st;
-    private byte[] imgByte;
     ProgressDialog progressDialog;
 
     private boolean checkResult;
@@ -119,39 +118,59 @@ public class UpdateAccountActivity extends AppCompatActivity {
 
     private String ImageToString(Bitmap bitmap){
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG,20, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG,100, byteArrayOutputStream);
         byte[] imgBytes = byteArrayOutputStream.toByteArray();
-
-        //imgByte = new byte[]{"-1".getBytes(), "-2".getBytes()};
 
         StringImg = new ArrayList<String>();
 
         int StrLen = 0;
-        int StLen = 0;
+        int LastNumber = 0;
+        int AllBytes = 0;
+        int LastBytes = 0;
+        st = "";
 
-        //for (int i = 0; i < imgBytes.length; i++){
-        /*for (int i = 0; i < 10; i++){
-            if (StrLen == 10){
-                StringImg.add(st);
-                Log.i("TAG", StringImg.get(StLen));
-                st = "";
-                StrLen = 0;
-                StLen++;
+        byte[] imgByte = new byte[100];
+
+        for (int i = 0; i < imgBytes.length; i++){
+
+            if (i == imgBytes.length - 1){
+                LastNumber = (imgBytes.length % 100);
+                byte[] LastImgByte = new byte[LastNumber];
+
+                for (int j = 0; j < LastNumber; j++){
+                    LastImgByte[j] = imgByte[j];
+                    LastBytes++;
+                }
+
+                //st = Base64.encodeToString(imgByte,Base64.DEFAULT);
+                StringImg.add(Base64.encodeToString(LastImgByte,Base64.DEFAULT));
             }
             else {
-                imgByte[0] = imgBytes[i];
-                st = st + Base64.encodeToString(imgByte,Base64.DEFAULT);
-                Log.i("Bytes", st);
-                StrLen++;
+                if (StrLen == 100){
+                    //st = st + Base64.encodeToString(imgByte,Base64.DEFAULT);
+                    StringImg.add(Base64.encodeToString(imgByte,Base64.DEFAULT));
+                    st = "";
+                    StrLen = 0;
+
+                }
+                else {
+                    imgByte[StrLen] = imgBytes[i];
+                    StrLen++;
+                    //LastNumber++;
+                }
+
+                AllBytes++;
             }
-        }*/
+        }
 
-        //int kek = StringImg.size();
-        //Log.i("GSON", "imgBytes: " + String.valueOf(imgByte.length));
-        //Log.i("GSON", "imgBytes: " + Base64.encodeToString(imgBytes,Base64.DEFAULT).length());
-        //Log.i("GSON", String.valueOf(kek));
-        //Log.i("TAG", StLen);
+        for (int j = 0; j < StringImg.size(); j++){
+            Log.i("Bytes", StringImg.get(j));
+        }
 
+        Log.i("Bytes", String.valueOf(imgBytes.length));
+        Log.i("Bytes", String.valueOf(AllBytes+1));
+        Log.i("Bytes", String.valueOf(LastBytes));
+        Log.i("Bytes", String.valueOf(StringImg.size()));
         return Base64.encodeToString(imgBytes,Base64.DEFAULT);
     }
 
@@ -199,8 +218,12 @@ public class UpdateAccountActivity extends AppCompatActivity {
 
 
         //Map<String,String> par = getParams();
-        int kek = StringImg.size();
-        Log.i("GSON", String.valueOf(kek));
+        /*int kek = StringImg.size();
+        Log.i("imgBytes", String.valueOf(kek));*/
+
+        /*for (int i = 0; i < StringImg.size(); i++){
+            Log.i("imgBytes", StringImg.get(i));
+        }*/
 
         //Log.i("GSON", par.get("avatar"));
         //par.get("avatar");
@@ -212,40 +235,23 @@ public class UpdateAccountActivity extends AppCompatActivity {
 
         checkResult = false;
 
-        //ImportFromJSON.UpdateUser updateUser = new ImportFromJSON.UpdateUser(accountInputFirstName.getText().toString(), accountInputLastName.getText().toString(), true, accountInputAboutYourself.getText().toString(), ImageToString(bitmap));
+        ImportFromJSON.UpdateUser updateUser = new ImportFromJSON.UpdateUser(accountInputFirstName.getText().toString(), accountInputLastName.getText().toString(), true, accountInputAboutYourself.getText().toString(), StringImg);
 
         /*for (int i = 0; i < StringImg.size(); i++){
             Log.i("TAG", StringImg.get(i).toString());
         }*/
-        Log.i("TAG", String.valueOf(ImageToString(bitmap).length()));
+        //Log.i("TAG", String.valueOf(ImageToString(bitmap).length()));
 
         Log.i("TAG", "Вызван метод updateUser");
 
-        //OkHttpClient okHttpClient = new OkHttpClient();
+        OkHttpClient okHttpClient = new OkHttpClient();
 
-        /*RequestBody body = RequestBody.create(MEDIA_TYPE,
+        RequestBody body = RequestBody.create(MEDIA_TYPE,
                 gson.toJson(updateUser));
 
-        JSONObject response = null;
-        try {
-            response = new JSONObject();
-            response.put("firstName", accountInputFirstName.getText().toString());
-            response.put("lastName", accountInputLastName.getText().toString());
-            response.put("gender", true);
-            response.put("avatar", ImageToString(bitmap));
-            response.put("aboutYourself", accountInputAboutYourself.getText().toString());
-        } catch (Exception exx) {
-        }
+        Log.i("GSON",String.valueOf(gson.toJson(updateUser).length()));
 
-        //okhttp3.RequestBody body = RequestBody.create(MEDIA_TYPE, response.toString());
-
-        try {
-            Log.i("GSON",response.getString("avatar"));
-        } catch (Exception exx) {
-        }*/
-
-
-        /*final Request request = new Request.Builder()
+        final okhttp3.Request request = new Request.Builder()
                 .url(URL + "Account/UpdateUser")
                 .post(body)
                 .addHeader("Content-Type", "application/json")
@@ -265,20 +271,40 @@ public class UpdateAccountActivity extends AppCompatActivity {
 
                 if (response.isSuccessful()){
                     checkResult = true;
-                    Log.i("GSON","Обновлено");
+                    Log.i("GSON","Обновление произведено!");
 
                 }
 
                 else {
-                    Log.i("GSON","Обновление НЕ выполнено!");
-
+                    Log.i("GSON","Обновление НЕ произведено!");
                 }
 
                 hideDialog();
                 CheckResult(result);
             }
-        });*/
-        hideDialog();
+        });
+
+        /*JSONObject response = null;
+        try {
+            response = new JSONObject();
+            response.put("firstName", accountInputFirstName.getText().toString());
+            response.put("lastName", accountInputLastName.getText().toString());
+            response.put("gender", true);
+            response.put("avatar", ImageToString(bitmap));
+            response.put("aboutYourself", accountInputAboutYourself.getText().toString());
+        } catch (Exception exx) {
+        }
+
+        okhttp3.RequestBody body = RequestBody.create(MEDIA_TYPE, response.toString());
+
+        try {
+            Log.i("GSON",response.getString("avatar"));
+        } catch (Exception exx) {
+        }*/
+
+
+
+        //hideDialog();
         Log.i("GSON", "Завершен метод updateUser");
     }
 
