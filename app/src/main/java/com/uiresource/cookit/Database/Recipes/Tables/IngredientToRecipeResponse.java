@@ -11,18 +11,10 @@ public class IngredientToRecipeResponse {
     public String ingredientId;
 
     @SerializedName("amount")
-    public int amount;
+    public String amount;
 
-    @SerializedName("price")
-    public int price;
-
-    @SerializedName("weight")
-    public int weight;
-
-    public IngredientToRecipeResponse(String ingredientId, int amount, int price, int weight) {
+    public IngredientToRecipeResponse(String ingredientId, String amount) {
         this.ingredientId = ingredientId;
         this.amount = amount;
-        this.price = price;
-        this.weight = weight;
     }
 }

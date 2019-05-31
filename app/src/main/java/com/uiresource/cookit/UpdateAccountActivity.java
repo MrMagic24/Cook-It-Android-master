@@ -1,6 +1,8 @@
 package com.uiresource.cookit;
 
 import android.app.ProgressDialog;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -20,6 +22,8 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.uiresource.cookit.Database.Accounts.AccountList;
+import com.uiresource.cookit.Database.Accounts.AccountViewModel;
 import com.uiresource.cookit.Database.ImportFromJSON;
 
 import org.json.JSONObject;
@@ -29,6 +33,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
@@ -38,6 +43,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+
+import static java.lang.Thread.sleep;
 
 public class UpdateAccountActivity extends AppCompatActivity {
 
@@ -53,6 +60,10 @@ public class UpdateAccountActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
 
     private boolean checkResult;
+
+    private AccountViewModel accountViewModel;
+
+    private static String COOKIE = "";
 
     private static GsonBuilder builder = new GsonBuilder();
     private static Gson gson = builder.create();
@@ -77,6 +88,22 @@ public class UpdateAccountActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
 
+        accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
+        accountViewModel.getAllAccounts().observe(this, new Observer<List<AccountList>>() {
+            @Override
+            public void onChanged(@Nullable List<AccountList> accountLists) {
+                try {
+                    COOKIE = accountLists.get(0).getCookie();
+                } catch (NullPointerException e){
+                    Log.i("Error", "Cookie: " + e);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    Log.i("Error", "Cookie: " + e);
+                } catch (IndexOutOfBoundsException e) {
+                    Log.i("Error", "Cookie: " + e);
+                }
+            }
+        });
+
         btnChooseImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,6 +115,10 @@ public class UpdateAccountActivity extends AppCompatActivity {
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                while (COOKIE == ""){
+
+                }
 
                 updateUser();
             }
@@ -123,7 +154,7 @@ public class UpdateAccountActivity extends AppCompatActivity {
 
         StringImg = new ArrayList<String>();
 
-        int StrLen = 0;
+        /*int StrLen = 0;
         int LastNumber = 0;
         int AllBytes = 0;
         int LastBytes = 0;
@@ -170,14 +201,14 @@ public class UpdateAccountActivity extends AppCompatActivity {
         Log.i("Bytes", String.valueOf(imgBytes.length));
         Log.i("Bytes", String.valueOf(AllBytes+1));
         Log.i("Bytes", String.valueOf(LastBytes));
-        Log.i("Bytes", String.valueOf(StringImg.size()));
+        Log.i("Bytes", String.valueOf(StringImg.size()));*/
         return Base64.encodeToString(imgBytes,Base64.DEFAULT);
     }
 
     private void updateUser() {
         // Tag used to cancel the request
 
-        ImageToString(bitmap);
+        //ImageToString(bitmap);
 
         /*StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "Account/UpdateUser",
                 new Response.Listener<String>() {
@@ -235,7 +266,7 @@ public class UpdateAccountActivity extends AppCompatActivity {
 
         checkResult = false;
 
-        ImportFromJSON.UpdateUser updateUser = new ImportFromJSON.UpdateUser(accountInputFirstName.getText().toString(), accountInputLastName.getText().toString(), true, accountInputAboutYourself.getText().toString(), StringImg);
+        ImportFromJSON.UpdateUser updateUser = new ImportFromJSON.UpdateUser(accountInputFirstName.getText().toString(), accountInputLastName.getText().toString(), true, accountInputAboutYourself.getText().toString(), /*ImageToString(bitmap)*/"");
 
         /*for (int i = 0; i < StringImg.size(); i++){
             Log.i("TAG", StringImg.get(i).toString());
@@ -249,13 +280,16 @@ public class UpdateAccountActivity extends AppCompatActivity {
         RequestBody body = RequestBody.create(MEDIA_TYPE,
                 gson.toJson(updateUser));
 
-        Log.i("GSON",String.valueOf(gson.toJson(updateUser).length()));
+        String newCookie = "ARRAffinity=f36c8130531c157fc790e7052450319f91d9a1fed7834277b558504530e1fd5; ";
+
+        //Log.i("GSON",String.valueOf(gson.toJson(updateUser).length()));
 
         final okhttp3.Request request = new Request.Builder()
                 .url(URL + "Account/UpdateUser")
-                .post(body)
+                .put(body)
                 .addHeader("Content-Type", "application/json")
                 .addHeader("accept", "text/plain")
+                .addHeader("Cookie", newCookie + COOKIE)
                 .build();
 
         okHttpClient.newCall(request).enqueue(new Callback() {
@@ -267,6 +301,7 @@ public class UpdateAccountActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String result = response.body().string();
+                int res = response.code();
                 Log.i("GSON", result);
 
                 if (response.isSuccessful()){
@@ -276,7 +311,9 @@ public class UpdateAccountActivity extends AppCompatActivity {
                 }
 
                 else {
-                    Log.i("GSON","Обновление НЕ произведено!");
+                    Log.i("GSON","Обновление НЕ произведено!" + response);
+                    Log.i("GSON","Обновление НЕ произведено!" + response.body().string());
+                    Log.i("GSON",String.valueOf(res));
                 }
 
                 hideDialog();

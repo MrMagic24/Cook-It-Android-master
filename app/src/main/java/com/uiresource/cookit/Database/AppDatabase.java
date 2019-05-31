@@ -15,7 +15,7 @@ import com.uiresource.cookit.Database.Ingredients.IngredientsDao;
 import com.uiresource.cookit.Database.Recipes.Recipes;
 import com.uiresource.cookit.Database.Recipes.RecipesDao;
 
-@Database(entities = {AccountList.class, Ingredients.class, Recipes.class}, version = 6, exportSchema = false)
+@Database(entities = {AccountList.class, Ingredients.class, Recipes.class}, version = 7, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase instance;
@@ -58,7 +58,7 @@ public abstract class AppDatabase extends RoomDatabase {
         @Override
         protected Void doInBackground(Void... voids){
 
-            accountListDao.deleteAll();
+            //accountListDao.deleteAll();
             //accountListDao.insert(new AccountList("44d838a0-d66b-4884-8b40-7bd17f281656", "kek", "svin", "","","", true, 0,0,0));
             //accountListDao.insert(new AccountList("9de8f6ee-552a-454e-8431-1c58ffe0f36f","hey@mail.ru", "Yo Man", "svinGames", "","", true, 0,0,0));
             return null;

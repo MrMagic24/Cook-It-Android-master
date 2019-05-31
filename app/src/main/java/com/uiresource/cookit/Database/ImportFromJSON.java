@@ -202,6 +202,8 @@ public class ImportFromJSON {
 
                     ListRecipes = acc.getRecipesFromJSON();
                     Log.i("GSON", "Присвоил ListRecipes");
+
+                    Log.i("GSON", String.valueOf(request.headers().size()));
                 }
             }
         });
@@ -321,6 +323,48 @@ public class ImportFromJSON {
         Log.i("GSON", "Завершен метод AccountUpdateToServer");
     }
 
+    public static void checkAuth(String Cookie){
+
+        OkHttpClient okHttpClient;
+        Request request;
+        String response;
+
+        response = URL + "Account/IsAuthorized";
+
+        String newCookie = "ARRAffinity=f36c8130531c157fc790e7052450319f91d9a1fed7834277b558504530e1fd5; ";
+
+        Log.i("ON1", "Cookie: " + Cookie);
+        Log.i("ON1", "newCookie: " + newCookie);
+        Log.i("ON1", "All: " + newCookie + Cookie);
+
+        okHttpClient = new OkHttpClient();
+        request = new Request.Builder()
+                .url(response)
+                .addHeader("Cookie", newCookie + Cookie)
+                .build();
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //Log.i(TAG,e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()){
+                    //final String myResponse = response.body().string();
+                    Log.i("ON1", "Авторизован!");
+                }
+                else {
+                    Log.i("ON1", "НЕ авторизован!");
+                }
+
+
+                Log.i("ON1", response.body().string() + "\n" + response.code());
+            }
+        });
+    }
+
     public static class RegisterUser {
         String email;
         String password;
@@ -350,9 +394,9 @@ public class ImportFromJSON {
         String lastName;
         boolean gender;
         String aboutYourself;
-        ArrayList<String> avatar;
+        String avatar;
 
-        public UpdateUser(String firstName, String lastName, boolean gender, String aboutYourself, ArrayList<String> avatar) {
+        public UpdateUser(String firstName, String lastName, boolean gender, String aboutYourself, String avatar) {
             this.firstName = firstName;
             this.lastName = lastName;
             this.gender = gender;

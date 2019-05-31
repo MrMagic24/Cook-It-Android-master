@@ -1,6 +1,7 @@
 package com.uiresource.cookit;
 
 import android.app.ProgressDialog;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,10 +16,14 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.uiresource.cookit.Database.Accounts.AccountImport;
+import com.uiresource.cookit.Database.Accounts.AccountList;
+import com.uiresource.cookit.Database.Accounts.AccountViewModel;
 import com.uiresource.cookit.Database.ImportFromJSON;
 import com.uiresource.cookit.utils.RegisterActivity;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -35,6 +40,11 @@ public class LoginActivity extends AppCompatActivity {
     private EditText loginInputEmail, loginInputPassword;
     private Button btnlogin;
     private Button btnLinkSignup;
+
+    private AccountViewModel accountViewModel;
+    private static ArrayList<AccountList> ListAcc;
+
+    private String COOKIES = "";
 
     private boolean checkResult;
 
@@ -63,6 +73,11 @@ public class LoginActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
+        accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
+        if (ListAcc != null){
+            ListAcc = null;
+        }
+
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,7 +86,11 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
                 else {
+                    accountViewModel.deleteAllAccounts();
+
                     loginUser();
+
+
                 }
             }
         });
@@ -95,6 +114,7 @@ public class LoginActivity extends AppCompatActivity {
 
         checkResult = false;
 
+
         ImportFromJSON.LoginUser loginUser = new ImportFromJSON.LoginUser(loginInputEmail.getText().toString(), loginInputPassword.getText().toString(), true);
 
         Log.i("GSON", "Вызван метод loginUser");
@@ -107,8 +127,10 @@ public class LoginActivity extends AppCompatActivity {
         final Request request = new Request.Builder()
                 .url(URL + "Account/Login")
                 .post(body)
-                .addHeader("Content-Type", "application/json")
+                .addHeader("Content-Type", "application/json-patch+json")
                 .addHeader("accept", "text/plain")
+                .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 YaBrowser/19.4.3.370 Yowser/2.5 Safari/537.36")
+                .addHeader("Cookie", "ARRAffinity=f36c8130531c157fc790e7052450319f91d9a1fed7834277b558504530e1fd5")
                 .build();
 
         okHttpClient.newCall(request).enqueue(new Callback() {
@@ -125,7 +147,27 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.isSuccessful()){
                     checkResult = true;
                     Log.i("GSON","Вход произведен!");
+                    //Log.i("GSON",response.headers("Set-Cookie"));
 
+                    int index = 0;
+
+                    while (response.headers("Set-Cookie").get(0).charAt(index)!= ';')
+                    {
+                        COOKIES = COOKIES + String.valueOf(response.headers("Set-Cookie").get(0).charAt(index));
+                        index++;
+                    }
+
+                    Log.i("GSON", String.valueOf(request.headers().size()));
+
+                    Log.i("GSON", COOKIES);
+
+
+                    final AccountList acc = gson.fromJson(result, AccountList.class);
+
+                    acc.Cookie = COOKIES;
+
+                    accountViewModel.insert(acc);
+                    Log.i("GSON", "Activity - Аккаунт добавлен! \nID: " + acc.getId() + "\nCookie: " + acc.getCookie());
                 }
 
                 else {
@@ -138,6 +180,8 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         Log.i("GSON", "Завершен метод loginUser");
+
+
     }
 
     private void showDialog() {
@@ -180,6 +224,8 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),
                             "Вход произведен", Toast.LENGTH_LONG).show();
                 }
+
+                ImportFromJSON.checkAuth(COOKIES);
             }
         });
 
@@ -190,4 +236,36 @@ public class LoginActivity extends AppCompatActivity {
             progressDialog.dismiss();
     }
 
+    private void checkAuth(){
+
+        OkHttpClient okHttpClient;
+        Request request;
+        String response;
+
+        response = URL + "Account/IsAuthorized";
+
+        okHttpClient = new OkHttpClient();
+        request = new Request.Builder()
+                .url(response)
+                .addHeader("Cookie", COOKIES)
+                .build();
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //Log.i(TAG,e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()){
+                    final String myResponse = response.body().string();
+
+                }
+
+                Log.i("ON1", "Присвоил ListIngredients");
+                Log.i("ON1", response.body().string() + "\n" + response.code());
+            }
+        });
+    }
 }

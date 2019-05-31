@@ -9,11 +9,16 @@ import com.google.gson.annotations.SerializedName;
 @Entity
 public class Ingredients {
 
-    public Ingredients(@NonNull String id, String name, String typeFoodId, String pathToIcon, int recipiesCount) {
+    @PrimaryKey
+    @NonNull
+    @SerializedName("id")
+    public String id;
+
+    public Ingredients(@NonNull String id, String name, String typeFoodId, String icon, int recipiesCount) {
         this.id = id;
         this.name = name;
         this.typeFoodId = typeFoodId;
-        this.pathToIcon = pathToIcon;
+        this.icon = icon;
         this.recipiesCount = recipiesCount;
     }
 
@@ -22,46 +27,21 @@ public class Ingredients {
         return id;
     }
 
-    public void setId(@NonNull String id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getTypeFoodId() {
         return typeFoodId;
     }
 
-    public void setTypeFoodId(String typeFoodId) {
-        this.typeFoodId = typeFoodId;
-    }
-
-    public String getPathToIcon() {
-        return pathToIcon;
-    }
-
-    public void setPathToIcon(String pathToIcon) {
-        this.pathToIcon = pathToIcon;
+    public String getIcon() {
+        return icon;
     }
 
     public int getRecipiesCount() {
         return recipiesCount;
     }
-
-    public void setRecipiesCount(int recipiesCount) {
-        this.recipiesCount = recipiesCount;
-    }
-
-    @PrimaryKey
-    @NonNull
-    @SerializedName("id")
-    public String id;
 
     @SerializedName("name")
     public String name;
@@ -69,8 +49,8 @@ public class Ingredients {
     @SerializedName("typeFoodId")
     public String typeFoodId;
 
-    @SerializedName("pathToIcon")
-    public String pathToIcon;
+    @SerializedName("icon")
+    public String icon;
 
     @SerializedName("recipiesCount")
     public int recipiesCount;

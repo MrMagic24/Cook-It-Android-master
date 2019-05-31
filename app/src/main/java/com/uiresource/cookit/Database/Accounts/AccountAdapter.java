@@ -73,7 +73,7 @@ public class AccountAdapter extends ListAdapter<AccountList, AccountAdapter.Acco
         return accounts.size();
     }*/
 
-    public int getItemsCount() {
+    public int getItemsFirst() {
         return accounts.size();
     }
 

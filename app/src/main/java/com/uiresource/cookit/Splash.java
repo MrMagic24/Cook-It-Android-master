@@ -1,10 +1,12 @@
 package com.uiresource.cookit;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +17,10 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.uiresource.cookit.Database.Accounts.AccountAdapter;
+import com.uiresource.cookit.Database.Accounts.AccountList;
+import com.uiresource.cookit.Database.Accounts.AccountViewModel;
+import com.uiresource.cookit.Database.ImportFromJSON;
 import com.uiresource.cookit.Database.Ingredients.Ingredients;
 import com.uiresource.cookit.Database.Ingredients.IngredientsDao;
 import com.uiresource.cookit.Database.Ingredients.IngredientsViewModel;
@@ -22,6 +28,7 @@ import com.uiresource.cookit.Database.Recipes.Recipes;
 import com.uiresource.cookit.Database.Recipes.RecipesViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.uiresource.cookit.Database.ImportFromJSON.IngredientsGetList;
 import static com.uiresource.cookit.Database.ImportFromJSON.RecipesGetList;
@@ -34,11 +41,14 @@ public class Splash extends BaseActivity {
     private static ArrayList<Recipes> RecipesListJSON;
     //private IngredientsDao ingredientsDao;
 
+    private AccountViewModel accountViewModel;
     private IngredientsViewModel ingredientsViewModel;
     private RecipesViewModel recipesViewModel;
 
     private static GsonBuilder builder = new GsonBuilder();
     private static Gson gson = builder.create();
+
+    public static String COOKIE = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +61,28 @@ public class Splash extends BaseActivity {
 
         changeStatusBarColor();
 
+        accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
         ingredientsViewModel = ViewModelProviders.of(this).get(IngredientsViewModel.class);
         recipesViewModel = ViewModelProviders.of(this).get(RecipesViewModel.class);
+
+        final AccountAdapter adapter = new AccountAdapter();
+
+        accountViewModel.getAllAccounts().observe(this, new Observer<List<AccountList>>() {
+            @Override
+            public void onChanged(@Nullable List<AccountList> accountLists) {
+                try {
+                    COOKIE = accountLists.get(0).getCookie();
+                    ImportFromJSON.checkAuth(COOKIE);
+                    Log.i("Cookie", "Cookie: " + COOKIE);
+                } catch (NullPointerException e){
+                    Log.i("Error", "Cookie: " + e);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    Log.i("Error", "Cookie: " + e);
+                } catch (IndexOutOfBoundsException e) {
+                    Log.i("Error", "Cookie: " + e);
+                }
+            }
+        });
 
         //getIngredients();
         getRecipes();
@@ -117,7 +147,7 @@ public class Splash extends BaseActivity {
             }*/
 
             //if (!checkItem){
-                Ingredients NewIngredient = new Ingredients(IngListJSON.get(i).getId(), IngListJSON.get(i).getName(), IngListJSON.get(i).getTypeFoodId(), IngListJSON.get(i).getPathToIcon(),IngListJSON.get(i).getRecipiesCount());
+                Ingredients NewIngredient = new Ingredients(IngListJSON.get(i).getId(), IngListJSON.get(i).getName(), IngListJSON.get(i).getTypeFoodId(), IngListJSON.get(i).getIcon(),IngListJSON.get(i).getRecipiesCount());
                 ingredientsViewModel.insert(NewIngredient);
                 Log.i("GSON", "Activity - Аккаунт Ingredients добавлен! \nID: " + IngListJSON.get(i).getId() + "\nИмя: " + IngListJSON.get(i).getName());
             //}
@@ -133,7 +163,7 @@ public class Splash extends BaseActivity {
         //checkImport = true;
         //accountViewModel.insert(account);
 
-        Toast.makeText(getApplicationContext(),"Download Ingredients is Success!", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(),"Download Ingredients is Success!", Toast.LENGTH_SHORT).show();
     }
 
     private void getRecipes(){
@@ -153,4 +183,5 @@ public class Splash extends BaseActivity {
 
         Toast.makeText(getApplicationContext(),"Download Recipes is Success!", Toast.LENGTH_SHORT).show();
     }
+
 }

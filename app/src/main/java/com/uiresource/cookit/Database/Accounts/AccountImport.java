@@ -124,7 +124,8 @@ public class AccountImport implements Parcelable {
                     items.get(i).gender,
                     items.get(i).recipiesCount,
                     items.get(i).reviewsCount,
-                    items.get(i).rateReviewsCount);
+                    items.get(i).rateReviewsCount,
+                    "");
 
             //if (items.get(i).id == null) {items.set(i, acc)}
 

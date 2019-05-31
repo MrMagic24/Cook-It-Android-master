@@ -43,7 +43,9 @@ public class AccountList {
     @SerializedName("rateReviewsCount")
     public int rateReviewsCount;
 
-    public AccountList(@NonNull String id, String email, String userName, String firstName, String pathToAvatar, String aboutYourself, boolean gender, int recipiesCount, int reviewsCount, int rateReviewsCount) {
+    public String Cookie;
+
+    public AccountList(@NonNull String id, String email, String userName, String firstName, String pathToAvatar, String aboutYourself, boolean gender, int recipiesCount, int reviewsCount, int rateReviewsCount, String Cookie) {
         this.id = id;
         this.email = email;
         this.userName = userName;
@@ -54,6 +56,7 @@ public class AccountList {
         this.recipiesCount = recipiesCount;
         this.reviewsCount = reviewsCount;
         this.rateReviewsCount = rateReviewsCount;
+        this.Cookie = Cookie;
     }
 
     @NonNull
@@ -99,6 +102,10 @@ public class AccountList {
 
     public int getRateReviewsCount() {
         return rateReviewsCount;
+    }
+
+    public String getCookie() {
+        return Cookie;
     }
 }
 

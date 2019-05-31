@@ -19,8 +19,8 @@ public class IngredientsImport implements Parcelable {
     @SerializedName("typeFoodId")
     public String typeFoodId;
 
-    @SerializedName("pathToIcon")
-    public String pathToIcon;
+    @SerializedName("icon")
+    public String icon;
 
     @SerializedName("recipiesCount")
     public int recipiesCount;
@@ -59,7 +59,7 @@ public class IngredientsImport implements Parcelable {
 
         public String typeFoodId;
 
-        public String pathToIcon;
+        public String icon;
 
         public int recipiesCount;
     }
@@ -81,7 +81,7 @@ public class IngredientsImport implements Parcelable {
                     items.get(i).id,
                     items.get(i).name,
                     items.get(i).typeFoodId,
-                    items.get(i).pathToIcon,
+                    items.get(i).icon,
                     items.get(i).recipiesCount);
 
             Log.i("GSON", "Ингредиент добавлен!");
