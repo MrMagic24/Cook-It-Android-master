@@ -32,7 +32,6 @@ public class AddRecipeActivity extends AppCompatActivity {
     private boolean checkResult;
 
     private IngredientsViewModel ingredientsViewModel;
-    private String[] IngredientsArray;
     private ArrayList<String> IngredientsArrayList;
 
     private String URL = "https://surviveonsotka20190524073221.azurewebsites.net/api/";
@@ -55,11 +54,15 @@ public class AddRecipeActivity extends AppCompatActivity {
         //recipeInputIngredients = (EditText) findViewById(R.id.recipe_input_ingredients);
         recipeInputIngredients1 = findViewById(R.id.recipe_input_autocomplete_ingredients);
 
+        /*final LayoutParams lparams = new LayoutParams(50,30); // Width , height
+        recipeInputIngredients1.setLayoutParams(lparams);
+
+        recipeInputIngredients1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,(int) (height/2)));*/
+
         btnAdd = (Button) findViewById(R.id.btn_add_recipe);
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
 
-        IngredientsArray = new String[0];
         IngredientsArrayList = new ArrayList<String>();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, IngredientsArrayList);
@@ -73,11 +76,6 @@ public class AddRecipeActivity extends AppCompatActivity {
                     for(int i = 0; i < ingredientsLists.size(); i++){
                         IngredientsArrayList.add(ingredientsLists.get(i).getName());
                     }
-                    /*IngredientsArray = new String[ingredientsLists.size()];
-
-                    for(int i = 0; i < ingredientsLists.size(); i++){
-                        IngredientsArray[i] = IngredientsArrayList.get(i);
-                    }*/
                 }
                     //COOKIE = ingredientsLists.get(0).getName();
                 catch (NullPointerException e){
@@ -91,5 +89,7 @@ public class AddRecipeActivity extends AppCompatActivity {
                 Log.i("OK", "IngredientsArrayList: " + IngredientsArrayList.size());
             }
         });
+
+        //final
     }
 }
