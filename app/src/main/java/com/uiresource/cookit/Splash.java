@@ -84,7 +84,7 @@ public class Splash extends BaseActivity {
             }
         });
 
-        //getIngredients();
+        getIngredients();
         getRecipes();
 
         new Handler().postDelayed(new Runnable() {
@@ -98,17 +98,6 @@ public class Splash extends BaseActivity {
 
     private void getIngredients(){
         IngListJSON = IngredientsGetList();
-
-        //Log.i("GSON", "Количество из БД: " + ingredientsDao.getAll().size());
-
-        /*int sizeOfIngDB = 0;
-
-        if (!ingredientsDao.getAll().){
-            sizeOfIngDB = ingredientsDao.getAll().size();
-        }*/
-
-        //boolean checkItem = false;
-        //boolean checkUpdate = false;
 
         ingredientsViewModel.deleteAllIngredients();
 
@@ -149,7 +138,7 @@ public class Splash extends BaseActivity {
             //if (!checkItem){
                 Ingredients NewIngredient = new Ingredients(IngListJSON.get(i).getId(), IngListJSON.get(i).getName(), IngListJSON.get(i).getTypeFoodId(), IngListJSON.get(i).getIcon(),IngListJSON.get(i).getRecipiesCount());
                 ingredientsViewModel.insert(NewIngredient);
-                Log.i("GSON", "Activity - Аккаунт Ingredients добавлен! \nID: " + IngListJSON.get(i).getId() + "\nИмя: " + IngListJSON.get(i).getName());
+                Log.i("GSON", "Activity - Ингредиент Ingredients добавлен! \nID: " + IngListJSON.get(i).getId() + "\nИмя: " + IngListJSON.get(i).getName());
             //}
 
             //if (!checkUpdate && checkItem){
