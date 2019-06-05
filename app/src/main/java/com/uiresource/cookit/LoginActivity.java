@@ -157,7 +157,7 @@ public class LoginActivity extends AppCompatActivity {
                         index++;
                     }
 
-                    Log.i("GSON", String.valueOf(request.headers().size()));
+                    //Log.i("GSON", String.valueOf(request.headers().size()));
 
                     Log.i("GSON", COOKIES);
 
@@ -167,11 +167,11 @@ public class LoginActivity extends AppCompatActivity {
                     acc.Cookie = COOKIES;
 
                     accountViewModel.insert(acc);
-                    Log.i("GSON", "Activity - Аккаунт добавлен! \nID: " + acc.getId() + "\nCookie: " + acc.getCookie());
+                    Log.i("GSON", "LoginActivity - Аккаунт загружен и добавлен в БД! \nID: " + acc.getId() + "\nCookie: " + acc.getCookie());
                 }
 
                 else {
-                    Log.i("GSON","Вход НЕ произведен!");
+                    Log.i("GSON","LoginActivity - Вход НЕ произведен!");
                 }
 
                 hideDialog();

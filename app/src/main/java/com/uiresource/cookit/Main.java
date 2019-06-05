@@ -125,6 +125,7 @@ public class Main extends BaseActivity
             //Intent intent = new Intent(this, AddRecipeActivity.class);
             //startActivity(new Intent(this, AddRecipeActivity.class));
 
+            startActivity(new Intent(this, AddRecipeActivity.class));
             // Handle the camera action
         } else if (id == R.id.recipes) {
 

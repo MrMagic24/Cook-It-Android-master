@@ -94,6 +94,7 @@ public class UpdateAccountActivity extends AppCompatActivity {
             public void onChanged(@Nullable List<AccountList> accountLists) {
                 try {
                     COOKIE = accountLists.get(0).getCookie();
+                    Log.i("Cookie", "Cookie: " + COOKIE);
                 } catch (NullPointerException e){
                     Log.i("Error", "Cookie: " + e);
                 } catch (ArrayIndexOutOfBoundsException e) {
@@ -116,9 +117,6 @@ public class UpdateAccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                while (COOKIE == ""){
-
-                }
 
                 updateUser();
             }
@@ -311,7 +309,6 @@ public class UpdateAccountActivity extends AppCompatActivity {
                 }
 
                 else {
-                    Log.i("GSON","Обновление НЕ произведено!" + response);
                     Log.i("GSON","Обновление НЕ произведено!" + response.body().string());
                     Log.i("GSON",String.valueOf(res));
                 }
