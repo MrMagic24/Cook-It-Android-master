@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/recipe_input_Constraintlayout"
     android:gravity="center"
     android:orientation="vertical"
     android:paddingLeft="20dp"
@@ -65,9 +66,8 @@
             app:layout_constraintTop_toBottomOf="@id/recipe_input_name" />
     </android.support.design.widget.TextInputLayout>
 
-
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/recipe_input_layout_ingredients"
+        android:id="@+id/recipe_input_layout_ingredients1"
         android:layout_width="195dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
@@ -77,24 +77,34 @@
         app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_timeForCooking"
         app:layout_constraintVertical_bias="0.07">
 
-        <!--<EditText-->
-            <!--android:id="@+id/recipe_input_ingredients"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:hint="Ингредиент 1"-->
-            <!--android:textColor="#000000"-->
-            <!--app:layout_constraintTop_toBottomOf="@id/recipe_input_timeForCooking" />-->
-
         <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/recipe_input_autocomplete_ingredients"
+            android:id="@+id/recipe_input_autocomplete_ingredients1"
             android:hint="Ингредиент 1"
             android:completionThreshold="1"
             android:enabled="true"
-            app:layout_constraintTop_toBottomOf="@id/recipe_input_timeForCooking"
+            app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_timeForCooking"
         />
 </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/recipe_input_layout_ingredients_amount1"
+        android:layout_width="123dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_timeForCooking">
+
+        <EditText
+            android:id="@+id/recipe_input_ingredients_amount1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Количество"
+            android:textColor="#000000"
+            app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_timeForCooking" />
+    </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/recipe_input_layout_ingredients2"
@@ -104,15 +114,7 @@
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_login"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipe_input_layout_ingredients">
-
-        <!--<EditText-->
-        <!--android:id="@+id/recipe_input_ingredients"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:hint="Ингредиент 1"-->
-        <!--android:textColor="#000000"-->
-        <!--app:layout_constraintTop_toBottomOf="@id/recipe_input_timeForCooking" />-->
+        app:layout_constraintTop_toBottomOf="@+id/recipe_input_layout_ingredients1">
 
         <AutoCompleteTextView
             android:id="@+id/recipe_input_autocomplete_ingredients2"
@@ -121,6 +123,23 @@
             android:completionThreshold="1"
             android:hint="Ингредиент 1"
             app:layout_constraintTop_toBottomOf="@id/recipe_input_timeForCooking" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/recipe_input_layout_ingredients_amount2"
+        android:layout_width="123dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount1">
+
+        <EditText
+            android:id="@+id/recipe_input_ingredients_amount2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Количество"
+            android:textColor="#000000"
+            app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount1" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -133,14 +152,6 @@
         app:layout_constraintTop_toBottomOf="@+id/recipe_input_layout_ingredients2"
         app:layout_constraintVertical_bias="0.07">
 
-        <!--<EditText-->
-        <!--android:id="@+id/recipe_input_ingredients"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:hint="Ингредиент 1"-->
-        <!--android:textColor="#000000"-->
-        <!--app:layout_constraintTop_toBottomOf="@id/recipe_input_timeForCooking" />-->
-
         <AutoCompleteTextView
             android:id="@+id/recipe_input_autocomplete_ingredients3"
             android:layout_width="match_parent"
@@ -148,6 +159,23 @@
             android:completionThreshold="1"
             android:hint="Ингредиент 1"
             app:layout_constraintTop_toBottomOf="@id/recipe_input_timeForCooking" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/recipe_input_layout_ingredients_amount3"
+        android:layout_width="123dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount2">
+
+        <EditText
+            android:id="@+id/recipe_input_ingredients_amount3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Количество"
+            android:textColor="#000000"
+            app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount2" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -160,14 +188,6 @@
         app:layout_constraintTop_toBottomOf="@+id/recipe_input_layout_ingredients3"
         app:layout_constraintVertical_bias="0.07">
 
-        <!--<EditText-->
-        <!--android:id="@+id/recipe_input_ingredients"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:hint="Ингредиент 1"-->
-        <!--android:textColor="#000000"-->
-        <!--app:layout_constraintTop_toBottomOf="@id/recipe_input_timeForCooking" />-->
-
         <AutoCompleteTextView
             android:id="@+id/recipe_input_autocomplete_ingredients4"
             android:layout_width="match_parent"
@@ -178,23 +198,31 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/recipe_input_layout_ingredients_amount4"
+        android:layout_width="123dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount3">
+
+        <EditText
+            android:id="@+id/recipe_input_ingredients_amount4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Количество"
+            android:textColor="#000000"
+            app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount3" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
         android:id="@+id/recipe_input_layout_ingredients5"
         android:layout_width="195dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_login"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recipe_input_layout_ingredients4"
         app:layout_constraintVertical_bias="0.07">
-
-        <!--<EditText-->
-        <!--android:id="@+id/recipe_input_ingredients"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:hint="Ингредиент 1"-->
-        <!--android:textColor="#000000"-->
-        <!--app:layout_constraintTop_toBottomOf="@id/recipe_input_timeForCooking" />-->
 
         <AutoCompleteTextView
             android:id="@+id/recipe_input_autocomplete_ingredients5"
@@ -205,35 +233,425 @@
             app:layout_constraintTop_toBottomOf="@id/recipe_input_timeForCooking" />
     </android.support.design.widget.TextInputLayout>
 
-<android.support.design.widget.TextInputLayout
-    android:id="@+id/recipe_input_layout_ingredients_amount"
-    android:layout_width="123dp"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="36dp"
-    android:layout_marginEnd="4dp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_timeForCooking">
-
-    <EditText
-        android:id="@+id/recipe_input_ingredients_amount"
-        android:layout_width="match_parent"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/recipe_input_layout_ingredients_amount5"
+        android:layout_width="123dp"
         android:layout_height="wrap_content"
-        android:hint="Количество"
-        android:textColor="#000000"
-        app:layout_constraintTop_toBottomOf="@id/recipe_input_timeForCooking" />
-</android.support.design.widget.TextInputLayout>
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount4">
+
+        <EditText
+            android:id="@+id/recipe_input_ingredients_amount5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Количество"
+            android:textColor="#000000"
+            app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount4" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/recipe_input_layout_ingredients6"
+        android:layout_width="195dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipe_input_layout_ingredients5"
+        app:layout_constraintVertical_bias="0.07">
+
+        <AutoCompleteTextView
+            android:id="@+id/recipe_input_autocomplete_ingredients6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:completionThreshold="1"
+            android:hint="Ингредиент 1"
+            app:layout_constraintTop_toBottomOf="@id/recipe_input_timeForCooking" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/recipe_input_layout_ingredients_amount6"
+        android:layout_width="123dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount5">
+
+        <EditText
+            android:id="@+id/recipe_input_ingredients_amount6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Количество"
+            android:textColor="#000000"
+            app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount5" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/recipe_input_layout_ingredients7"
+        android:layout_width="195dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipe_input_layout_ingredients6"
+        app:layout_constraintVertical_bias="0.07">
+
+        <AutoCompleteTextView
+            android:id="@+id/recipe_input_autocomplete_ingredients7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:completionThreshold="1"
+            android:hint="Ингредиент 1"
+            app:layout_constraintTop_toBottomOf="@id/recipe_input_timeForCooking" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/recipe_input_layout_ingredients_amount7"
+        android:layout_width="123dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount6">
+
+        <EditText
+            android:id="@+id/recipe_input_ingredients_amount7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Количество"
+            android:textColor="#000000"
+            app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount6" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/recipe_input_layout_ingredients8"
+        android:layout_width="195dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipe_input_layout_ingredients7"
+        app:layout_constraintVertical_bias="0.07">
+
+        <AutoCompleteTextView
+            android:id="@+id/recipe_input_autocomplete_ingredients8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:completionThreshold="1"
+            android:hint="Ингредиент 1"
+            app:layout_constraintTop_toBottomOf="@id/recipe_input_timeForCooking" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/recipe_input_layout_ingredients_amount8"
+        android:layout_width="123dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount7">
+
+        <EditText
+            android:id="@+id/recipe_input_ingredients_amount8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Количество"
+            android:textColor="#000000"
+            app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount7" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/recipe_input_layout_ingredients9"
+        android:layout_width="195dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipe_input_layout_ingredients8"
+        app:layout_constraintVertical_bias="0.07">
+
+        <AutoCompleteTextView
+            android:id="@+id/recipe_input_autocomplete_ingredients9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:completionThreshold="1"
+            android:hint="Ингредиент 1"
+            app:layout_constraintTop_toBottomOf="@id/recipe_input_timeForCooking" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/recipe_input_layout_ingredients_amount9"
+        android:layout_width="123dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount8">
+
+        <EditText
+            android:id="@+id/recipe_input_ingredients_amount9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Количество"
+            android:textColor="#000000"
+            app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount8" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/recipe_input_layout_ingredients10"
+        android:layout_width="195dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipe_input_layout_ingredients9"
+        app:layout_constraintVertical_bias="0.07">
+
+        <AutoCompleteTextView
+            android:id="@+id/recipe_input_autocomplete_ingredients10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:completionThreshold="1"
+            android:hint="Ингредиент 1"
+            app:layout_constraintTop_toBottomOf="@id/recipe_input_timeForCooking" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/recipe_input_layout_ingredients_amount10"
+        android:layout_width="123dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount9">
+
+        <EditText
+            android:id="@+id/recipe_input_ingredients_amount10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Количество"
+            android:textColor="#000000"
+            app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount9" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/recipe_input_layout_ingredients11"
+        android:layout_width="195dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipe_input_layout_ingredients10"
+        app:layout_constraintVertical_bias="0.07">
+
+        <AutoCompleteTextView
+            android:id="@+id/recipe_input_autocomplete_ingredients11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:completionThreshold="1"
+            android:hint="Ингредиент 1"
+            app:layout_constraintTop_toBottomOf="@id/recipe_input_timeForCooking" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/recipe_input_layout_ingredients_amount11"
+        android:layout_width="123dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount10">
+
+        <EditText
+            android:id="@+id/recipe_input_ingredients_amount11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Количество"
+            android:textColor="#000000"
+            app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount10" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/recipe_input_layout_ingredients12"
+        android:layout_width="195dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipe_input_layout_ingredients11"
+        app:layout_constraintVertical_bias="0.07">
+
+        <AutoCompleteTextView
+            android:id="@+id/recipe_input_autocomplete_ingredients12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:completionThreshold="1"
+            android:hint="Ингредиент 1"
+            app:layout_constraintTop_toBottomOf="@id/recipe_input_timeForCooking" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/recipe_input_layout_ingredients_amount12"
+        android:layout_width="123dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount11">
+
+        <EditText
+            android:id="@+id/recipe_input_ingredients_amount12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Количество"
+            android:textColor="#000000"
+            app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount11" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/recipe_input_layout_ingredients13"
+        android:layout_width="195dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipe_input_layout_ingredients12"
+        app:layout_constraintVertical_bias="0.07">
+
+        <AutoCompleteTextView
+            android:id="@+id/recipe_input_autocomplete_ingredients13"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:completionThreshold="1"
+            android:hint="Ингредиент 1"
+            app:layout_constraintTop_toBottomOf="@id/recipe_input_timeForCooking" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/recipe_input_layout_ingredients_amount13"
+        android:layout_width="123dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount12">
+
+        <EditText
+            android:id="@+id/recipe_input_ingredients_amount13"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Количество"
+            android:textColor="#000000"
+            app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount12" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/recipe_input_layout_ingredients14"
+        android:layout_width="195dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipe_input_layout_ingredients13"
+        app:layout_constraintVertical_bias="0.07">
+
+        <AutoCompleteTextView
+            android:id="@+id/recipe_input_autocomplete_ingredients14"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:completionThreshold="1"
+            android:hint="Ингредиент 1"
+            app:layout_constraintTop_toBottomOf="@id/recipe_input_timeForCooking" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/recipe_input_layout_ingredients_amount14"
+        android:layout_width="123dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount13">
+
+        <EditText
+            android:id="@+id/recipe_input_ingredients_amount14"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Количество"
+            android:textColor="#000000"
+            app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount13" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/recipe_input_layout_ingredients15"
+        android:layout_width="195dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipe_input_layout_ingredients14"
+        app:layout_constraintVertical_bias="0.07">
+
+        <AutoCompleteTextView
+            android:id="@+id/recipe_input_autocomplete_ingredients15"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:completionThreshold="1"
+            android:hint="Ингредиент 1"
+            app:layout_constraintTop_toBottomOf="@id/recipe_input_timeForCooking" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/recipe_input_layout_ingredients_amount15"
+        android:layout_width="123dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount14">
+
+        <EditText
+            android:id="@+id/recipe_input_ingredients_amount15"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Количество"
+            android:textColor="#000000"
+            app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount14" />
+    </android.support.design.widget.TextInputLayout>
+
+    <!--<android.support.design.widget.TextInputLayout
+        android:id="@+id/recipe_input_layout_image"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_choose_image_recipe"
+        app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount15"
+        app:layout_constraintVertical_bias="0.52"
+        tools:layout_editor_absoluteX="20dp">
+
+        <ImageView
+            android:id="@+id/recipe_input_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount15" />
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/btn_choose_image_recipe"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:background="@color/colorPink"
+        android:text="Выбрать изображение"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipe_input_layout_image"
+        tools:layout_editor_absoluteY="553dp"
+        />-->
 
     <Button
         android:id="@+id/btn_add_recipe"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
         android:background="@color/colorPink"
         android:text="Создать"
         android:textColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@+id/recipe_input_layout_ingredients_amount15"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipe_input_layout_ingredients5" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
