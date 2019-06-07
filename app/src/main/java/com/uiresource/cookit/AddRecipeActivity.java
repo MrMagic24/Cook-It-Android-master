@@ -10,6 +10,8 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -54,6 +56,9 @@ public class AddRecipeActivity extends AppCompatActivity {
             recipeInputIngredientsAmount11, recipeInputIngredientsAmount12, recipeInputIngredientsAmount13, recipeInputIngredientsAmount14, recipeInputIngredientsAmount15;
     private Button btnAdd, btnImgChoose;
     private ImageView imgView;
+
+    private int EditTextIngredientWidth = 0, EditTextIngredientHeight = 0;
+    private int EditTextAmountWidth = 0, EditTextAmountHeight = 0;
 
     private boolean checkResult;
 
@@ -143,6 +148,11 @@ public class AddRecipeActivity extends AppCompatActivity {
         recipeInputLayoutAmount14 = findViewById(R.id.recipe_input_layout_ingredients_amount14);
         recipeInputLayoutAmount15 = findViewById(R.id.recipe_input_layout_ingredients_amount15);
 
+        EditTextIngredientHeight = recipeInputLayoutIngredients1.getHeight();
+        EditTextIngredientWidth = recipeInputLayoutIngredients1.getWidth();
+        EditTextAmountHeight = recipeInputLayoutAmount1.getHeight();
+        EditTextAmountWidth = recipeInputLayoutAmount1.getWidth();
+
         final ConstraintLayout.LayoutParams lparams = new ConstraintLayout.LayoutParams(1,1); // Width , height
         //final ScrollView.LayoutParams llparams = new ScrollView.LayoutParams(0,0); // Width , height
 
@@ -150,18 +160,22 @@ public class AddRecipeActivity extends AppCompatActivity {
         final ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(constraintLayout);
 
-        /*recipeInputLayoutIngredients2.setLayoutParams(lparams);
+        constraintSet.clear(R.id.btn_add_recipe, ConstraintSet.BOTTOM);
+        constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.btn_choose_image_recipe, ConstraintSet.BOTTOM);
+        constraintSet.applyTo(constraintLayout);
+
+        recipeInputLayoutIngredients2.setLayoutParams(lparams);
         recipeInputLayoutAmount2.setLayoutParams(lparams);
         //recipeInputIngredients2.setEnabled(false);
-        recipeInputIngredientsAmount2.setEnabled(false);
+        //recipeInputIngredientsAmount2.setEnabled(false);
         recipeInputLayoutIngredients3.setLayoutParams(lparams);
         recipeInputLayoutAmount3.setLayoutParams(lparams);
         //recipeInputIngredients3.setEnabled(false);
-        recipeInputIngredientsAmount3.setEnabled(false);
+        //recipeInputIngredientsAmount3.setEnabled(false);
         recipeInputLayoutIngredients4.setLayoutParams(lparams);
         recipeInputLayoutAmount4.setLayoutParams(lparams);
-        recipeInputIngredients4.setEnabled(false);
-        recipeInputIngredientsAmount4.setEnabled(false);
+        //recipeInputIngredients4.setEnabled(false);
+        //recipeInputIngredientsAmount4.setEnabled(false);
         recipeInputLayoutIngredients5.setLayoutParams(lparams);
         recipeInputLayoutAmount5.setLayoutParams(lparams);
         recipeInputIngredients5.setEnabled(false);
@@ -197,7 +211,7 @@ public class AddRecipeActivity extends AppCompatActivity {
         recipeInputLayoutIngredients13.setLayoutParams(lparams);
         recipeInputLayoutAmount13.setLayoutParams(lparams);
         recipeInputIngredients13.setEnabled(false);
-        recipeInputIngredientsAmount13.setEnabled(false);*/
+        recipeInputIngredientsAmount13.setEnabled(false);
         recipeInputLayoutIngredients14.setLayoutParams(lparams);
         recipeInputLayoutAmount14.setLayoutParams(lparams);
         //recipeInputIngredients14.setEnabled(false);
@@ -263,36 +277,523 @@ public class AddRecipeActivity extends AppCompatActivity {
             }
         });
 
-        btnImgChoose.setOnClickListener(new View.OnClickListener() {
+        recipeInputIngredients1.addTextChangedListener(new TextWatcher(){
             @Override
-            public void onClick(View view) {
+            public void afterTextChanged(Editable s) {
+                // Прописываем то, что надо выполнить после изменения текста
+                if (!recipeInputIngredients1.getText().toString().equals("")){
+                    recipeInputLayoutIngredients2.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    recipeInputLayoutAmount2.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    constraintSet.clear(R.id.btn_add_recipe, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.recipe_input_layout_ingredients2, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients1, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.recipe_input_layout_ingredients_amount2, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount1, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount2, ConstraintSet.BOTTOM);
 
-                //recipeInputIngredients3.setEnabled(true);
-                //constraintSet.applyTo(recipeInputLayoutIngredients1);
-                //recipeInputLayoutIngredients15.setLayoutParams(new ConstraintLayout.LayoutParams(R.dimen.IngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
-                //recipeInputLayoutAmount15.setLayoutParams(new ConstraintLayout.LayoutParams(R.dimen.AmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
-                //constraintSet.connect(R.id.recipe_input_layout_ingredients15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients14, ConstraintSet.BOTTOM);
-                //constraintSet.connect(R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
-                recipeInputLayoutIngredients14.setLayoutParams(new ConstraintLayout.LayoutParams(R.dimen.IngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
-                recipeInputLayoutAmount14.setLayoutParams(new ConstraintLayout.LayoutParams(R.dimen.AmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    constraintSet.applyTo(constraintLayout);
+
+                }
+                else {
+                    recipeInputLayoutIngredients2.setLayoutParams(lparams);
+                    recipeInputLayoutAmount2.setLayoutParams(lparams);
+                    constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount1, ConstraintSet.BOTTOM);
+                    constraintSet.applyTo(constraintLayout);
+                }
+
+                Log.i("Bytes", recipeInputIngredients14.getText().toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
+        recipeInputIngredients2.addTextChangedListener(new TextWatcher(){
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Прописываем то, что надо выполнить после изменения текста
+                if (!recipeInputIngredients2.getText().toString().equals("")){
+                    recipeInputLayoutIngredients3.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    recipeInputLayoutAmount3.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    constraintSet.clear(R.id.btn_add_recipe, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.recipe_input_layout_ingredients3, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients2, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.recipe_input_layout_ingredients_amount3, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount2, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount3, ConstraintSet.BOTTOM);
+
+                    constraintSet.applyTo(constraintLayout);
+
+                }
+                else {
+                    recipeInputLayoutIngredients15.setLayoutParams(lparams);
+                    recipeInputLayoutAmount15.setLayoutParams(lparams);
+                    constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
+                    constraintSet.applyTo(constraintLayout);
+                }
+
+                Log.i("Bytes", recipeInputIngredients14.getText().toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
+        recipeInputIngredients3.addTextChangedListener(new TextWatcher(){
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Прописываем то, что надо выполнить после изменения текста
+                if (!recipeInputIngredients14.getText().toString().equals("")){
+                    recipeInputLayoutIngredients15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    recipeInputLayoutAmount15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    constraintSet.clear(R.id.btn_add_recipe, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.recipe_input_layout_ingredients15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients14, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.BOTTOM);
+
+                    constraintSet.applyTo(constraintLayout);
+
+                }
+                else {
+                    recipeInputLayoutIngredients15.setLayoutParams(lparams);
+                    recipeInputLayoutAmount15.setLayoutParams(lparams);
+                    constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
+                    constraintSet.applyTo(constraintLayout);
+                }
+
+                Log.i("Bytes", recipeInputIngredients14.getText().toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
+        recipeInputIngredients4.addTextChangedListener(new TextWatcher(){
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Прописываем то, что надо выполнить после изменения текста
+                if (!recipeInputIngredients14.getText().toString().equals("")){
+                    recipeInputLayoutIngredients15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    recipeInputLayoutAmount15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    constraintSet.clear(R.id.btn_add_recipe, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.recipe_input_layout_ingredients15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients14, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.BOTTOM);
+
+                    constraintSet.applyTo(constraintLayout);
+
+                }
+                else {
+                    recipeInputLayoutIngredients15.setLayoutParams(lparams);
+                    recipeInputLayoutAmount15.setLayoutParams(lparams);
+                    constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
+                    constraintSet.applyTo(constraintLayout);
+                }
+
+                Log.i("Bytes", recipeInputIngredients14.getText().toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
+        recipeInputIngredients5.addTextChangedListener(new TextWatcher(){
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Прописываем то, что надо выполнить после изменения текста
+                if (!recipeInputIngredients14.getText().toString().equals("")){
+                    recipeInputLayoutIngredients15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    recipeInputLayoutAmount15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    constraintSet.clear(R.id.btn_add_recipe, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.recipe_input_layout_ingredients15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients14, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.BOTTOM);
+
+                    constraintSet.applyTo(constraintLayout);
+
+                }
+                else {
+                    recipeInputLayoutIngredients15.setLayoutParams(lparams);
+                    recipeInputLayoutAmount15.setLayoutParams(lparams);
+                    constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
+                    constraintSet.applyTo(constraintLayout);
+                }
+
+                Log.i("Bytes", recipeInputIngredients14.getText().toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
+        recipeInputIngredients6.addTextChangedListener(new TextWatcher(){
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Прописываем то, что надо выполнить после изменения текста
+                if (!recipeInputIngredients14.getText().toString().equals("")){
+                    recipeInputLayoutIngredients15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    recipeInputLayoutAmount15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    constraintSet.clear(R.id.btn_add_recipe, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.recipe_input_layout_ingredients15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients14, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.BOTTOM);
+
+                    constraintSet.applyTo(constraintLayout);
+
+                }
+                else {
+                    recipeInputLayoutIngredients15.setLayoutParams(lparams);
+                    recipeInputLayoutAmount15.setLayoutParams(lparams);
+                    constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
+                    constraintSet.applyTo(constraintLayout);
+                }
+
+                Log.i("Bytes", recipeInputIngredients14.getText().toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
+        recipeInputIngredients7.addTextChangedListener(new TextWatcher(){
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Прописываем то, что надо выполнить после изменения текста
+                if (!recipeInputIngredients14.getText().toString().equals("")){
+                    recipeInputLayoutIngredients15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    recipeInputLayoutAmount15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    constraintSet.clear(R.id.btn_add_recipe, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.recipe_input_layout_ingredients15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients14, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.BOTTOM);
+
+                    constraintSet.applyTo(constraintLayout);
+
+                }
+                else {
+                    recipeInputLayoutIngredients15.setLayoutParams(lparams);
+                    recipeInputLayoutAmount15.setLayoutParams(lparams);
+                    constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
+                    constraintSet.applyTo(constraintLayout);
+                }
+
+                Log.i("Bytes", recipeInputIngredients14.getText().toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
+        recipeInputIngredients8.addTextChangedListener(new TextWatcher(){
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Прописываем то, что надо выполнить после изменения текста
+                if (!recipeInputIngredients14.getText().toString().equals("")){
+                    recipeInputLayoutIngredients15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    recipeInputLayoutAmount15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    constraintSet.clear(R.id.btn_add_recipe, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.recipe_input_layout_ingredients15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients14, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.BOTTOM);
+
+                    constraintSet.applyTo(constraintLayout);
+
+                }
+                else {
+                    recipeInputLayoutIngredients15.setLayoutParams(lparams);
+                    recipeInputLayoutAmount15.setLayoutParams(lparams);
+                    constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
+                    constraintSet.applyTo(constraintLayout);
+                }
+
+                Log.i("Bytes", recipeInputIngredients14.getText().toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
+        recipeInputIngredients9.addTextChangedListener(new TextWatcher(){
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Прописываем то, что надо выполнить после изменения текста
+                if (!recipeInputIngredients14.getText().toString().equals("")){
+                    recipeInputLayoutIngredients15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    recipeInputLayoutAmount15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    constraintSet.clear(R.id.btn_add_recipe, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.recipe_input_layout_ingredients15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients14, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.BOTTOM);
+
+                    constraintSet.applyTo(constraintLayout);
+
+                }
+                else {
+                    recipeInputLayoutIngredients15.setLayoutParams(lparams);
+                    recipeInputLayoutAmount15.setLayoutParams(lparams);
+                    constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
+                    constraintSet.applyTo(constraintLayout);
+                }
+
+                Log.i("Bytes", recipeInputIngredients14.getText().toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
+        recipeInputIngredients10.addTextChangedListener(new TextWatcher(){
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Прописываем то, что надо выполнить после изменения текста
+                if (!recipeInputIngredients14.getText().toString().equals("")){
+                    recipeInputLayoutIngredients15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    recipeInputLayoutAmount15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    constraintSet.clear(R.id.btn_add_recipe, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.recipe_input_layout_ingredients15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients14, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.BOTTOM);
+
+                    constraintSet.applyTo(constraintLayout);
+
+                }
+                else {
+                    recipeInputLayoutIngredients15.setLayoutParams(lparams);
+                    recipeInputLayoutAmount15.setLayoutParams(lparams);
+                    constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
+                    constraintSet.applyTo(constraintLayout);
+                }
+
+                Log.i("Bytes", recipeInputIngredients14.getText().toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
+        recipeInputIngredients11.addTextChangedListener(new TextWatcher(){
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Прописываем то, что надо выполнить после изменения текста
+                if (!recipeInputIngredients14.getText().toString().equals("")){
+                    recipeInputLayoutIngredients15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    recipeInputLayoutAmount15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    constraintSet.clear(R.id.btn_add_recipe, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.recipe_input_layout_ingredients15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients14, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.BOTTOM);
+
+                    constraintSet.applyTo(constraintLayout);
+
+                }
+                else {
+                    recipeInputLayoutIngredients15.setLayoutParams(lparams);
+                    recipeInputLayoutAmount15.setLayoutParams(lparams);
+                    constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
+                    constraintSet.applyTo(constraintLayout);
+                }
+
+                Log.i("Bytes", recipeInputIngredients14.getText().toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
+        recipeInputIngredients12.addTextChangedListener(new TextWatcher(){
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Прописываем то, что надо выполнить после изменения текста
+                if (!recipeInputIngredients14.getText().toString().equals("")){
+                    recipeInputLayoutIngredients15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    recipeInputLayoutAmount15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    constraintSet.clear(R.id.btn_add_recipe, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.recipe_input_layout_ingredients15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients14, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.BOTTOM);
+
+                    constraintSet.applyTo(constraintLayout);
+
+                }
+                else {
+                    recipeInputLayoutIngredients15.setLayoutParams(lparams);
+                    recipeInputLayoutAmount15.setLayoutParams(lparams);
+                    constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
+                    constraintSet.applyTo(constraintLayout);
+                }
+
+                Log.i("Bytes", recipeInputIngredients14.getText().toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
+        recipeInputIngredients13.addTextChangedListener(new TextWatcher(){
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Прописываем то, что надо выполнить после изменения текста
+                recipeInputLayoutIngredients14.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                recipeInputLayoutAmount14.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
                 constraintSet.clear(R.id.btn_add_recipe, ConstraintSet.BOTTOM);
                 constraintSet.clear(R.id.recipe_input_layout_ingredients14, ConstraintSet.TOP);
                 constraintSet.clear(R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.TOP);
                 constraintSet.clear(R.id.recipe_input_layout_ingredients15, ConstraintSet.TOP);
                 constraintSet.clear(R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.TOP);
+                constraintSet.clear(R.id.recipe_input_layout_image, ConstraintSet.TOP);
                 constraintSet.connect(R.id.recipe_input_layout_ingredients14, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients13, ConstraintSet.BOTTOM);
                 constraintSet.connect(R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount13, ConstraintSet.BOTTOM);
                 constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
-
-                //constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.LEFT, R.id.btn_choose_image_recipe, ConstraintSet.LEFT);
+                constraintSet.connect(R.id.recipe_input_layout_image, ConstraintSet.TOP, R.id.btn_add_recipe, ConstraintSet.BOTTOM);
 
                 constraintSet.applyTo(constraintLayout);
+            }
 
-                //recipeInputLayoutIngredients2.getLayoutParams().
-                Log.i("Bytes", String.valueOf(recipeInputLayoutIngredients2.getLayoutParams().width));
-                Log.i("Bytes", String.valueOf(recipeInputLayoutIngredients2.getLayoutParams().height));
-                //recipeInputIngredientsAmount3.setEnabled(true);
-                //recipeInputIngredientsAmount3.setLayoutParams(new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT,ScrollView.LayoutParams.WRAP_CONTENT));
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
+        recipeInputIngredients14.addTextChangedListener(new TextWatcher(){
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Прописываем то, что надо выполнить после изменения текста
+                if (!recipeInputIngredients14.getText().toString().equals("")){
+                    recipeInputLayoutIngredients15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    recipeInputLayoutAmount15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    constraintSet.clear(R.id.btn_add_recipe, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.recipe_input_layout_ingredients15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients14, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.BOTTOM);
+
+                    constraintSet.applyTo(constraintLayout);
+
+                }
+                else {
+                    recipeInputLayoutIngredients15.setLayoutParams(lparams);
+                    recipeInputLayoutAmount15.setLayoutParams(lparams);
+                    constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
+                    constraintSet.applyTo(constraintLayout);
+                }
+
+                Log.i("Bytes", recipeInputIngredients14.getText().toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
+        recipeInputIngredients14.addTextChangedListener(new TextWatcher(){
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Прописываем то, что надо выполнить после изменения текста
+                if (!recipeInputIngredients14.getText().toString().equals("")){
+                    recipeInputLayoutIngredients15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    recipeInputLayoutAmount15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    constraintSet.clear(R.id.btn_add_recipe, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.recipe_input_layout_ingredients15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients14, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.BOTTOM);
+
+                    constraintSet.applyTo(constraintLayout);
+
+                }
+                else {
+                    recipeInputLayoutIngredients15.setLayoutParams(lparams);
+                    recipeInputLayoutAmount15.setLayoutParams(lparams);
+                    constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
+                    constraintSet.applyTo(constraintLayout);
+                }
+
+                Log.i("Bytes", recipeInputIngredients14.getText().toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
+        btnImgChoose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                recipeInputLayoutIngredients15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                recipeInputLayoutAmount15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                constraintSet.clear(R.id.btn_add_recipe, ConstraintSet.BOTTOM);
+                constraintSet.connect(R.id.recipe_input_layout_ingredients15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients14, ConstraintSet.BOTTOM);
+                constraintSet.connect(R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
+                constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.BOTTOM);
+
+                constraintSet.applyTo(constraintLayout);
             }
         });
 
@@ -302,8 +803,8 @@ public class AddRecipeActivity extends AppCompatActivity {
 
                 //recipeInputIngredients3.setEnabled(true);
                 //constraintSet.applyTo(recipeInputLayoutIngredients1);
-                recipeInputLayoutIngredients15.setLayoutParams(new ConstraintLayout.LayoutParams(R.dimen.IngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
-                recipeInputLayoutAmount15.setLayoutParams(new ConstraintLayout.LayoutParams(R.dimen.AmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                recipeInputLayoutIngredients15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                recipeInputLayoutAmount15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
                 constraintSet.clear(R.id.btn_add_recipe, ConstraintSet.BOTTOM);
                 constraintSet.connect(R.id.recipe_input_layout_ingredients15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients14, ConstraintSet.BOTTOM);
                 constraintSet.connect(R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
