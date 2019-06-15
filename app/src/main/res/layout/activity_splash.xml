@@ -22,7 +22,7 @@
         android:layout_marginBottom="@dimen/space16"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="Cook it"
+        android:text="Eazy Eat"
         android:textSize="@dimen/h2"
         android:textColor="@android:color/white"
         android:textAppearance="@style/Regular"/>
