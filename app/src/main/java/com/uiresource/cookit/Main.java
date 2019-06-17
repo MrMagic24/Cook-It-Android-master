@@ -75,7 +75,7 @@ public class Main extends BaseActivity
 
         // Вставка фото пользователя в шторке
         View header = navigationView.getHeaderView(0);
-        ImageView imageView = (ImageView) header.findViewById(R.id.imageView);
+        ImageView imageView = (ImageView) header.findViewById(R.id.header_account_image);
         Glide.with(this)
                 .load(Uri.parse("https://s3.amazonaws.com/uifaces/faces/twitter/jsa/128.jpg"))
                 .transform(new CircleGlide(this))
@@ -122,8 +122,6 @@ public class Main extends BaseActivity
         int id = item.getItemId();
 
         if (id == R.id.new_recipe) {
-            //Intent intent = new Intent(this, AddRecipeActivity.class);
-            //startActivity(new Intent(this, AddRecipeActivity.class));
 
             startActivity(new Intent(this, AddRecipeActivity.class));
             // Handle the camera action

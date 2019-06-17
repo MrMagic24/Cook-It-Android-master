@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.CountDownTimer;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -48,7 +49,7 @@ import static java.lang.Thread.sleep;
 
 public class UpdateAccountActivity extends AppCompatActivity {
 
-    private static String URL = "https://surviveonsotka20190524073221.azurewebsites.net/api/";
+    private static String URL = "https://surviveonsotkanewfromkirill.azurewebsites.net/api/";
 
     private EditText accountInputFirstName, accountInputLastName, accountInputAboutYourself;
     private Button btnUpload, btnChooseImg;
@@ -60,6 +61,7 @@ public class UpdateAccountActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
 
     private boolean checkResult;
+    private boolean checkSuccessConnect = false;
 
     private AccountViewModel accountViewModel;
 
@@ -117,8 +119,29 @@ public class UpdateAccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                new CountDownTimer(30000, 6000) {
 
-                updateUser();
+                    public void onTick(long millisUntilFinished) {
+                        if (!checkSuccessConnect){
+                            updateUser();
+                            Log.i("GSON","UpdateActivity - Новая попытка установления связи!");
+                        }
+                        else{
+                            this.cancel();
+                            Log.i("GSON","UpdateActivity - Таймер остановлен!");
+                        }
+                    }
+
+                    public void onFinish() {
+                        if (!checkSuccessConnect){
+                            hideDialog();
+                            Toast.makeText(getApplicationContext(),"Ошибка соединения", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }.start();
+
+                checkSuccessConnect = false;
+
             }
         });
     }
@@ -145,7 +168,7 @@ public class UpdateAccountActivity extends AppCompatActivity {
         startActivityForResult(intent, IMG_REQUEST);
     }
 
-    private String ImageToString(Bitmap bitmap){
+    private byte[] ImageToString(Bitmap bitmap){
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG,100, byteArrayOutputStream);
         byte[] imgBytes = byteArrayOutputStream.toByteArray();
@@ -200,7 +223,9 @@ public class UpdateAccountActivity extends AppCompatActivity {
         Log.i("Bytes", String.valueOf(AllBytes+1));
         Log.i("Bytes", String.valueOf(LastBytes));
         Log.i("Bytes", String.valueOf(StringImg.size()));*/
-        return Base64.encodeToString(imgBytes,Base64.DEFAULT);
+        Log.i("Bytes", Base64.encodeToString(imgBytes,Base64.DEFAULT));
+        //return Base64.encodeToString(imgBytes,Base64.DEFAULT);
+        return imgBytes;
     }
 
     private void updateUser() {
@@ -264,7 +289,7 @@ public class UpdateAccountActivity extends AppCompatActivity {
 
         checkResult = false;
 
-        ImportFromJSON.UpdateUser updateUser = new ImportFromJSON.UpdateUser(accountInputFirstName.getText().toString(), accountInputLastName.getText().toString(), true, accountInputAboutYourself.getText().toString(), /*ImageToString(bitmap)*/"");
+        ImportFromJSON.UpdateUser updateUser = new ImportFromJSON.UpdateUser(accountInputFirstName.getText().toString(), accountInputLastName.getText().toString(), true, accountInputAboutYourself.getText().toString(), ImageToString(bitmap));
 
         /*for (int i = 0; i < StringImg.size(); i++){
             Log.i("TAG", StringImg.get(i).toString());
@@ -305,7 +330,7 @@ public class UpdateAccountActivity extends AppCompatActivity {
                 if (response.isSuccessful()){
                     checkResult = true;
                     Log.i("GSON","Обновление произведено!");
-
+                    checkSuccessConnect = true;
                 }
 
                 else {
@@ -317,28 +342,6 @@ public class UpdateAccountActivity extends AppCompatActivity {
                 CheckResult(result);
             }
         });
-
-        /*JSONObject response = null;
-        try {
-            response = new JSONObject();
-            response.put("firstName", accountInputFirstName.getText().toString());
-            response.put("lastName", accountInputLastName.getText().toString());
-            response.put("gender", true);
-            response.put("avatar", ImageToString(bitmap));
-            response.put("aboutYourself", accountInputAboutYourself.getText().toString());
-        } catch (Exception exx) {
-        }
-
-        okhttp3.RequestBody body = RequestBody.create(MEDIA_TYPE, response.toString());
-
-        try {
-            Log.i("GSON",response.getString("avatar"));
-        } catch (Exception exx) {
-        }*/
-
-
-
-        //hideDialog();
         Log.i("GSON", "Завершен метод updateUser");
     }
 

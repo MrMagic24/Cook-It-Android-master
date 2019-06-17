@@ -31,7 +31,7 @@ import okhttp3.Response;
 public class RegisterActivity extends AppCompatActivity {
 
     private static final String TAG = "RegisterActivity";
-    private String URL = "https://surviveonsotka20190524073221.azurewebsites.net/api/";
+    private String URL = "https://surviveonsotkanewfromkirill.azurewebsites.net/api/";
     ProgressDialog progressDialog;
 
     private boolean checkResult;
@@ -97,7 +97,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         checkResult = false;
 
-        ImportFromJSON.RegisterUser registerUser = new ImportFromJSON.RegisterUser(signupInputEmail.getText().toString(), signupInputPassword.getText().toString(), signupInputPasswordConfirm.getText().toString());
+        ImportFromJSON.RegisterUser registerUser = new ImportFromJSON.RegisterUser(signupInputEmail.getText().toString(), signupInputPassword.getText().toString());
 
         Log.i("TAG", "Вызван метод registerUser");
 

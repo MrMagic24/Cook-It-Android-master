@@ -614,19 +614,21 @@
         android:id="@+id/recipe_input_layout_image"
         android:layout_width="match_parent"
         android:layout_height="280dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_choose_image_recipe"
-        app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount15"
-        app:layout_constraintVertical_bias="0.52"
-        tools:layout_editor_absoluteX="20dp">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_add_recipe"
+        app:layout_constraintVertical_bias="0.50">
 
         <ImageView
             android:id="@+id/recipe_input_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
-            app:layout_constraintTop_toBottomOf="@id/recipe_input_layout_ingredients_amount15" />
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_add_recipe" />
     </android.support.design.widget.TextInputLayout>
 
     <Button

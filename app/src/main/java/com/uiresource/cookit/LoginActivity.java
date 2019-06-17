@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -47,8 +48,9 @@ public class LoginActivity extends AppCompatActivity {
     private String COOKIES = "";
 
     private boolean checkResult;
+    private boolean checkSuccessConnect = false;
 
-    private String URL = "https://surviveonsotka20190524073221.azurewebsites.net/api/";
+    private String URL = "https://surviveonsotkanewfromkirill.azurewebsites.net/api/";
 
     private static GsonBuilder builder = new GsonBuilder();
     private static Gson gson = builder.create();
@@ -88,9 +90,28 @@ public class LoginActivity extends AppCompatActivity {
                 else {
                     accountViewModel.deleteAllAccounts();
 
-                    loginUser();
+                    new CountDownTimer(30000, 6000) {
 
+                        public void onTick(long millisUntilFinished) {
+                            if (!checkSuccessConnect){
+                                loginUser();
+                                Log.i("GSON","LoginActivity - Новая попытка установления связи!");
+                            }
+                            else{
+                                this.cancel();
+                                Log.i("GSON","LoginActivity - Таймер остановлен!");
+                            }
+                        }
 
+                        public void onFinish() {
+                            if (!checkSuccessConnect){
+                                hideDialog();
+                                Toast.makeText(getApplicationContext(),"Ошибка соединения", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }.start();
+
+                    checkSuccessConnect = false;
                 }
             }
         });
@@ -167,6 +188,8 @@ public class LoginActivity extends AppCompatActivity {
                     acc.Cookie = COOKIES;
 
                     accountViewModel.insert(acc);
+
+                    checkSuccessConnect = true;
                     Log.i("GSON", "LoginActivity - Аккаунт загружен и добавлен в БД! \nID: " + acc.getId() + "\nCookie: " + acc.getCookie());
                 }
 

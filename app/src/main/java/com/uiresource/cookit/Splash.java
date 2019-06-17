@@ -35,7 +35,7 @@ import static com.uiresource.cookit.Database.ImportFromJSON.RecipesGetList;
 
 public class Splash extends BaseActivity {
 
-    private String URL = "https://surviveonsotka20190524073221.azurewebsites.net/api/";
+    private String URL = "https://surviveonsotkanewfromkirill.azurewebsites.net/api/";
 
     private static ArrayList<Ingredients> IngListJSON;
     private static ArrayList<Recipes> RecipesListJSON;
@@ -84,8 +84,8 @@ public class Splash extends BaseActivity {
             }
         });
 
-        getIngredients();
-        getRecipes();
+        //getIngredients();
+        //getRecipes();
 
         new Handler().postDelayed(new Runnable() {
             @Override

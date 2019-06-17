@@ -3,6 +3,10 @@ package com.uiresource.cookit;
 import android.app.ProgressDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
@@ -30,6 +34,7 @@ import com.uiresource.cookit.Database.Ingredients.Ingredients;
 import com.uiresource.cookit.Database.Ingredients.IngredientsViewModel;
 import com.uiresource.cookit.R;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +45,7 @@ public class AddRecipeActivity extends AppCompatActivity {
     private ConstraintLayout constraintLayout;
     private ConstraintSet constraintSet;
 
-    private int checkLayouts[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    private int checkLayouts[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
     private EditText recipeInputName, recipeInputDescription, recipeInputIngredients;
 
@@ -50,7 +55,7 @@ public class AddRecipeActivity extends AppCompatActivity {
 
     private TextInputLayout recipeInputLayoutAmount1, recipeInputLayoutAmount2, recipeInputLayoutAmount3, recipeInputLayoutAmount4, recipeInputLayoutAmount5,
             recipeInputLayoutAmount6, recipeInputLayoutAmount7, recipeInputLayoutAmount8, recipeInputLayoutAmount9, recipeInputLayoutAmount10,
-            recipeInputLayoutAmount11, recipeInputLayoutAmount12, recipeInputLayoutAmount13, recipeInputLayoutAmount14, recipeInputLayoutAmount15;
+            recipeInputLayoutAmount11, recipeInputLayoutAmount12, recipeInputLayoutAmount13, recipeInputLayoutAmount14, recipeInputLayoutAmount15, imgLayoutView;
 
     private AutoCompleteTextView recipeInputIngredients1, recipeInputIngredients2, recipeInputIngredients3, recipeInputIngredients4, recipeInputIngredients5,
             recipeInputIngredients6, recipeInputIngredients7, recipeInputIngredients8, recipeInputIngredients9, recipeInputIngredients10,
@@ -59,18 +64,22 @@ public class AddRecipeActivity extends AppCompatActivity {
     private EditText recipeInputIngredientsAmount1, recipeInputIngredientsAmount2, recipeInputIngredientsAmount3, recipeInputIngredientsAmount4, recipeInputIngredientsAmount5,
             recipeInputIngredientsAmount6, recipeInputIngredientsAmount7, recipeInputIngredientsAmount8, recipeInputIngredientsAmount9, recipeInputIngredientsAmount10,
             recipeInputIngredientsAmount11, recipeInputIngredientsAmount12, recipeInputIngredientsAmount13, recipeInputIngredientsAmount14, recipeInputIngredientsAmount15;
+
     private Button btnAdd, btnImgChoose;
     private ImageView imgView;
+    private Bitmap bitmap;
+    private final int IMG_REQUEST = 1;
 
     private int EditTextIngredientWidth = 0, EditTextIngredientHeight = 0;
     private int EditTextAmountWidth = 0, EditTextAmountHeight = 0;
+    private int ImgLayoutViewWidth = 0;
 
     private boolean checkResult;
 
     private IngredientsViewModel ingredientsViewModel;
     private ArrayList<String> IngredientsArrayList;
 
-    private String URL = "https://surviveonsotka20190524073221.azurewebsites.net/api/";
+    private String URL = "https://surviveonsotkanewfromkirill.azurewebsites.net/api/";
 
     private static GsonBuilder builder = new GsonBuilder();
     private static Gson gson = builder.create();
@@ -85,10 +94,10 @@ public class AddRecipeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_recipe);
 
-        //imgView = findViewById(R.id.recipe_input_layout_image);
+        imgLayoutView = findViewById(R.id.recipe_input_layout_image);
+        imgView = findViewById(R.id.recipe_input_image);
         recipeInputName = (EditText) findViewById(R.id.login_input_email);
         recipeInputDescription = (EditText) findViewById(R.id.recipe_input_description);
-        //recipeInputIngredients = (EditText) findViewById(R.id.recipe_input_ingredients);
         recipeInputIngredients1 = findViewById(R.id.recipe_input_autocomplete_ingredients1);
         recipeInputIngredients2 = findViewById(R.id.recipe_input_autocomplete_ingredients2);
         recipeInputIngredients3 = findViewById(R.id.recipe_input_autocomplete_ingredients3);
@@ -154,84 +163,27 @@ public class AddRecipeActivity extends AppCompatActivity {
         recipeInputLayoutAmount14 = findViewById(R.id.recipe_input_layout_ingredients_amount14);
         recipeInputLayoutAmount15 = findViewById(R.id.recipe_input_layout_ingredients_amount15);
 
+
         EditTextIngredientHeight = recipeInputLayoutIngredients1.getHeight();
         EditTextIngredientWidth = recipeInputLayoutIngredients1.getWidth();
         EditTextAmountHeight = recipeInputLayoutAmount1.getHeight();
         EditTextAmountWidth = recipeInputLayoutAmount1.getWidth();
+        ImgLayoutViewWidth = imgLayoutView.getWidth();
 
-        final ConstraintLayout.LayoutParams lparams = new ConstraintLayout.LayoutParams(1,1); // Width , height
+        //final ConstraintLayout.LayoutParams lparams = new ConstraintLayout.LayoutParams(1,1); // Width , height
         //final ScrollView.LayoutParams llparams = new ScrollView.LayoutParams(0,0); // Width , height
 
         constraintLayout = findViewById(R.id.recipe_input_Constraintlayout);
         constraintSet = new ConstraintSet();
         constraintSet.clone(constraintLayout);
 
-
-
-
         //imgView.setLayoutParams(lparams);
 
-        recipeInputLayoutIngredients2.setLayoutParams(lparams);
-        recipeInputLayoutAmount2.setLayoutParams(lparams);
-        //recipeInputIngredients2.setEnabled(false);
-        //recipeInputIngredientsAmount2.setEnabled(false);
-        recipeInputLayoutIngredients3.setLayoutParams(lparams);
-        recipeInputLayoutAmount3.setLayoutParams(lparams);
-        //recipeInputIngredients3.setEnabled(false);
-        //recipeInputIngredientsAmount3.setEnabled(false);
-        recipeInputLayoutIngredients4.setLayoutParams(lparams);
-        recipeInputLayoutAmount4.setLayoutParams(lparams);
-        //recipeInputIngredients4.setEnabled(false);
-        //recipeInputIngredientsAmount4.setEnabled(false);
-        recipeInputLayoutIngredients5.setLayoutParams(lparams);
-        recipeInputLayoutAmount5.setLayoutParams(lparams);
-        //recipeInputIngredients5.setEnabled(false);
-        //recipeInputIngredientsAmount5.setEnabled(false);
-        recipeInputLayoutIngredients6.setLayoutParams(lparams);
-        recipeInputLayoutAmount6.setLayoutParams(lparams);
-        recipeInputIngredients6.setEnabled(false);
-        recipeInputIngredientsAmount6.setEnabled(false);
-        recipeInputLayoutIngredients7.setLayoutParams(lparams);
-        recipeInputLayoutAmount7.setLayoutParams(lparams);
-        recipeInputIngredients7.setEnabled(false);
-        recipeInputIngredientsAmount7.setEnabled(false);
-        recipeInputLayoutIngredients8.setLayoutParams(lparams);
-        recipeInputLayoutAmount8.setLayoutParams(lparams);
-        recipeInputIngredients8.setEnabled(false);
-        recipeInputIngredientsAmount8.setEnabled(false);
-        recipeInputLayoutIngredients9.setLayoutParams(lparams);
-        recipeInputLayoutAmount9.setLayoutParams(lparams);
-        recipeInputIngredients9.setEnabled(false);
-        recipeInputIngredientsAmount9.setEnabled(false);
-        recipeInputLayoutIngredients10.setLayoutParams(lparams);
-        recipeInputLayoutAmount10.setLayoutParams(lparams);
-        recipeInputIngredients10.setEnabled(false);
-        recipeInputIngredientsAmount10.setEnabled(false);
-        recipeInputLayoutIngredients11.setLayoutParams(lparams);
-        recipeInputLayoutAmount11.setLayoutParams(lparams);
-        recipeInputLayoutIngredients11.setEnabled(false);
-        recipeInputIngredientsAmount11.setEnabled(false);
-        recipeInputLayoutIngredients12.setLayoutParams(lparams);
-        recipeInputLayoutAmount12.setLayoutParams(lparams);
-        recipeInputIngredients12.setEnabled(false);
-        recipeInputIngredientsAmount12.setEnabled(false);
-        recipeInputLayoutIngredients13.setLayoutParams(lparams);
-        recipeInputLayoutAmount13.setLayoutParams(lparams);
-        recipeInputIngredients13.setEnabled(false);
-        recipeInputIngredientsAmount13.setEnabled(false);
-        recipeInputLayoutIngredients14.setLayoutParams(lparams);
-        recipeInputLayoutAmount14.setLayoutParams(lparams);
-        //recipeInputIngredients14.setEnabled(false);
-        //recipeInputIngredientsAmount14.setEnabled(false);
-        recipeInputLayoutIngredients15.setLayoutParams(lparams);
-        recipeInputLayoutAmount15.setLayoutParams(lparams);
-        //recipeInputIngredients15.setEnabled(false);
-        //recipeInputIngredientsAmount15.setEnabled(false);
-
+        setSmallLayout(new ConstraintLayout.LayoutParams(1,1));
         correctLayoutParams();
 
         constraintSet.clear(R.id.btn_choose_image_recipe, ConstraintSet.TOP);
-        constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients1, ConstraintSet.BOTTOM);
+        constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients1, ConstraintSet.BOTTOM, 30);
         constraintSet.clear(R.id.btn_add_recipe, ConstraintSet.BOTTOM);
         constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.btn_choose_image_recipe, ConstraintSet.BOTTOM);
         constraintSet.applyTo(constraintLayout);
@@ -284,12 +236,12 @@ public class AddRecipeActivity extends AppCompatActivity {
                     correctLayoutParams();
 
                     constraintSet.clear(R.id.btn_choose_image_recipe, ConstraintSet.TOP);
-                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients2, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients2, ConstraintSet.BOTTOM, 30);
                     constraintSet.applyTo(constraintLayout);
                     checkLayouts[0] = 1;
                 }
 
-                Log.i("Bytes", recipeInputIngredients14.getText().toString());
+                Log.i("Bytes", recipeInputIngredients1.getText().toString());
                 Log.i("Bytes", String.valueOf(recipeInputLayoutIngredients2.getHeight()));
             }
 
@@ -313,7 +265,7 @@ public class AddRecipeActivity extends AppCompatActivity {
                     correctLayoutParams();
 
                     constraintSet.clear(R.id.btn_choose_image_recipe, ConstraintSet.TOP);
-                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients3, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients3, ConstraintSet.BOTTOM, 30);
                     constraintSet.applyTo(constraintLayout);
                     checkLayouts[1] = 1;
                 }
@@ -335,15 +287,16 @@ public class AddRecipeActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 // Прописываем то, что надо выполнить после изменения текста
-                if (!recipeInputIngredients3.getText().toString().equals("")){
+                if (!recipeInputIngredients3.getText().toString().equals("") && checkLayouts[2] == 0){
                     recipeInputLayoutIngredients4.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
                     recipeInputLayoutAmount4.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
 
                     correctLayoutParams();
 
                     constraintSet.clear(R.id.btn_choose_image_recipe, ConstraintSet.TOP);
-                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients4, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients4, ConstraintSet.BOTTOM, 30);
                     constraintSet.applyTo(constraintLayout);
+                    checkLayouts[2] = 1;
                 }
 
                 Log.i("Bytes", recipeInputIngredients14.getText().toString());
@@ -362,23 +315,16 @@ public class AddRecipeActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 // Прописываем то, что надо выполнить после изменения текста
-                if (!recipeInputIngredients4.getText().toString().equals("")){
+                if (!recipeInputIngredients4.getText().toString().equals("") && checkLayouts[3] == 0){
                     recipeInputLayoutIngredients5.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
                     recipeInputLayoutAmount5.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
 
                     correctLayoutParams();
 
                     constraintSet.clear(R.id.btn_choose_image_recipe, ConstraintSet.TOP);
-                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients5, ConstraintSet.BOTTOM);
-                }
-                else {
-                    recipeInputLayoutIngredients3.setLayoutParams(lparams);
-                    recipeInputLayoutAmount3.setLayoutParams(lparams);
-
-                    correctLayoutParams();
-
-                    constraintSet.clear(R.id.btn_choose_image_recipe, ConstraintSet.TOP);
-                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients4, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients5, ConstraintSet.BOTTOM, 30);
+                    constraintSet.applyTo(constraintLayout);
+                    checkLayouts[3] = 1;
                 }
 
                 constraintSet.applyTo(constraintLayout);
@@ -398,23 +344,16 @@ public class AddRecipeActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 // Прописываем то, что надо выполнить после изменения текста
-                if (!recipeInputIngredients5.getText().toString().equals("")){
+                if (!recipeInputIngredients5.getText().toString().equals("") && checkLayouts[4] == 0){
                     recipeInputLayoutIngredients6.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
                     recipeInputLayoutAmount6.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
 
                     correctLayoutParams();
 
                     constraintSet.clear(R.id.btn_choose_image_recipe, ConstraintSet.TOP);
-                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients6, ConstraintSet.BOTTOM);
-                }
-                else {
-                    recipeInputLayoutIngredients3.setLayoutParams(lparams);
-                    recipeInputLayoutAmount3.setLayoutParams(lparams);
-
-                    correctLayoutParams();
-
-                    constraintSet.clear(R.id.btn_choose_image_recipe, ConstraintSet.TOP);
-                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients5, ConstraintSet.BOTTOM);
+                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients6, ConstraintSet.BOTTOM, 30);
+                    constraintSet.applyTo(constraintLayout);
+                    checkLayouts[4] = 1;
                 }
 
                 constraintSet.applyTo(constraintLayout);
@@ -434,27 +373,17 @@ public class AddRecipeActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 // Прописываем то, что надо выполнить после изменения текста
-                if (!recipeInputIngredients6.getText().toString().equals("")){
-                    recipeInputLayoutIngredients3.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
-                    recipeInputLayoutAmount3.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                if (!recipeInputIngredients6.getText().toString().equals("") && checkLayouts[5] == 0){
+                    recipeInputLayoutIngredients7.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    recipeInputLayoutAmount7.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
 
                     correctLayoutParams();
 
                     constraintSet.clear(R.id.btn_choose_image_recipe, ConstraintSet.TOP);
-                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients3, ConstraintSet.BOTTOM);
-
+                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients7, ConstraintSet.BOTTOM, 30);
                     constraintSet.applyTo(constraintLayout);
+                    checkLayouts[5] = 1;
 
-                }
-                else {
-                    recipeInputLayoutIngredients3.setLayoutParams(lparams);
-                    recipeInputLayoutAmount3.setLayoutParams(lparams);
-
-                    correctLayoutParams();
-
-                    constraintSet.clear(R.id.btn_choose_image_recipe, ConstraintSet.TOP);
-                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients2, ConstraintSet.BOTTOM);
-                    constraintSet.applyTo(constraintLayout);
                 }
 
                 Log.i("Bytes", recipeInputIngredients14.getText().toString());
@@ -473,27 +402,17 @@ public class AddRecipeActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 // Прописываем то, что надо выполнить после изменения текста
-                if (!recipeInputIngredients7.getText().toString().equals("")){
-                    recipeInputLayoutIngredients3.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
-                    recipeInputLayoutAmount3.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                if (!recipeInputIngredients7.getText().toString().equals("") && checkLayouts[6] == 0){
+                    recipeInputLayoutIngredients8.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    recipeInputLayoutAmount8.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
 
                     correctLayoutParams();
 
                     constraintSet.clear(R.id.btn_choose_image_recipe, ConstraintSet.TOP);
-                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients3, ConstraintSet.BOTTOM);
-
+                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients8, ConstraintSet.BOTTOM, 30);
                     constraintSet.applyTo(constraintLayout);
+                    checkLayouts[6] = 1;
 
-                }
-                else {
-                    recipeInputLayoutIngredients3.setLayoutParams(lparams);
-                    recipeInputLayoutAmount3.setLayoutParams(lparams);
-
-                    correctLayoutParams();
-
-                    constraintSet.clear(R.id.btn_choose_image_recipe, ConstraintSet.TOP);
-                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients2, ConstraintSet.BOTTOM);
-                    constraintSet.applyTo(constraintLayout);
                 }
 
                 Log.i("Bytes", recipeInputIngredients14.getText().toString());
@@ -512,27 +431,17 @@ public class AddRecipeActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 // Прописываем то, что надо выполнить после изменения текста
-                if (!recipeInputIngredients8.getText().toString().equals("")){
-                    recipeInputLayoutIngredients3.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
-                    recipeInputLayoutAmount3.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                if (!recipeInputIngredients8.getText().toString().equals("") && checkLayouts[7] == 0){
+                    recipeInputLayoutIngredients9.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    recipeInputLayoutAmount9.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
 
                     correctLayoutParams();
 
                     constraintSet.clear(R.id.btn_choose_image_recipe, ConstraintSet.TOP);
-                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients3, ConstraintSet.BOTTOM);
-
+                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients9, ConstraintSet.BOTTOM, 30);
                     constraintSet.applyTo(constraintLayout);
+                    checkLayouts[7] = 1;
 
-                }
-                else {
-                    recipeInputLayoutIngredients3.setLayoutParams(lparams);
-                    recipeInputLayoutAmount3.setLayoutParams(lparams);
-
-                    correctLayoutParams();
-
-                    constraintSet.clear(R.id.btn_choose_image_recipe, ConstraintSet.TOP);
-                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients2, ConstraintSet.BOTTOM);
-                    constraintSet.applyTo(constraintLayout);
                 }
 
                 Log.i("Bytes", recipeInputIngredients14.getText().toString());
@@ -551,27 +460,17 @@ public class AddRecipeActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 // Прописываем то, что надо выполнить после изменения текста
-                if (!recipeInputIngredients9.getText().toString().equals("")){
-                    recipeInputLayoutIngredients3.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
-                    recipeInputLayoutAmount3.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                if (!recipeInputIngredients9.getText().toString().equals("") && checkLayouts[8] == 0){
+                    recipeInputLayoutIngredients10.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    recipeInputLayoutAmount10.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
 
                     correctLayoutParams();
 
                     constraintSet.clear(R.id.btn_choose_image_recipe, ConstraintSet.TOP);
-                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients3, ConstraintSet.BOTTOM);
-
+                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients10, ConstraintSet.BOTTOM, 30);
                     constraintSet.applyTo(constraintLayout);
+                    checkLayouts[8] = 1;
 
-                }
-                else {
-                    recipeInputLayoutIngredients3.setLayoutParams(lparams);
-                    recipeInputLayoutAmount3.setLayoutParams(lparams);
-
-                    correctLayoutParams();
-
-                    constraintSet.clear(R.id.btn_choose_image_recipe, ConstraintSet.TOP);
-                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients2, ConstraintSet.BOTTOM);
-                    constraintSet.applyTo(constraintLayout);
                 }
 
                 Log.i("Bytes", recipeInputIngredients14.getText().toString());
@@ -590,27 +489,20 @@ public class AddRecipeActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 // Прописываем то, что надо выполнить после изменения текста
-                if (!recipeInputIngredients10.getText().toString().equals("")){
-                    recipeInputLayoutIngredients3.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
-                    recipeInputLayoutAmount3.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                if (!recipeInputIngredients10.getText().toString().equals("") && checkLayouts[9] == 0){
+                    recipeInputLayoutIngredients11.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    recipeInputLayoutAmount11.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
 
                     correctLayoutParams();
 
                     constraintSet.clear(R.id.btn_choose_image_recipe, ConstraintSet.TOP);
-                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients3, ConstraintSet.BOTTOM);
-
+                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients11, ConstraintSet.BOTTOM, 30);
+                    recipeInputLayoutAmount12.setVisibility(View.INVISIBLE);
+                    recipeInputLayoutAmount13.setVisibility(View.INVISIBLE);
+                    recipeInputLayoutAmount14.setVisibility(View.INVISIBLE);
                     constraintSet.applyTo(constraintLayout);
+                    checkLayouts[9] = 1;
 
-                }
-                else {
-                    recipeInputLayoutIngredients3.setLayoutParams(lparams);
-                    recipeInputLayoutAmount3.setLayoutParams(lparams);
-
-                    correctLayoutParams();
-
-                    constraintSet.clear(R.id.btn_choose_image_recipe, ConstraintSet.TOP);
-                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients2, ConstraintSet.BOTTOM);
-                    constraintSet.applyTo(constraintLayout);
                 }
 
                 Log.i("Bytes", recipeInputIngredients14.getText().toString());
@@ -629,27 +521,18 @@ public class AddRecipeActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 // Прописываем то, что надо выполнить после изменения текста
-                if (!recipeInputIngredients11.getText().toString().equals("")){
-                    recipeInputLayoutIngredients3.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
-                    recipeInputLayoutAmount3.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                if (!recipeInputIngredients11.getText().toString().equals("") && checkLayouts[10] == 0){
+                    recipeInputLayoutAmount12.setVisibility(View.VISIBLE);
+                    recipeInputLayoutIngredients12.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    recipeInputLayoutAmount12.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
 
                     correctLayoutParams();
 
                     constraintSet.clear(R.id.btn_choose_image_recipe, ConstraintSet.TOP);
-                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients3, ConstraintSet.BOTTOM);
-
+                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients12, ConstraintSet.BOTTOM, 30);
                     constraintSet.applyTo(constraintLayout);
+                    checkLayouts[10] = 1;
 
-                }
-                else {
-                    recipeInputLayoutIngredients3.setLayoutParams(lparams);
-                    recipeInputLayoutAmount3.setLayoutParams(lparams);
-
-                    correctLayoutParams();
-
-                    constraintSet.clear(R.id.btn_choose_image_recipe, ConstraintSet.TOP);
-                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients2, ConstraintSet.BOTTOM);
-                    constraintSet.applyTo(constraintLayout);
                 }
 
                 Log.i("Bytes", recipeInputIngredients14.getText().toString());
@@ -668,27 +551,18 @@ public class AddRecipeActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 // Прописываем то, что надо выполнить после изменения текста
-                if (!recipeInputIngredients12.getText().toString().equals("")){
-                    recipeInputLayoutIngredients3.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
-                    recipeInputLayoutAmount3.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                if (!recipeInputIngredients12.getText().toString().equals("") && checkLayouts[11] == 0){
+                    recipeInputLayoutAmount13.setVisibility(View.VISIBLE);
+                    recipeInputLayoutIngredients13.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    recipeInputLayoutAmount13.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
 
                     correctLayoutParams();
 
                     constraintSet.clear(R.id.btn_choose_image_recipe, ConstraintSet.TOP);
-                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients3, ConstraintSet.BOTTOM);
-
+                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients13, ConstraintSet.BOTTOM, 30);
                     constraintSet.applyTo(constraintLayout);
+                    checkLayouts[11] = 1;
 
-                }
-                else {
-                    recipeInputLayoutIngredients3.setLayoutParams(lparams);
-                    recipeInputLayoutAmount3.setLayoutParams(lparams);
-
-                    correctLayoutParams();
-
-                    constraintSet.clear(R.id.btn_choose_image_recipe, ConstraintSet.TOP);
-                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients2, ConstraintSet.BOTTOM);
-                    constraintSet.applyTo(constraintLayout);
                 }
 
                 Log.i("Bytes", recipeInputIngredients14.getText().toString());
@@ -707,27 +581,18 @@ public class AddRecipeActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 // Прописываем то, что надо выполнить после изменения текста
-                if (!recipeInputIngredients13.getText().toString().equals("")){
-                    recipeInputLayoutIngredients3.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
-                    recipeInputLayoutAmount3.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                if (!recipeInputIngredients13.getText().toString().equals("") && checkLayouts[12] == 0){
+                    recipeInputLayoutAmount14.setVisibility(View.VISIBLE);
+                    recipeInputLayoutIngredients14.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    recipeInputLayoutAmount14.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
 
                     correctLayoutParams();
 
                     constraintSet.clear(R.id.btn_choose_image_recipe, ConstraintSet.TOP);
-                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients3, ConstraintSet.BOTTOM);
-
+                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients14, ConstraintSet.BOTTOM, 30);
                     constraintSet.applyTo(constraintLayout);
+                    checkLayouts[12] = 1;
 
-                }
-                else {
-                    recipeInputLayoutIngredients3.setLayoutParams(lparams);
-                    recipeInputLayoutAmount3.setLayoutParams(lparams);
-
-                    correctLayoutParams();
-
-                    constraintSet.clear(R.id.btn_choose_image_recipe, ConstraintSet.TOP);
-                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients2, ConstraintSet.BOTTOM);
-                    constraintSet.applyTo(constraintLayout);
                 }
             }
 
@@ -744,27 +609,17 @@ public class AddRecipeActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 // Прописываем то, что надо выполнить после изменения текста
-                if (!recipeInputIngredients14.getText().toString().equals("")){
-                    recipeInputLayoutIngredients3.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
-                    recipeInputLayoutAmount3.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                if (!recipeInputIngredients14.getText().toString().equals("") && checkLayouts[13] == 0){
+                    recipeInputLayoutIngredients15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    recipeInputLayoutAmount15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
 
                     correctLayoutParams();
 
                     constraintSet.clear(R.id.btn_choose_image_recipe, ConstraintSet.TOP);
-                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients3, ConstraintSet.BOTTOM);
-
+                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients15, ConstraintSet.BOTTOM, 30);
                     constraintSet.applyTo(constraintLayout);
+                    checkLayouts[13] = 1;
 
-                }
-                else {
-                    recipeInputLayoutIngredients3.setLayoutParams(lparams);
-                    recipeInputLayoutAmount3.setLayoutParams(lparams);
-
-                    correctLayoutParams();
-
-                    constraintSet.clear(R.id.btn_choose_image_recipe, ConstraintSet.TOP);
-                    constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients2, ConstraintSet.BOTTOM);
-                    constraintSet.applyTo(constraintLayout);
                 }
 
                 Log.i("Bytes", recipeInputIngredients14.getText().toString());
@@ -783,14 +638,18 @@ public class AddRecipeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                recipeInputLayoutIngredients15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextIngredientWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
-                recipeInputLayoutAmount15.setLayoutParams(new ConstraintLayout.LayoutParams(EditTextAmountWidth,ConstraintLayout.LayoutParams.WRAP_CONTENT));
-                constraintSet.clear(R.id.btn_add_recipe, ConstraintSet.BOTTOM);
-                constraintSet.connect(R.id.recipe_input_layout_ingredients15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients14, ConstraintSet.BOTTOM);
-                constraintSet.connect(R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
-                constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.BOTTOM);
+                imgLayoutView.setLayoutParams(new ConstraintLayout.LayoutParams(ImgLayoutViewWidth, ConstraintLayout.LayoutParams.WRAP_CONTENT));
+
+                constraintSet.clear(R.id.btn_choose_image_recipe, ConstraintSet.BOTTOM);
+                constraintSet.connect(R.id.btn_choose_image_recipe, ConstraintSet.BOTTOM, R.id.recipe_input_layout_image, ConstraintSet.TOP);
+                constraintSet.clear(R.id.recipe_input_layout_image, ConstraintSet.TOP);
+                constraintSet.connect(R.id.recipe_input_layout_image, ConstraintSet.TOP, R.id.btn_choose_image_recipe, ConstraintSet.BOTTOM);
+                constraintSet.clear(R.id.btn_add_recipe, ConstraintSet.TOP);
+                constraintSet.connect(R.id.btn_add_recipe, ConstraintSet.TOP, R.id.recipe_input_layout_image, ConstraintSet.BOTTOM);
 
                 constraintSet.applyTo(constraintLayout);
+
+                selectImage();
             }
         });
 
@@ -838,6 +697,28 @@ public class AddRecipeActivity extends AppCompatActivity {
         });
     }
 
+    private void selectImage(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, IMG_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == IMG_REQUEST && resultCode == RESULT_OK && data != null){
+            Uri path = data.getData();
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), path);
+                imgView.setImageBitmap(bitmap);
+                imgView.setVisibility(View.VISIBLE);
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void correctLayoutParams(){
         constraintSet.connect(R.id.recipe_input_layout_ingredients2, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients1, ConstraintSet.BOTTOM);
         constraintSet.connect(R.id.recipe_input_layout_ingredients_amount2, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount1, ConstraintSet.BOTTOM);
@@ -880,5 +761,36 @@ public class AddRecipeActivity extends AppCompatActivity {
 
         constraintSet.connect(R.id.recipe_input_layout_ingredients15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients14, ConstraintSet.BOTTOM);
         constraintSet.connect(R.id.recipe_input_layout_ingredients_amount15, ConstraintSet.TOP, R.id.recipe_input_layout_ingredients_amount14, ConstraintSet.BOTTOM);
+    }
+
+    private void setSmallLayout(ConstraintLayout.LayoutParams lparams){
+        recipeInputLayoutIngredients2.setLayoutParams(lparams);
+        recipeInputLayoutAmount2.setLayoutParams(lparams);
+        recipeInputLayoutIngredients3.setLayoutParams(lparams);
+        recipeInputLayoutAmount3.setLayoutParams(lparams);
+        recipeInputLayoutIngredients4.setLayoutParams(lparams);
+        recipeInputLayoutAmount4.setLayoutParams(lparams);
+        recipeInputLayoutIngredients5.setLayoutParams(lparams);
+        recipeInputLayoutAmount5.setLayoutParams(lparams);
+        recipeInputLayoutIngredients6.setLayoutParams(lparams);
+        recipeInputLayoutAmount6.setLayoutParams(lparams);
+        recipeInputLayoutIngredients7.setLayoutParams(lparams);
+        recipeInputLayoutAmount7.setLayoutParams(lparams);
+        recipeInputLayoutIngredients8.setLayoutParams(lparams);
+        recipeInputLayoutAmount8.setLayoutParams(lparams);
+        recipeInputLayoutIngredients9.setLayoutParams(lparams);
+        recipeInputLayoutAmount9.setLayoutParams(lparams);
+        recipeInputLayoutIngredients10.setLayoutParams(lparams);
+        recipeInputLayoutAmount10.setLayoutParams(lparams);
+        recipeInputLayoutIngredients11.setLayoutParams(lparams);
+        recipeInputLayoutAmount11.setLayoutParams(lparams);
+        recipeInputLayoutIngredients12.setLayoutParams(lparams);
+        recipeInputLayoutAmount12.setLayoutParams(lparams);
+        recipeInputLayoutIngredients13.setLayoutParams(lparams);
+        recipeInputLayoutAmount13.setLayoutParams(lparams);
+        recipeInputLayoutIngredients14.setLayoutParams(lparams);
+        recipeInputLayoutAmount14.setLayoutParams(lparams);
+        recipeInputLayoutIngredients15.setLayoutParams(lparams);
+        recipeInputLayoutAmount15.setLayoutParams(lparams);
     }
 }

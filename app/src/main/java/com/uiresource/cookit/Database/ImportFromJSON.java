@@ -45,7 +45,7 @@ import static java.lang.Thread.*;
 
 public class ImportFromJSON {
 
-    private static String URL = "https://surviveonsotka20190524073221.azurewebsites.net/api/";
+    private static String URL = "https://surviveonsotkanewfromkirill.azurewebsites.net/api/";
 
     private static OkHttpClient okHttpClient;
     private static Request request;
@@ -211,7 +211,7 @@ public class ImportFromJSON {
 
     public static void AccountRegisterToServer(AccountList account){
 
-        RegisterUser registerUser = new RegisterUser(account.email, "AaT1234.", "AaT1234.");
+        RegisterUser registerUser = new RegisterUser(account.email, "AaT1234.");
 
         Log.i("GSON", "Вызван метод AccountExportToServer");
 
@@ -368,12 +368,10 @@ public class ImportFromJSON {
     public static class RegisterUser {
         String email;
         String password;
-        String passwordConfirm;
 
-        public RegisterUser(String email, String password, String passwordConfirm) {
+        public RegisterUser(String email, String password) {
             this.email = email;
             this.password = password;
-            this.passwordConfirm = passwordConfirm;
         }
     }
 
@@ -394,9 +392,9 @@ public class ImportFromJSON {
         String lastName;
         boolean gender;
         String aboutYourself;
-        String avatar;
+        byte[] avatar;
 
-        public UpdateUser(String firstName, String lastName, boolean gender, String aboutYourself, String avatar) {
+        public UpdateUser(String firstName, String lastName, boolean gender, String aboutYourself, byte[] avatar) {
             this.firstName = firstName;
             this.lastName = lastName;
             this.gender = gender;
