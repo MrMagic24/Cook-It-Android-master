@@ -62,28 +62,28 @@ public class FragmentHome extends Fragment{
 
         View view = inflater.inflate(R.layout.fragment_home, null, false);
 
-        ((Main)getActivity()).setupToolbar(R.id.toolbar, "DESSERT", R.color.colorPink, R.color.colorWhiteTrans, R.drawable.ic_burger);
+        ((Main)getActivity()).setupToolbar(R.id.toolbar, "ДЕСЕРТЫ", R.color.colorPink, R.color.colorWhiteTrans, R.drawable.ic_burger);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
         /*recipesViewModel = ViewModelProviders.of(this).get(RecipesViewModel.class);
         resi = recipesViewModel.getAllRecipes().getValue();*/
 
-        //mAdapter = new RecipeAdapter(setupRecipe(), getActivity());
+        mAdapter = new RecipeAdapter(setupRecipe(), getActivity());
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
         mLayoutManager.setAutoMeasureEnabled(true);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        //recyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(mAdapter);
 
         appCompatActivity = (AppCompatActivity) getActivity();
 
-        final RecipesAdapter adapter = new RecipesAdapter();
-        recyclerView.setAdapter(adapter);
+        //final RecipesAdapter adapter = new RecipesAdapter();
+        //recyclerView.setAdapter(adapter);
 
         recipesViewModel = ViewModelProviders.of(this).get(RecipesViewModel.class);
         //accountViewModel.deleteAllAccounts();
-        recipesViewModel.getAllRecipes().observe(this, new Observer<List<Recipes>>() {
+        /*recipesViewModel.getAllRecipes().observe(this, new Observer<List<Recipes>>() {
             @Override
             public void onChanged(@Nullable List<Recipes> recipes) {
                 adapter.submitList(recipes);
@@ -109,9 +109,9 @@ public class FragmentHome extends Fragment{
             public void onItemClick(Recipes account) {
 
             }
-        });
+        });*/
 
-        /*recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new RecyclerTouchListener.ClickListener() {
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 Intent intent = new Intent(getActivity(), Detail.class);
@@ -125,7 +125,7 @@ public class FragmentHome extends Fragment{
             public void onLongClick(View view, int position) {
 
             }
-        }));*/
+        }));
 
         return view;
     }
@@ -136,7 +136,7 @@ public class FragmentHome extends Fragment{
 
 
 
-        String recipe[] = {"BLOOD ORANGE CAKE", "SEMIFREDDO TIRAMISU", "MARBLE CAKE", "RICE PUDDING", "RAINBOW CAKE", "ICE CREAM", "STROWBERRY CAKE", "CUPCAKE FRUIT"};
+        String recipe[] = {"АПЕЛЬСИНОВЫЙ ПИРОГ", "ОРЕХОВЫЙ ТИРАМИСУ", "МРАМОРНЫЙ ТОРТ", "РИСОВЫЙ ПУДИНГ", "РАДУЖНЫЙ ТОРТ", "МОРОЖЕНОЕ В СТАКАНЕ", "КЛУБНИЧНЫЙ ТОРТ", "ФРУКТОВЫЙ КЕКС"};
         String img[] = {"https://images.pexels.com/photos/53468/dessert-orange-food-chocolate-53468.jpeg?h=350&auto=compress&cs=tinysrgb",
                 "https://images.pexels.com/photos/159887/pexels-photo-159887.jpeg?h=350&auto=compress",
                 "https://images.pexels.com/photos/136745/pexels-photo-136745.jpeg?w=1260&h=750&auto=compress&cs=tinysrgb",
@@ -145,7 +145,7 @@ public class FragmentHome extends Fragment{
                 "https://images.pexels.com/photos/8382/pexels-photo.jpg?w=1260&h=750&auto=compress&cs=tinysrgb",
                 "https://images.pexels.com/photos/51186/pexels-photo-51186.jpeg?w=1260&h=750&auto=compress&cs=tinysrgb",
                 "https://images.pexels.com/photos/55809/dessert-strawberry-tart-berry-55809.jpeg?w=1260&h=750&auto=compress&cs=tinysrgb"};
-        String time[] = {"1h 5'", "30m", "1h 10'", "50m", "20m", "1h 20'", "20m", "1h 20'"};
+        String time[] = {"1ч 5'", "30м", "1ч 10'", "50м", "20м", "1ч 20'", "20м", "1ч 20'"};
         float rating[] = {3, 4, 4, 3, 5, 4, 4, 3};
 
         for (int i = 0; i<recipe.length; i++){

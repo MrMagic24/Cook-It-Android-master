@@ -50,7 +50,7 @@ public class Detail extends BaseActivity implements PreparationAdapter.ViewHolde
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         rootView = (CoordinatorLayout) findViewById(R.id.rootview);
-        setupToolbar(R.id.toolbar, "DESSERTS", android.R.color.white, android.R.color.transparent, R.drawable.ic_arrow_back);
+        setupToolbar(R.id.toolbar, "ДЕСЕРТЫ", android.R.color.white, android.R.color.transparent, R.drawable.ic_arrow_back);
 
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbarLayout.setTitleEnabled(false);
@@ -125,8 +125,8 @@ public class Detail extends BaseActivity implements PreparationAdapter.ViewHolde
 
     public List<ItemShopping> generateShopping(){
         List<ItemShopping> itemList = new ArrayList<>();
-        String name[] = {"butter", "brown", "eggs", "flour", "baking powder", "of salt", "buttermilk", "orange juice"};
-        String pieces[] = {"200g", "200g", "4", "300g", "2tsp", "1 pinch", "100ml", "50ml"};
+        String name[] = {"Масло", "Яйца", "Мука", "Разрыхлитель теста", "Соль", "Молочная сыворотка", "Апельсиновый сок"};
+        String pieces[] = {"200г", "4 шт", "300г", "2 ст. ложки", "1 щепотка", "100мл", "50мл"};
         float rating[] = {3, 4, 4, 3, 5, 4, 4, 3};
 
         for (int i = 0; i<name.length; i++){
@@ -139,8 +139,8 @@ public class Detail extends BaseActivity implements PreparationAdapter.ViewHolde
     }
     public List<ItemComment> generateComments(){
         List<ItemComment> itemList = new ArrayList<>();
-        String username[] = {"LAURA MAGNAGO"};
-        String date[] = {".27-01-2017"};
+        String username[] = {"ЕЛЕНА ПРОХОРОВА"};
+        String date[] = {" 27-06-2019"};
         String comments[] = {"Made this for a BBQ today and it was amazing. Bought 2 Madiera cakes from Tesco and cut them Into wedges. Poured the coffee over the top. And used 75ml of Ameretti instead of masala in the cream. Will be making again next week for a gathering and probably many more times! :)"};
         String userphoto[] = {"https://randomuser.me/api/portraits/women/20.jpg"};
         String img1[] = {"https://images.pexels.com/photos/8382/pexels-photo.jpg?h=350&auto=compress&cs=tinysrgb"};
@@ -161,10 +161,10 @@ public class Detail extends BaseActivity implements PreparationAdapter.ViewHolde
 
     public List<ItemPreparation> generatePreparation(){
         List<ItemPreparation> itemList = new ArrayList<>();
-        String step[] = {"In a medium saucepan, whisk together egg yolks and sugar until well blended. Whisk in milk and cook over medium heat, stirring constantly, until mixture boils. Boil gently for 1 minute, remove from heat and allow to cool slightly. Cover tightly and chill in refrigerator 1 hour.",
-                "In a medium bowl, beat cream with vanilla until stiff peaks form. Whisk mascarpone into yolk mixture until smooth.",
-                "In a small bowl, combine coffee and rum. Split ladyfingers in half lengthwise and drizzle with coffee mixture.",
-                "Arrange half of soaked ladyfingers in bottom of a 7x11 inch dish. Spread half of mascarpone mixture over ladyfingers, then half of whipped cream over that. Repeat layers and sprinkle with cocoa. Cover and refrigerate 4 to 6 hours, until set."};
+        String step[] = {"В небольшой кастрюле взбейте яичные желтки и сахар до однородной массы. Затем взбейте молоко и варите на среднем огне, постоянно помешивая, пока смесь не закипит. Варить 1 минуту. Снять с огня и дать немного остыть. Плотно накройте крышкой и оставьте в холодильнике на 1 час.",
+                "В средней миске взбейте сливки с ванилью до образования жестких комков. Взбейте в желтковую смесь до однородной массы.",
+                "В небольшой миске смешайте кофе и ром. Полейте массу кофейной смесью.",
+                "Расположите половину пропитанных дамских пальцев в нижней части 7x11-сантиметрового блюда. Намажьте половину смеси маскарпоне на женские пальчики, затем половину взбитых сливок. Повторить слои и посыпать какао. Накройте крышкой и поставьте в холодильник на 4-6 часов."};
 
         for (int i = 0; i<step.length; i++){
             ItemPreparation item = new ItemPreparation();

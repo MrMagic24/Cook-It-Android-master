@@ -102,7 +102,7 @@
                     android:layout_below="@id/ratingBar"
                     android:layout_marginTop="-16dp"
                     android:layout_centerHorizontal="true"
-                    android:text="SEMIFREDDO TIRAMISU"
+                    android:text="ОРЕХОВЫЙ ТИРАМИСУ"
                     android:gravity="center_horizontal"
                     style="@style/Text22Semi"/>
                 <LinearLayout
@@ -118,7 +118,7 @@
                         android:gravity="center_vertical"
                         android:drawableLeft="@drawable/ic_time"
                         android:drawablePadding="@dimen/space8"
-                        android:text="1h 20'"
+                        android:text="1ч 20'"
                         style="@style/Text14Grey"/>
                     <TextView
                         android:id="@+id/tv_love"
@@ -152,7 +152,7 @@
                     android:layout_marginRight="@dimen/space24"
                     android:drawablePadding="@dimen/space8"
                     android:gravity="center_horizontal"
-                    android:text=" so semifreddo as a combination with one of my favorite desserts Tiramisu sounded so wonderful in my mind that I made me equal to work, to test ever."
+                    android:text="Один из лучших рецептов в моей жизни. Вы обязательно должны его попробовать!"
                     style="@style/Text14Grey"/>
                 <TextView
                     android:id="@+id/tv_author"
@@ -160,7 +160,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space8"
                     android:drawablePadding="@dimen/space8"
-                    android:text="by Marco Tomasini"
+                    android:text="от Ященкова Кирилла"
                     style="@style/Text14ItGrey"/>
 
                 <LinearLayout
@@ -178,7 +178,7 @@
                         android:paddingRight="@dimen/space24"
                         android:paddingLeft="@dimen/space24"
                         android:gravity="center"
-                        android:text="SHARE"
+                        android:text="ПОДЕЛИТЬСЯ"
                         style="@style/Text14Pink"
                         android:background="@null"/>
                     <View
@@ -192,10 +192,10 @@
                         android:paddingLeft="@dimen/space24"
                         android:paddingRight="@dimen/space24"
                         android:gravity="center"
-                        android:text="COMMENT"
+                        android:text="КОММЕНТИРОВАТЬ"
                         style="@style/Text14Pink"
                         android:background="@null"/>
-                    <View
+                    <!--<View
                         android:layout_width="1.5dp"
                         android:layout_height="@dimen/space8"
                         android:background="@color/colorPink"/>
@@ -208,7 +208,7 @@
                         android:gravity="center"
                         android:text="RATE"
                         style="@style/Text14Pink"
-                        android:background="@null"/>
+                        android:background="@null"/>-->
                 </LinearLayout>
                 <ImageView
                     android:layout_width="wrap_content"
@@ -220,7 +220,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space16"
-                    android:text="SHOPPING LIST"
+                    android:text="СПИСОК ИНГРЕДИЕНТОВ"
                     android:textSize="@dimen/h2"
                     android:textColor="@color/colorTextDark"
                     android:textAppearance="@style/SemiBold"/>
@@ -236,7 +236,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space16"
                     android:layout_marginBottom="@dimen/space8"
-                    android:text="OPEN SHOPPING LIST"
+                    android:text="ОТКРЫТЬ СПИСОК ИНГРЕДИЕНТОВ"
                     android:textColor="@color/colorPink"
                     android:textSize="@dimen/h3"
                     android:textAppearance="@style/Regular"/>
@@ -250,7 +250,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space16"
-                    android:text="PREPARATION"
+                    android:text="ПОДГОТОВКА"
                     android:textSize="@dimen/h2"
                     android:textColor="@color/colorTextDark"
                     android:textAppearance="@style/SemiBold"/>
@@ -290,7 +290,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/space8"
-                                android:text="You did it! Let your friend know about it!"
+                                android:text="Вы сделали это! Расскажите об этом своим друзьям!"
                                 style="@style/Text14Grey"/>
                             <LinearLayout
                                 android:layout_width="wrap_content"
@@ -321,7 +321,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space16"
-                    android:text="COMMENTS"
+                    android:text="КОММЕНТАРИИ"
                     android:textSize="@dimen/h2"
                     android:textColor="@color/colorTextDark"
                     android:textAppearance="@style/SemiBold"/>
@@ -366,7 +366,7 @@
                         android:paddingBottom="@dimen/space16"
                         android:layout_centerVertical="true"
                         android:lines="2"
-                        android:hint="Type your comment here…"
+                        android:hint="Оставьте свой комментарий…"
                         android:textSize="@dimen/h3"
                         android:textColor="@color/colorTextDark"
                         android:textColorHint="@color/colorTextGrey"

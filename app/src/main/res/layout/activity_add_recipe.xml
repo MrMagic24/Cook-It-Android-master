@@ -7,7 +7,7 @@
     android:id="@+id/add_recipe_layout"
     tools:context=".AddRecipeActivity">
 
-    <!--<android.support.design.widget.AppBarLayout
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
@@ -20,7 +20,7 @@
             android:textAlignment="center"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:title="Создание рецепта" />
-    </android.support.design.widget.AppBarLayout>-->
+    </android.support.design.widget.AppBarLayout>
 
     <ScrollView
         android:layout_width="match_parent"
