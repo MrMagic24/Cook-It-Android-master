@@ -87,7 +87,7 @@ public class Detail extends BaseActivity implements PreparationAdapter.ViewHolde
                 .into(imageComment);
 
         final ImageView image = (ImageView) findViewById(R.id.image);
-        Glide.with(this).load(Uri.parse("https://images.pexels.com/photos/140831/pexels-photo-140831.jpeg?w=1260&h=750&auto=compress&cs=tinysrgb")).into(image);
+        Glide.with(this).load(Uri.parse("https://images.pexels.com/photos/159887/pexels-photo-159887.jpeg?h=350&auto=compress")).into(image);
 
     }
 
@@ -141,7 +141,7 @@ public class Detail extends BaseActivity implements PreparationAdapter.ViewHolde
         List<ItemComment> itemList = new ArrayList<>();
         String username[] = {"ЕЛЕНА ПРОХОРОВА"};
         String date[] = {" 27-06-2019"};
-        String comments[] = {"Made this for a BBQ today and it was amazing. Bought 2 Madiera cakes from Tesco and cut them Into wedges. Poured the coffee over the top. And used 75ml of Ameretti instead of masala in the cream. Will be making again next week for a gathering and probably many more times! :)"};
+        String comments[] = {"Попробовала сделать это блюдо вчера. Все были в восторге! Это действительно отличный рецепт!! Лайк :)"};
         String userphoto[] = {"https://randomuser.me/api/portraits/women/20.jpg"};
         String img1[] = {"https://images.pexels.com/photos/8382/pexels-photo.jpg?h=350&auto=compress&cs=tinysrgb"};
         String img2[] = {"https://images.pexels.com/photos/134574/pexels-photo-134574.jpeg?h=350&auto=compress&cs=tinysrgb"};

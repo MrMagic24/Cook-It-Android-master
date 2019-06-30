@@ -77,7 +77,8 @@ public class Main extends BaseActivity
         View header = navigationView.getHeaderView(0);
         ImageView imageView = (ImageView) header.findViewById(R.id.header_account_image);
         Glide.with(this)
-                .load(Uri.parse("https://s3.amazonaws.com/uifaces/faces/twitter/jsa/128.jpg"))
+                //.load(Uri.parse("https://s3.amazonaws.com/uifaces/faces/twitter/jsa/128.jpg"))
+                .load(Uri.parse("https://pp.userapi.com/c623816/v623816502/313c0/VGkX9pCO8tI.jpg"))
                 .transform(new CircleGlide(this))
                 .into(imageView);
     }

@@ -42,7 +42,7 @@
             android:id="@+id/login_input_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
+            android:hint="@string/hint_password"
             android:inputType="textPassword"
             android:textColor="#000000"
             app:layout_constraintTop_toBottomOf="@id/login_input_email" />
@@ -51,7 +51,7 @@
     <Button android:id="@+id/btn_login"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:text="Войти"
         android:background="@color/colorPink"
         android:layout_marginTop="20dp"
         android:textColor="@android:color/white"
@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:background="@null"
-        android:text="Singup"
+        android:text="Зарегистрироваться"
         android:textColor="@android:color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_login" />

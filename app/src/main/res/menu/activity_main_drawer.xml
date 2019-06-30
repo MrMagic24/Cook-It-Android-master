@@ -4,18 +4,18 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/new_recipe"
-            android:title="NEW RECIPE" />
+            android:title="НОВЫЙ РЕЦЕПТ" />
         <item
             android:id="@+id/recipes"
-            android:title="RECIPES" />
+            android:title="РЕЦЕПТЫ" />
         <item
             android:id="@+id/saved"
-            android:title="SAVED RECIPES" />
+            android:title="МОИ РЕЦЕПТЫ" />
         <item
             android:id="@+id/shop_list"
-            android:title="SHOPPING LIST" />
+            android:title="СПИСОК ПОКУПОК" />
         <item
             android:id="@+id/setting"
-            android:title="SETTINGS" />
+            android:title="НАСТРОЙКИ" />
     </group>
 </menu>
